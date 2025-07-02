@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react';
 import HeroSection from './HeroSection';
-import { expect, test } from 'vitest';
+import { expect, test, describe } from 'vitest';
 
 describe('HeroSection Component', () => {
     test('Spotify is rendered', () => {

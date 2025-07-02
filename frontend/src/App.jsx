@@ -5,16 +5,7 @@ import { storeTokensFromParams, checkIsLoggedIn } from './util';
 import HeroSection from './components/Hero/HeroSection';
 
 function App() {
-  const [ isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    storeTokensFromParams();
-
-    const loggedIn = checkIsLoggedIn();
-    console.log('isLoggedIn: ', loggedIn);
-    
-    
-  }, [])
 
   const loginHandlerFn = async () => {
     try {
@@ -27,24 +18,24 @@ function App() {
     }
   }
 
-  const getUserInfoHandlerFn = async () => {
-    const accessToken = localStorage.getItem("access_token");
-    try {
+  // const getUserInfoHandlerFn = async () => {
+  //   const accessToken = localStorage.getItem("access_token");
+  //   try {
 
-      // console.log('sdf')
-      const response = await fetch('http://localhost:3000/userData', 
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ accessToken })
-        })
-      console.log(response);
-      const data  = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  //     // console.log('sdf')
+  //     const response = await fetch('http://localhost:3000/userData', 
+  //       {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({ accessToken })
+  //       })
+  //     console.log(response);
+  //     const data  = await response.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   return (
     <>
