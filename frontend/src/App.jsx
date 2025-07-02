@@ -3,6 +3,7 @@ import './App.css';
 import { storeTokensFromParams, checkIsLoggedIn } from './util'; 
 
 import HeroSection from './components/Hero/HeroSection';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
 
@@ -39,9 +40,8 @@ function App() {
 
   return (
     <>
+      <Navbar/>
       <HeroSection></HeroSection>
-      <button onClick={loginHandlerFn}>{isLoggedIn  ? 'Logged In' : 'Login'}</button>
-      <button onClick={getUserInfoHandlerFn}>get user info</button>
     </>
   );
 }
