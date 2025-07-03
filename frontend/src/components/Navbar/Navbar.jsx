@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { storeTokensFromParams, checkIsLoggedIn } from '../../util'; 
+import { getUserInfoHandlerFn } from "../../util"
 
 export default function Navbar({ isLoggedIn }) {
     // const { loggedIn }  = useContext(LoginContext);
@@ -9,6 +10,9 @@ export default function Navbar({ isLoggedIn }) {
 
         const loggedIn = checkIsLoggedIn();
         console.log('isLoggedIn: ', loggedIn);
+
+        // after logging in, fetch the user profile detail so we can display it in navbar
+        getUserInfoHandlerFn();
     }, [])
 
     const loginHandlerFn = async () => {
@@ -21,7 +25,7 @@ export default function Navbar({ isLoggedIn }) {
         console.log(error) 
         }
     }
-    console.log('this is the context state for login: ', isLoggedIn)
+    // console.log('this is the context state for login: ', isLoggedIn)
 
     return <div className="navbarContainer">
         <button onClick={loginHandlerFn}>{isLoggedIn  ? 'Logged In' : 'Login'}</button>

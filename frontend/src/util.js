@@ -28,3 +28,25 @@ export const checkIsLoggedIn = () => {
     if(accessToken && refreshToken && expiresIn) return true
     else return false;
 }
+
+// gets user profile details
+export const getUserInfoHandlerFn = async () => {
+  const accessToken = localStorage.getItem("access_token");
+  try {
+
+    // console.log('sdf')
+    const response = await fetch('http://localhost:3000/userData', 
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accessToken })
+      }
+    );
+    
+    console.log(response);
+    const data  = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error)
+  }
+}

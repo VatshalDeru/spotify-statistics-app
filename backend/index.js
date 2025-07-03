@@ -46,11 +46,11 @@ app.get('/callback', async (req, res) => {
 app.post('/userData', async (req, res) => {
     const { accessToken } = req.body;
 
-    const userData = await getUserData(accessToken, 'tracks', 'short_term');
+    // const userData = await getUserData(accessToken, 'tracks', 'short_term');
 
-    // const userProfile = await getUserProfile(accessToken);
+    const userProfile = await getUserProfile(accessToken);
 
-    res.json(userData)
+    res.json(userProfile)
 
 })
 
