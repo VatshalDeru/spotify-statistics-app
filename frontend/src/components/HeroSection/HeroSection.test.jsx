@@ -20,4 +20,11 @@ describe('HeroSection Component', () => {
         const textElement = screen.getByText('Wrapped');
         expect(textElement).toBeInTheDocument();
     })
+    test('button that says Get Started is Rendered', () => {
+        render(<HeroSection/>);
+
+        const buttonElement = screen.getByRole('button', { name: "Get Started" });
+
+        expect(buttonElement).toBeInTheDocument();
+    })
 })

@@ -2,22 +2,30 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import { storeTokensFromParams, checkIsLoggedIn } from './util'; 
 
-import HeroSection from './components/Hero/HeroSection';
+import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    useEffect(() => {
+      storeTokensFromParams();
 
-  const loginHandlerFn = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/login');
-      const data = await response.json();
-      console.log(data);
-      window.location.replace(data)
-    } catch (error) {
-      console.log(error) 
-    }
-  }
+      const loggedIn = checkIsLoggedIn();
+      setIsLoggedIn(loggedIn);
+      // console.log('isLoggedIn: ', loggedIn);
+  }, [isLoggedIn])
+
+  // const loginHandlerFn = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:3000/login');
+  //     const data = await response.json();
+  //     console.log(data);
+  //     window.location.replace(data)
+  //   } catch (error) {
+  //     console.log(error) 
+  //   }
+  // }
 
   // const getUserInfoHandlerFn = async () => {
   //   const accessToken = localStorage.getItem("access_token");
@@ -40,7 +48,7 @@ function App() {
 
   return (
     <>
-      <Navbar/>
+      <Navbar isLoggedIn={isLoggedIn}/>
       <HeroSection></HeroSection>
     </>
   );
