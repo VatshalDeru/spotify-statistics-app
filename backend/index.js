@@ -47,7 +47,12 @@ app.get('/callback', async (req, res) => {
 
         // get user profile info
 
-        res.redirect('http://localhost:5173/')
+        const tokenGeneratedAt = new Date();
+        console.log(tokenGeneratedAt.getTime(), tokenGeneratedAt.getTime().toString());
+        const homeURL = new URL('http://localhost:5173/')
+        homeURL.searchParams.append('tokenCreationTime', tokenGeneratedAt.getTime().toString())
+
+        res.redirect(homeURL)
     } catch (error) {
         console.log('index.js - /callback: ', error)
     }

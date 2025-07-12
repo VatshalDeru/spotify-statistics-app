@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
-import { storeTokensFromParams, checkIsLoggedIn } from '../../util'; 
+import { storeDateFromParams, checkIsLoggedIn } from '../../util'; 
 import { getUserProfileHandler } from "../../util"
 
-export default function Navbar() {
+export default function Navbar({isLoggedIn}) {
     // const { loggedIn }  = useContext(LoginContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    useEffect(() => {
-        const loginStatus = checkIsLoggedIn();
-        if(isLoggedIn !== loginStatus){
-            setIsLoggedIn(loginStatus);
-        }
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // useEffect(() => {
+    //     const loginStatus = checkIsLoggedIn();
+    //     if(isLoggedIn !== loginStatus){
+    //         setIsLoggedIn(loginStatus);
+    //     }
 
-        const getUserProf = async () => {
-            const data = await getUserProfileHandler();
-            console.log(data)
-            return data;
-        }
-        // after logging in, fetch the user profile detail so we can display it in navbar
-        if(isLoggedIn) getUserProf();
-        // console.log('Navbar.jsx', data)
-    }, [isLoggedIn])
+    //     const getUserProf = async () => {
+    //         const data = await getUserProfileHandler();
+    //         console.log(data)
+    //         return data;
+    //     }
+    //     // after logging in, fetch the user profile detail so we can display it in navbar
+    //     if(isLoggedIn) getUserProf();
+    //     // console.log('Navbar.jsx', data)
+    // }, [isLoggedIn])
 
     const loginHandlerFn = async () => {
         try {

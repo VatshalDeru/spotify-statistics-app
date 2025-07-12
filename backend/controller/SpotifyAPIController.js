@@ -56,6 +56,7 @@ export default class SpotifyAPIController {
 
     // get access & refresh tokens using the authcode
     async getTokens(authCode){
+        // prepare values/object for spotifyFetch()
         const url = 'https://accounts.spotify.com/api/token';
         const method = 'POST';
         const bodyObj = new URLSearchParams({
@@ -74,37 +75,6 @@ export default class SpotifyAPIController {
         //set the tokens in this class for later use
         this.setAccessToken(access_token);
         this.setRefreshToken(refresh_token);
-        // console.log(access_token, refresh_token)
-
-        // console.log(data);
-        // try {
-        //     const URL = 'https://accounts.spotify.com/api/token'   
-            
-        //     const response = await fetch('https://accounts.spotify.com/api/token' , {
-        //         method: 'POST',
-        //         headers: {
-        //             'content-type': 'application/x-www-form-urlencoded',
-        //             'Authorization': 'Basic ' + (new Buffer.from(this.client_id + ':' + this.client_secret).toString('base64'))
-        //         },
-        //         // attach the query params to body of the url
-        //         body: new URLSearchParams({
-        //             redirect_uri: this.redirect_uri,
-        //             code: authCode,
-        //             grant_type: 'authorization_code'
-        //         })
-        //     })
-
-        //     if(!response.ok) {
-        //         const errorMsg = await response.text();
-        //         throw new Error(`error getting tokens, error status: ${response.status}, error message: ${errorMsg}`)
-        //     }
-
-        //     const {access_token, refresh_token} = await response.json();
-        //     // console.log('SpotifyAPIController.js - tokens: ', data)
-        //     return {access_token, refresh_token}
-        // } catch (error) {
-        //     console.log('helper.js - getToken():', error)
-        // }
     }
 
     // function to get users listening statistics 
@@ -115,7 +85,6 @@ export default class SpotifyAPIController {
     // get users spotify profile data
     async getUserProfile(){
         // prepare values/object for spotifyFetch()
-        // const accessToken = this.getAccessToken();
         const url = 'https://api.spotify.com/v1/me';
         const headersObj = {
             Authorization: "Bearer " + this.getAccessToken()
@@ -125,24 +94,6 @@ export default class SpotifyAPIController {
         const data = await spotifyFetch({url, headersObj, errorIntro});
         // console.log('apiController.js - getUserProfile(): ', data);
 
-        return data
-        // try {
-        //     const response = await fetch('https://api.spotify.com/v1/me', {
-        //         headers: {
-        //             Authorization: "Bearer " + accessToken
-        //         }
-        //     })
-            
-        //     if(!response.ok){
-        //         const errorMsg = await response.text();
-        //         throw new Error(`Error getting user profile data. Status: ${response.status}, Message: ${errorMsg}`);            
-        //     } 
-            
-        //     const data = await response.json();
-        //     console.log('apiController - getUserProfile: ', data)
-        //     return data;
-        // } catch (error) {
-        //     console.error(error)
-        // }
+        return data;
     }
 }

@@ -1,10 +1,13 @@
-import { getUserDataHandler, getUserProfileHandler } from "../../util"
+import { getUserProfileHandler } from "../../util"
 
-export default function HeroSection() {
+export default function HeroSection({ isLoggedIn }) {
     return <div className="HeroContainer">
         <h1>Spotify <span>Wrapped</span></h1>
-        <div className="actionButtonContainer">
-            <button onClick={getUserProfileHandler}>Get Started</button>
-        </div>
+        {isLoggedIn && 
+            <div className="actionButtonContainer">
+                <button onClick={getUserProfileHandler}>Get Started</button>
+            </div>
+        }
+
     </div>
 }

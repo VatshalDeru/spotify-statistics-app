@@ -1,24 +1,32 @@
-// we get the access token, refresh token and expiry timer from the URL PARAM
-export const storeTokensFromParams = () => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get('access_token');
-    const refreshToken = params.get('refresh_token');
-    const expiresIn = params.get('expires_in');
+// we get the time of token creation from the query params of URL and store it in local storage
+// we will use this time to calculate if tokens have expired or not before each request we make
+export const storeDateFromParams = () => {
+  const params = new URLSearchParams(window.location.search);
+  const tokenCreationTime = params.get('tokenCreationTime');
+  // console.log(tokenCreationTime, typeof parseInt(tokenCreationTime))
 
-    if (accessToken) {
-      localStorage.setItem('access_token', accessToken);
-    }
+  if(!tokenCreationTime) return;
 
-    if (refreshToken) {
-      localStorage.setItem('refresh_token', refreshToken);
-    }
-    
-    if (expiresIn) {
-      localStorage.setItem('expires_in', expiresIn);
-    }
-
-    if(accessToken || refreshToken || expiresIn) window.location.replace('http://localhost:5173/');
+  localStorage.setItem('tokenCreationTime', parseInt(tokenCreationTime))
+  window.location.replace('http://localhost:5173/')
 }
+
+export const checkTokenIsExpired = () => {
+  const tokenCreationTime = localStorage.getItem('tokenCreationTime');
+  const currTime  = new Date().getTime();
+  const timeDifference = (currTime - tokenCreationTime) / 1000;
+  // console.log('util.js - checkTokenIsExpired() - timeDifference: ', timeDifference);
+
+  const tokenHasExpired = timeDifference >= 3600;
+
+  if(tokenHasExpired) clearTokenCreationTime(tokenHasExpired);
+
+  return tokenHasExpired;
+}
+
+const clearTokenCreationTime = () => {
+  localStorage.removeItem('tokenCreationTime');
+};
 
 export const checkIsLoggedIn = () => {
     const accessToken = localStorage.getItem('access_token');

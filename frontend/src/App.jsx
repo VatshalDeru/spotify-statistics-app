@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { storeTokensFromParams, checkIsLoggedIn } from './util'; 
+import { storeDateFromParams, checkTokenIsExpired, getUserProfileHandler } from './util'; 
 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
@@ -9,12 +9,34 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    storeTokensFromParams();
+    // check for the date query params in the URL and if present, store it in localstorage
+    storeDateFromParams();
 
-    // const loggedIn = checkIsLoggedIn();
-    // setIsLoggedIn(loggedIn);
+    // determine if user is logged in
+    const loggedIn = !checkTokenIsExpired();
+    // const loggedIn = checkIsLoggedIn();#
+
+
+    
+    // only change state if the new loggedIn value is different from the current isLoggedIn state
+    if(loggedIn !== isLoggedIn) {
+      setIsLoggedIn(loggedIn);
+    };
+
+    // function to call getUserProfilHandler() inside of useEffect asynchronously 
+    const callfetchProfile = async () => {
+      const userProfileData = await getUserProfileHandler();
+      console.log('userProfileData: ', userProfileData);
+    }
+
+    // fetch the users profile data if 
+    if(loggedIn) {
+      callfetchProfile();
+    }
+    
     // console.log('isLoggedIn: ', loggedIn);
-  }, [isLoggedIn])
+  }, [])
+  // console.log('App.jsx - isLoggedIn: ', isLoggedIn)
 
   // const loginHandlerFn = async () => {
   //   try {
@@ -49,7 +71,7 @@ function App() {
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn}/>
-      <HeroSection></HeroSection>
+      <HeroSection isLoggedIn={isLoggedIn}></HeroSection>
     </>
   );
 }
