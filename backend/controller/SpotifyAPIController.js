@@ -1,0 +1,140 @@
+import { getUserDataHelper, spotifyFetch } from "../helper.js";
+
+export default class SpotifyAPIController {
+    constructor({client_id, client_secret, redirect_uri}) {
+        this.accessToken = '';
+        this.refreshToken = '';
+        this.client_id = client_id || '';
+        this.client_secret = client_secret || '';
+        this.redirect_uri = redirect_uri || '';
+    }
+
+    // ------ getter and setter functions ---------
+    getAccessToken() {
+        // console.log('getting accessToken: ', this.accessToken)
+        return this.accessToken;
+    }
+
+    getRefreshToken() {
+        return this.refreshToken;
+    }
+
+    setAccessToken(token) {
+        this.accessToken = token;
+        console.log('access token set to: ', this.accessToken)
+    }
+
+    setRefreshToken(token) {
+        this.refreshToken = token;
+        console.log('refresh token set to: ', this.refreshToken)
+    }
+    // ---------------------------------------------
+
+    // create the URL to authenticate user to obtain authcode
+    getAuthURL(givenScope){
+        const scope = givenScope || ['playlist-read-private', 'user-read-recently-played', 'user-top-read,', 'user-read-private', 'user-read-email' ];
+        
+        const baseURL = 'https://accounts.spotify.com/authorize?'
+
+        try {
+            // create the query params for the auth URL
+            const params = new URLSearchParams({
+                response_type: 'code',
+                client_id: this.client_id,
+                scope: scope,
+                redirect_uri: this.redirect_uri,
+            })
+
+            // comnine base URL + params to create the auth URL
+            const authURL = baseURL + params.toString();
+
+            return authURL;
+        } catch (error) {
+            throw new Error('hey',error);
+        }
+    }
+
+    // get access & refresh tokens using the authcode
+    async getTokens(authCode){
+        const url = 'https://accounts.spotify.com/api/token';
+        const method = 'POST';
+        const bodyObj = new URLSearchParams({
+            redirect_uri: this.redirect_uri,
+            code: authCode,
+            grant_type: 'authorization_code'
+        })
+        const headersObj = {
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + (new Buffer.from(this.client_id + ':' + this.client_secret).toString('base64'))
+        };
+        const errorIntro = 'error getting tokens'
+
+        const {access_token, refresh_token} = await spotifyFetch({url, method, bodyObj, headersObj, errorIntro})
+        
+        //set the tokens in this class for later use
+        this.setAccessToken(access_token);
+        this.setRefreshToken(refresh_token);
+        // console.log(access_token, refresh_token)
+
+        // console.log(data);
+        // try {
+        //     const URL = 'https://accounts.spotify.com/api/token'   
+            
+        //     const response = await fetch('https://accounts.spotify.com/api/token' , {
+        //         method: 'POST',
+        //         headers: {
+        //             'content-type': 'application/x-www-form-urlencoded',
+        //             'Authorization': 'Basic ' + (new Buffer.from(this.client_id + ':' + this.client_secret).toString('base64'))
+        //         },
+        //         // attach the query params to body of the url
+        //         body: new URLSearchParams({
+        //             redirect_uri: this.redirect_uri,
+        //             code: authCode,
+        //             grant_type: 'authorization_code'
+        //         })
+        //     })
+
+        //     if(!response.ok) {
+        //         const errorMsg = await response.text();
+        //         throw new Error(`error getting tokens, error status: ${response.status}, error message: ${errorMsg}`)
+        //     }
+
+        //     const {access_token, refresh_token} = await response.json();
+        //     // console.log('SpotifyAPIController.js - tokens: ', data)
+        //     return {access_token, refresh_token}
+        // } catch (error) {
+        //     console.log('helper.js - getToken():', error)
+        // }
+    }
+
+    // function to get users listening statistics 
+    async getUserData(){
+        return await getUserDataHelper(this.accessToken); 
+        // console.log('apiController - getUserData - topArtists: ', topArtists)
+        // console.log('apiController - getUserData - topTracks: ', topTracks)
+    };
+
+    // get users spotify profile data
+    async getUserProfile(){
+        const accessToken = this.getAccessToken();
+        console.log('apiController - access_token: ', accessToken)
+        try {
+            const response = await fetch('https://api.spotify.com/v1/me', {
+                headers: {
+                    Authorization: "Bearer " + accessToken
+                }
+            })
+            
+            if(!response.ok){
+                const errorMsg = await response.text();
+                throw new Error(`Error getting user profile data. Status: ${response.status}, Message: ${errorMsg}`);            
+            } 
+            
+            const data = await response.json();
+            console.log('apiController - getUserProfile: ', data)
+            return data;
+        } catch (error) {
+            console.error(error)
+        }
+    }
+}

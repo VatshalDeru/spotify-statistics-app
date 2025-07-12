@@ -30,22 +30,51 @@ export const checkIsLoggedIn = () => {
 }
 
 // gets user profile details
-export const getUserInfoHandlerFn = async () => {
-  const accessToken = localStorage.getItem("access_token");
+export const getUserProfileHandler = async () => {
   try {
 
     // console.log('sdf')
-    const response = await fetch('http://localhost:3000/userData', 
+    const response = await fetch('http://localhost:3000/user', 
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ accessToken })
+        body: JSON.stringify({ action: 'userProfile' })
       }
     );
     
+    if(!response.ok) {
+      const errorMsg = await response.text();
+      throw new Error(`error getting user profile data, error status: ${response.status}, error message: ${errorMsg}`)
+    }
+
+    // console.log(response);
+    const data  = await response.json();
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+}
+// gets user data statistics
+export const getUserDataHandler = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/user', 
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'userData' })
+      }
+    );
     console.log(response);
+
+    if(!response.ok) {
+      const errorMsg = await response.text();
+      throw new Error(`error getting user data, error status: ${response.status}, error message: ${errorMsg}`)
+    }
+
     const data  = await response.json();
     console.log(data);
+    return data;
   } catch (error) {
     console.log(error)
   }

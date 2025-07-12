@@ -1,67 +1,89 @@
-import SpotifyWebApi from "spotify-web-api-node";
-
-const spotifyApi = new SpotifyWebApi({
-  redirectUri: 'http://localhost:3000/callback',
-  clientId: '31efb33b062d4da9a45cb8f69e7cf34d',
-  clientSecret: '21c9d39137cb440b9898877d15d510e7',
-});
-
-const scope = ['playlist-read-private', 'user-read-recently-played', 'user-top-read' ];
-
-// generates the URL required to which the user needs to be redirected to get the auth code
-export const getAuthUrl = () => spotifyApi.createAuthorizeURL(scope);
-
-// uses the auth code to request tokens
-export const getToken = async (authCode) => {
-    const response = await spotifyApi.authorizationCodeGrant(authCode);
-
-    const accessToken = response.body['access_token'];
-    const refreshToken = response.body['refresh_token'];
-    const expiresIn = response.body['expires_in']
-
-    console.log(accessToken);
-    return {
-        accessToken,
-        refreshToken,
-        expiresIn
-    };
+// we'll loop through this objects arrays to send requests for data
+const userDataParamsObj = {
+    itemTypes: ['artists', 'tracks'],
+    timeRanges: ['short_term', 'medium_term', 'long_term']
 }
 
-// fetches either users top tracks or artists depending on the type provided and also the timerange
-export const getUserData = async (accessToken, type, timeRange) => {
+export const getUserDataHelper = async (accessToken) =>{
+    const topArtists = {};
+    const topTracks = {};
     console.log(accessToken)
-    try {
-        const response = await fetch(`https://api.spotify.com/v1/me/top/${type}?time_range=${timeRange}`,{
-            headers: {
-                Authorization : `Bearer ${accessToken}`
-            }
-        });
-        const data = await response.json();
-        console.log(data)
-        return data;
-    } catch (error) {
-        console.log('error getting user info');
-    }
-};
 
-// gets users last listened to tracks (20 tracks max)
-export const getUserListeningHistory = async (accessToken) => {
+    // create and prepare the static values/obj so we can pass it spotifyFetch() for the request
+    const headersObj = {
+        Authorization : `Bearer ${accessToken}`
+    };
     
+
+    // loop over userDataParamsObj to fetch user data for their top tracks/artists over long/medium/short (time) term using for loop
+    for(const itemType of userDataParamsObj.itemTypes) {
+        for(const timeRange of userDataParamsObj.timeRanges) {
+            // create the dynamic values/obj so we can pass it to spotifyFetch() for the request
+            const url = `https://api.spotify.com/v1/me/top/${itemType}?time_range=${timeRange}`;
+            const errorIntro = `error getting user data with itemType: ${itemType} and timeRange: ${timeRange}`;
+
+            const {items} = await spotifyFetch({url, headersObj, errorIntro})
+            // console.log(items);
+            // adding the fetched user data to the relevant data item obj we created above
+            if(itemType === 'artists') {
+                topArtists[timeRange] = items;
+            } else{
+                topTracks[timeRange] = items;
+            }
+            
+            // try {
+            //     const response = await fetch(`https://api.spotify.com/v1/me/top/${itemType}?time_range=${timeRange}`,{
+            //         headers: {
+            //             Authorization : `Bearer ${accessToken}`
+            //         }
+            //     });
+
+            //     if(!response.ok) {
+            //         const errorMsg = await response.text();
+            //         throw new Error(`error getting user data with itemType: ${itemType} and timeRange: ${timeRange}, error status: ${response.status}, error message: ${errorMsg}`)
+            //     }
+
+            //     // get only the array of the top tracks/artits from the received data
+            //     const {items} = await response.json();
+
+            //     // adding the fetched user data to the relevant data item obj we created above
+            //     if(itemType === 'artists') {
+            //         topArtists[timeRange] = items;
+            //     } else{
+            //         topTracks[timeRange] = items;
+            //     }
+            // } catch (error) {
+            //     console.log(error);
+            // }
+        }
+    }
+    // console.log('helper.js - getUserData - topArtists: ', topArtists)
+    // console.log('helper.js - getUserData - topTracks: ', topTracks)
+    return {topArtists, topTracks}
 }
 
-// gets users current profile info on spotify
-export const getUserProfile = async (accessToken) => {
+// function that will call fetch() for you, help write DRY code
+export const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
+    const options = {
+        ...(method && {method: method}),
+        ...(headersObj && { headers: headersObj}),
+        ...(bodyObj && {body: bodyObj}),
+    }
+    // console.log('helper.js - spotifyFetch():', options);
+
     try {
-        const response = await fetch('https://api.spotify.com/v1/me', {
-            headers: {
-                Authorization: "Bearer " + accessToken
-            }
-        })
+        const response = await fetch(url, options);
+
+        if(!response.ok) {
+            const errorMsg = await response.text();
+            throw new Error(`${errorIntro}, error status: ${response.status}, error message: ${errorMsg}`)
+        }
 
         const data = await response.json();
-        console.log(data)
+
+        // console.log(data);
         return data;
     } catch (error) {
-        console.error(error)
+        console.log(error);
     }
 }

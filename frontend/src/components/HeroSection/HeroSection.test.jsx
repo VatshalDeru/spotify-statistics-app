@@ -27,4 +27,5 @@ describe('HeroSection Component', () => {
 
         expect(buttonElement).toBeInTheDocument();
     })
+    test((''))
 })

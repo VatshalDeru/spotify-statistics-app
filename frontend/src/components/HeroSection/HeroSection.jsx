@@ -1,8 +1,10 @@
+import { getUserDataHandler, getUserProfileHandler } from "../../util"
+
 export default function HeroSection() {
     return <div className="HeroContainer">
         <h1>Spotify <span>Wrapped</span></h1>
         <div className="actionButtonContainer">
-            <button>Get Started</button>
+            <button onClick={getUserDataHandler}>Get Started</button>
         </div>
     </div>
 }

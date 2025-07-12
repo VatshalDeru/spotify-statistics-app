@@ -8,12 +8,12 @@ import Navbar from './components/Navbar/Navbar';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-      storeTokensFromParams();
+  useEffect(() => {
+    storeTokensFromParams();
 
-      const loggedIn = checkIsLoggedIn();
-      setIsLoggedIn(loggedIn);
-      // console.log('isLoggedIn: ', loggedIn);
+    // const loggedIn = checkIsLoggedIn();
+    // setIsLoggedIn(loggedIn);
+    // console.log('isLoggedIn: ', loggedIn);
   }, [isLoggedIn])
 
   // const loginHandlerFn = async () => {

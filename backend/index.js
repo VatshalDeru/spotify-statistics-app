@@ -2,9 +2,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import SpotifyWebApi from "spotify-web-api-node";
 import 'dotenv/config'
+import SpotifyAPIController from "./controller/SpotifyAPIController.js";
 
 // console.log(process.env.CLIENT_iD)
-import { getToken, getAuthUrl, getUserData, getUserProfile } from "./helper.js";
+// import { getAuthUrl} from "./helper.js";
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,14 @@ const port = 3000;
 // allowed me to receive the access tokens in the backend through body, that i sent from frontend
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// initialise the controller
+const spotifyAPIController = new SpotifyAPIController({
+  redirect_uri: 'http://localhost:3000/callback',
+  client_id: '31efb33b062d4da9a45cb8f69e7cf34d',
+  client_secret: '21c9d39137cb440b9898877d15d510e7',
+});
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,8 +34,8 @@ app.use((req, res, next) => {
 });
 
 app.get('/login', (req, res) => {
-    const authUrl = getAuthUrl();
-    console.log(authUrl)
+    const authUrl = spotifyAPIController.getAuthURL();
+    // console.log('authURL: ', authUrl)
 
     res.json(authUrl);
 })
@@ -34,24 +43,28 @@ app.get('/login', (req, res) => {
 app.get('/callback', async (req, res) => {
     try {
         const authCode = req.query.code;
-        const tokenObj = await getToken(authCode);
+        await spotifyAPIController.getTokens(authCode);
 
-        console.log(tokenObj)
-        res.redirect(`http://localhost:5173/?access_token=${tokenObj.accessToken}&refresh_token=${tokenObj.refreshToken}&expires_in=${tokenObj.expiresIn}`)
+        // get user profile info
+
+        res.redirect('http://localhost:5173/')
     } catch (error) {
-        console.log(error)
+        console.log('index.js - /callback: ', error)
     }
 })
 
-app.post('/userData', async (req, res) => {
-    const { accessToken } = req.body;
+app.post('/user', async (req, res) => {
+    const { action } = req.body;
+    let data;
+    if(action === 'userData') {
+        data = await spotifyAPIController.getUserData('tracks', 'long_term');
+    } else if (action === 'userProfile') {
+        data = await spotifyAPIController.getUserProfile();
+    }
 
-    // const userData = await getUserData(accessToken, 'tracks', 'short_term');
+    console.log(data)
 
-    const userProfile = await getUserProfile(accessToken);
-
-    res.json(userProfile)
-
+    res.json(data)
 })
 
 app.listen(port, () => console.log(`Listening on port: ${port}`))
