@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import './components/HeroSection/HeroSection.css'
 import './components/Navbar/Navbar.css'
+import './components/ProfilePopUpCard/ProfilePopUpCard.css'
 import App from './App.jsx'
 // import { Provider } from 'react-redux'
 

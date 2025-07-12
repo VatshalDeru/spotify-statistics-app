@@ -1,0 +1,43 @@
+.navbarContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 1em -1em;
+    display: flex;
+    justify-content: end;
+
+    button{
+    margin-inline: 1em;
+    
+        &:hover{
+            background-color: rgb(59, 228, 119);
+            color: rgb(36, 36, 36);
+        }
+    }
+
+    .profileImg{
+        background-color: rgb(26, 25, 25);
+        aspect-ratio: 1/1;
+        padding: 0.5em;
+        border-radius: 50%;
+        display: flex;
+
+        img{
+            width: 2.5em;
+            height: 2.5em;
+            border-radius: 50%;
+            border: 2px solid rgb(82, 82, 82);
+            object-fit: cover;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color:rgb(59, 228, 119);
+
+        }
+    }
+}
+
+
+

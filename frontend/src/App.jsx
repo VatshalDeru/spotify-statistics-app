@@ -4,11 +4,13 @@ import { storeDateFromParams, checkTokenIsExpired, getUserProfileHandler } from 
 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
+import { UserDataContext } from './store/user-data-context.js';
 
 const  INTITIAL_USER_DATA_OBJ = {
     topArtits: [],
     topTracks: [],
     listeningHistory: [],
+    userProfileData: {},
 }
 
 function App() {
@@ -30,7 +32,12 @@ function App() {
     // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
       const userProfileData = await getUserProfileHandler();
-      console.log('userProfileData: ', userProfileData);
+      setUserData(prevUserData => {
+        return {
+          ...prevUserData,
+          userProfileData
+        }
+      })
     }
 
     // fetch the users profile data if 
@@ -39,11 +46,20 @@ function App() {
     }
   }, [isLoggedIn])
 
+  // initilise the userData context value so we can connect to it the state and pass it as a value 
+  // to the context provider so the context is available in all nested components
+  const userDataCtxValue = {
+    topArtits: userData.topArtits,
+    topTracks: userData.topTracks,
+    listeningHistory: userData.listeningHistory,
+    userProfileData: userData.userProfileData,
+  }
+  // console.log(userData)
   return (
-    <>
+    <UserDataContext value={userDataCtxValue}>
       <Navbar isLoggedIn={isLoggedIn}/>
       <HeroSection isLoggedIn={isLoggedIn}></HeroSection>
-    </>
+    </UserDataContext>
   );
 }
 

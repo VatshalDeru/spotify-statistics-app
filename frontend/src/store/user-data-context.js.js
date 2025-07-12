@@ -4,4 +4,5 @@ export const UserDataContext = createContext({
     topArtits: [],
     topTracks: [],
     listeningHistory: [],
+    userProfileData: {},
 });

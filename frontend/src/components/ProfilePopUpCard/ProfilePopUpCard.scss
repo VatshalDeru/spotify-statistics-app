@@ -1,0 +1,40 @@
+.profileCardContainer{
+    background-color: rgb(24, 24, 24);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    padding: 2em 4em;
+    z-index: 99;
+    border-radius: 5%;
+
+    
+    .profilePhotoContainer{
+        img{
+            width: 10em;
+            height: 10em;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+    
+    .userName {
+        margin-block: 0.4em;
+    }
+
+    .userId{
+        color: rgb(131, 130, 130);
+        margin: 0;
+    }
+
+
+    button{
+        background-color: rgb(235, 38, 38);
+        border: none;
+        width: 10em;
+        margin: 0 auto;
+
+        &:hover{
+            background-color: #3BE477;
+        }
+    }
+}
