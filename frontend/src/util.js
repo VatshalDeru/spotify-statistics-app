@@ -19,12 +19,12 @@ export const checkTokenIsExpired = () => {
 
   const tokenHasExpired = timeDifference >= 3600;
 
-  if(tokenHasExpired) clearTokenCreationTime(tokenHasExpired);
+  if(tokenHasExpired) handleLogout(tokenHasExpired);
 
   return tokenHasExpired;
 }
 
-const clearTokenCreationTime = () => {
+const handleLogout = () => {
   localStorage.removeItem('tokenCreationTime');
 };
 

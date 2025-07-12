@@ -5,8 +5,15 @@ import { storeDateFromParams, checkTokenIsExpired, getUserProfileHandler } from 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
 
+const  INTITIAL_USER_DATA_OBJ = {
+    topArtits: [],
+    topTracks: [],
+    listeningHistory: [],
+}
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(INTITIAL_USER_DATA_OBJ)
 
   useEffect(() => {
     // check for the date query params in the URL and if present, store it in localstorage
@@ -14,10 +21,7 @@ function App() {
 
     // determine if user is logged in
     const loggedIn = !checkTokenIsExpired();
-    // const loggedIn = checkIsLoggedIn();#
 
-
-    
     // only change state if the new loggedIn value is different from the current isLoggedIn state
     if(loggedIn !== isLoggedIn) {
       setIsLoggedIn(loggedIn);
@@ -33,40 +37,7 @@ function App() {
     if(loggedIn) {
       callfetchProfile();
     }
-    
-    // console.log('isLoggedIn: ', loggedIn);
-  }, [])
-  // console.log('App.jsx - isLoggedIn: ', isLoggedIn)
-
-  // const loginHandlerFn = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:3000/login');
-  //     const data = await response.json();
-  //     console.log(data);
-  //     window.location.replace(data)
-  //   } catch (error) {
-  //     console.log(error) 
-  //   }
-  // }
-
-  // const getUserInfoHandlerFn = async () => {
-  //   const accessToken = localStorage.getItem("access_token");
-  //   try {
-
-  //     // console.log('sdf')
-  //     const response = await fetch('http://localhost:3000/userData', 
-  //       {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({ accessToken })
-  //       })
-  //     console.log(response);
-  //     const data  = await response.json();
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  }, [isLoggedIn])
 
   return (
     <>
