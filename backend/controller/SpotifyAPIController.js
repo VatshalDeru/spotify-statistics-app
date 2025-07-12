@@ -110,31 +110,39 @@ export default class SpotifyAPIController {
     // function to get users listening statistics 
     async getUserData(){
         return await getUserDataHelper(this.accessToken); 
-        // console.log('apiController - getUserData - topArtists: ', topArtists)
-        // console.log('apiController - getUserData - topTracks: ', topTracks)
     };
 
     // get users spotify profile data
     async getUserProfile(){
-        const accessToken = this.getAccessToken();
-        console.log('apiController - access_token: ', accessToken)
-        try {
-            const response = await fetch('https://api.spotify.com/v1/me', {
-                headers: {
-                    Authorization: "Bearer " + accessToken
-                }
-            })
+        // prepare values/object for spotifyFetch()
+        // const accessToken = this.getAccessToken();
+        const url = 'https://api.spotify.com/v1/me';
+        const headersObj = {
+            Authorization: "Bearer " + this.getAccessToken()
+        };
+        const errorIntro = 'error getting user profile data';
+
+        const data = await spotifyFetch({url, headersObj, errorIntro});
+        // console.log('apiController.js - getUserProfile(): ', data);
+
+        return data
+        // try {
+        //     const response = await fetch('https://api.spotify.com/v1/me', {
+        //         headers: {
+        //             Authorization: "Bearer " + accessToken
+        //         }
+        //     })
             
-            if(!response.ok){
-                const errorMsg = await response.text();
-                throw new Error(`Error getting user profile data. Status: ${response.status}, Message: ${errorMsg}`);            
-            } 
+        //     if(!response.ok){
+        //         const errorMsg = await response.text();
+        //         throw new Error(`Error getting user profile data. Status: ${response.status}, Message: ${errorMsg}`);            
+        //     } 
             
-            const data = await response.json();
-            console.log('apiController - getUserProfile: ', data)
-            return data;
-        } catch (error) {
-            console.error(error)
-        }
+        //     const data = await response.json();
+        //     console.log('apiController - getUserProfile: ', data)
+        //     return data;
+        // } catch (error) {
+        //     console.error(error)
+        // }
     }
 }

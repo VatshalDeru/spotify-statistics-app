@@ -64,6 +64,7 @@ export const getUserDataHelper = async (accessToken) =>{
 
 // function that will call fetch() for you, help write DRY code
 export const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
+    // conditionally configuring the options object depending on if each option was passed in the parameter or not
     const options = {
         ...(method && {method: method}),
         ...(headersObj && { headers: headersObj}),
@@ -71,6 +72,7 @@ export const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntr
     }
     // console.log('helper.js - spotifyFetch():', options);
 
+    // general try/catch block that calls fetch(), will be used for all fetch requests in the backend
     try {
         const response = await fetch(url, options);
 
