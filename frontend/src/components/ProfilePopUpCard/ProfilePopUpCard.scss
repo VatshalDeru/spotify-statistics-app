@@ -6,6 +6,7 @@
     padding: 2em 4em;
     z-index: 99;
     border-radius: 5%;
+    margin-inline: 1em;
 
     
     .profilePhotoContainer{
@@ -14,6 +15,7 @@
             height: 10em;
             object-fit: cover;
             border-radius: 50%;
+            border: 5px solid rgb(59, 228, 119);
         }
     }
     

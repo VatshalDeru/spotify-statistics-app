@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { storeDateFromParams, checkTokenIsExpired, getUserProfileHandler } from './util'; 
+import { getUserProfileHandler } from './http'; 
+import { storeDateFromParams, checkTokenIsFresh } from './util'
 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
@@ -22,10 +23,10 @@ function App() {
     storeDateFromParams();
 
     // determine if user is logged in
-    const loggedIn = !checkTokenIsExpired();
+    const loggedIn = checkTokenIsFresh();
 
     // only change state if the new loggedIn value is different from the current isLoggedIn state
-    if(loggedIn !== isLoggedIn) {
+    if(loggedIn !== isLoggedIn && loggedIn !== null) {
       setIsLoggedIn(loggedIn);
     };
 
