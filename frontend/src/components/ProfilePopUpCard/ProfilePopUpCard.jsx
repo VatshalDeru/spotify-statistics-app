@@ -3,9 +3,10 @@ import { useContext, useRef, useEffect } from "react"
 import { UserDataContext } from "../../store/user-data-context.js";
 import { handleLogout } from "../../util.js";
 
+// eslint-disable-next-line react/prop-types
 export default function ProfilePopUpCard({ open, closeCard}) {
     //get the uesr profile data from conext to use in the card
-    const { userProfileData } = useContext(UserDataContext);
+    const { userProfileData, recentlyPlayedTracks } = useContext(UserDataContext);
     const cardRef = useRef(null);
 
     useEffect(() => {
@@ -25,17 +26,20 @@ export default function ProfilePopUpCard({ open, closeCard}) {
         }
     }, [closeCard])
 
+    console.log(recentlyPlayedTracks)
 
     if(!open) return null
     return (
         <div className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
                 <a href={userProfileData.external_urls.spotify} target="_blank"><img src={userProfileData.images ? userProfileData.images[0].url : '#'} alt="" /></a>
-                </div>
-                <h2 className="userName">{userProfileData.display_name}</h2>
-                <p className="userId">id: {userProfileData.id}</p>
-                <p className="userFollowers">Followers: {userProfileData.followers.total}</p>
-            <button onClick={handleLogout}>Logout</button>
-        </div>
+            </div>
+            <h2 className="userName">{userProfileData.display_name}</h2>
+            <p className="userId">id: {userProfileData.id}</p>
+            <p className="userFollowers">Followers: {userProfileData.followers.total}</p>
+            <div className="logoutBtnContainer">
+                <button onClick={handleLogout}>Logout</button>  
+            </div>
+    </div>
     )
 }

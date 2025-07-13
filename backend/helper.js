@@ -4,6 +4,7 @@ const userDataParamsObj = {
     timeRanges: ['short_term', 'medium_term', 'long_term']
 }
 
+// get users top artists/tracks for short(4 weeks), medium(6 months), long term(1 year)
 export const getUserDataHelper = async (accessToken) =>{
     const topArtists = {};
     const topTracks = {};
@@ -57,9 +58,26 @@ export const getUserDataHelper = async (accessToken) =>{
             // }
         }
     }
+    const { items: recentlyPlayedTracks } = await getUserRecentlyPlayed(accessToken);
+
     // console.log('helper.js - getUserData - topArtists: ', topArtists)
     // console.log('helper.js - getUserData - topTracks: ', topTracks)
-    return {topArtists, topTracks}
+    // console.log('helper.js - getUserData - recentlyPlayedTracks: ', recentlyPlayedTracks)
+    
+    return {topArtists, topTracks, recentlyPlayedTracks}
+}
+
+// get users 20 recently played tracks
+export const getUserRecentlyPlayed = async (accessToken) => {
+    const url = 'https://api.spotify.com/v1/me/player/recently-played';
+    const headersObj = {
+        'Authorization' : 'Bearer ' + accessToken
+    };
+    const errorIntro = 'error getting users recently played tracks'
+    
+    const data = await spotifyFetch({ url, headersObj, errorIntro });
+
+    return data;
 }
 
 // function that will call fetch() for you, help write DRY code

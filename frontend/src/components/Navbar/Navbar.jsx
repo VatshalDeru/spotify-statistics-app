@@ -3,7 +3,9 @@ import {  loginHandlerFn } from '../../http';
 import { UserDataContext } from "../../store/user-data-context.js";
 import ProfilePopUpCard from "../ProfilePopUpCard/ProfilePopUpCard.jsx";
 
-export default function Navbar({isLoggedIn}) {
+
+// eslint-disable-next-line react/prop-types
+export default function Navbar({ isLoggedIn }) {
     const [isCardOpen, setIsCardOpen] = useState(false)
 
     const  { userProfileData } = useContext(UserDataContext);
@@ -18,9 +20,8 @@ export default function Navbar({isLoggedIn}) {
 
     // console.log(isCardOpen)
     return <div className="navbarContainer">
-        {!isLoggedIn && <button onClick={loginHandlerFn}>{isLoggedIn  ? 'Logged In' : 'Login'}</button>}
-        {(isLoggedIn && userProfileData.images) && <div className="profileImg" onClick={openCard}><img src={ userProfileData.images[0].url} alt="" /></div>}
+        {!isLoggedIn && <button onClick={loginHandlerFn}>Login</button>}
+        {(isLoggedIn && userProfileData.images) && <div className="profileImg" onClick={openCard}><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
         {(isLoggedIn && isCardOpen)  && <ProfilePopUpCard open={isCardOpen} closeCard={closeCard}></ProfilePopUpCard>}
     </div>
-    ;
 }

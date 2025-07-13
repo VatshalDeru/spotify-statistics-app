@@ -8,10 +8,10 @@ import Navbar from './components/Navbar/Navbar';
 import { UserDataContext } from './store/user-data-context.js';
 
 const  INTITIAL_USER_DATA_OBJ = {
-    topArtits: [],
-    topTracks: [],
-    listeningHistory: [],
-    userProfileData: {},
+  topArtits: [],
+  topTracks: [],
+  recentlyPlayedTracks: [],
+  userProfileData: {},
 }
 
 function App() {
@@ -52,7 +52,7 @@ function App() {
   const userDataCtxValue = {
     topArtits: userData.topArtits,
     topTracks: userData.topTracks,
-    listeningHistory: userData.listeningHistory,
+    recentlyPlayedTracks: userData.recentlyPlayedTracks,
     userProfileData: userData.userProfileData,
   }
   // console.log(userData)

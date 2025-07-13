@@ -67,7 +67,7 @@ app.post('/user', async (req, res) => {
         data = await spotifyAPIController.getUserProfile();
     }
 
-    console.log('index.js - /user ', data);
+    // console.log('index.js - /user ', data);
 
     res.json(data)
 })

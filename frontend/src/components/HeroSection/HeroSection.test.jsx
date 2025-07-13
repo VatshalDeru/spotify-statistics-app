@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react';
 import HeroSection from './HeroSection';
-import { expect, test, describe } from 'vitest';
+import { expect, describe, it } from 'vitest';
 
 describe('HeroSection Component', () => {
-    test('Spotify is rendered', () => {
+    it('should render "Spotify"', () => {
         // Assign
         render(<HeroSection/>);
 
@@ -12,7 +12,7 @@ describe('HeroSection Component', () => {
         const textElement = screen.getByText('Spotify');
         expect(textElement).toBeInTheDocument();
     })
-    test('Wrapped is rendered', () => {
+    it('should render "Wrapped"', () => {
         // Assign
         render(<HeroSection/>);
 
@@ -20,12 +20,17 @@ describe('HeroSection Component', () => {
         const textElement = screen.getByText('Wrapped');
         expect(textElement).toBeInTheDocument();
     })
-    test('button that says Get Started is Rendered', () => {
+    it('should not dislay the "get started" button if user is logged in', () => {
         render(<HeroSection/>);
 
-        const buttonElement = screen.getByRole('button', { name: "Get Started" });
+        const buttonElement = screen.queryByRole('button', { name: "Get Started" });
+
+        expect(buttonElement).toBe(null);
+    })
+    it('should dislay the "get started" button if user is logged in', () => {
+        render(<HeroSection isLoggedIn={true}/>)
+        const buttonElement = screen.getByRole('button', { name: "Get Started" })
 
         expect(buttonElement).toBeInTheDocument();
     })
-    test((''))
 })

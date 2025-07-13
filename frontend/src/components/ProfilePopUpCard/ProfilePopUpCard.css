@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  padding: 2em 4em;
+  padding: 2em 3em;
   z-index: 99;
   border-radius: 5%;
   margin-inline: 1em;
@@ -23,12 +23,16 @@
   color: rgb(131, 130, 130);
   margin: 0;
 }
-.profileCardContainer button {
+.profileCardContainer .logoutBtnContainer {
+  padding-top: 1em;
+  border-top: 1px solid #383838;
+}
+.profileCardContainer .logoutBtnContainer button {
   background-color: rgb(235, 38, 38);
   border: none;
   width: 10em;
   margin: 0 auto;
 }
-.profileCardContainer button:hover {
+.profileCardContainer .logoutBtnContainer button:hover {
   background-color: #3BE477;
 }/*# sourceMappingURL=ProfilePopUpCard.css.map */

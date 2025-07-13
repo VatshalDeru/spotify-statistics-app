@@ -36,7 +36,7 @@ export const getUserProfileHandler = async () => {
 
     const data = await spotifyFetch({url, method, headersObj, bodyObj, errorIntro})
 
-    console.log('getUserProfileHandler() - user profile data', data)
+    // console.log('getUserProfileHandler() - user profile data', data)
     return data;
 }
 
@@ -50,7 +50,7 @@ export const getUserDataHandler = async () => {
 
     const data = await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
 
-     console.log('getUserDataHandler()- user listening data: ', data)
+    console.log('getUserDataHandler()- user listening data: ', data)
     return data;
 }
 
