@@ -40,6 +40,6 @@ export default function ProfilePopUpCard({ open, closeCard}) {
             <div className="logoutBtnContainer">
                 <button onClick={handleLogout}>Logout</button>  
             </div>
-    </div>
+        </div>
     )
 }
