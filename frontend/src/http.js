@@ -1,3 +1,5 @@
+
+
 // function will send fetch request for you with values and data provided
 const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
     // conditionally configuring the options object depending on if each option was passed in the parameter or not
@@ -27,7 +29,7 @@ const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) =>
 }
 
 // gets user profile details
-export const getUserProfileHandler = async () => {
+export const getUserProfileHandler = async () => { 
     const url = 'http://localhost:3000/user';
     const method = 'POST';
     const headersObj = { 'Content-Type': 'application/json' };
@@ -50,7 +52,8 @@ export const getUserDataHandler = async () => {
 
     const data = await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
 
-    console.log('getUserDataHandler()- user listening data: ', data)
+    // console.log('getUserDataHandler()- user listening data: ', data)
+    // updateUserData(data)
     return data;
 }
 

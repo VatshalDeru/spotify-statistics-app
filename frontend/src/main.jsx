@@ -7,10 +7,12 @@ import './components/ProfilePopUpCard/ProfilePopUpCard.css'
 import './components/UserDataContainer/UserDataContainer.css'
 import './components/UserDataList/UserDataList.css'
 import App from './App.jsx'
-// import { Provider } from 'react-redux'
+import UserDataContextProvider from './store/user-data-context.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <UserDataContextProvider>
+      <App />
+    </UserDataContextProvider>
   </StrictMode>
 )

@@ -50,5 +50,5 @@ export const checkTokenIsFresh = () => {
 export const handleLogout = () => {
   localStorage.removeItem('tokenCreationTime');
   localStorage.removeItem('accessToken');
+  // window.location.reload();
 };
-

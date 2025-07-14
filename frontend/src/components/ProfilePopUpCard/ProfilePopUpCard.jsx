@@ -1,10 +1,10 @@
 import { useContext, useRef, useEffect } from "react"
 
-import { UserDataContext } from "../../store/user-data-context.js";
+import { UserDataContext } from "../../store/user-data-context.jsx";
 import { handleLogout } from "../../util.js";
 
 // eslint-disable-next-line react/prop-types
-export default function ProfilePopUpCard({ open, closeCard}) {
+export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     //get the uesr profile data from conext to use in the card
     const { userProfileData, recentlyPlayedTracks } = useContext(UserDataContext);
     const cardRef = useRef(null);
@@ -18,7 +18,7 @@ export default function ProfilePopUpCard({ open, closeCard}) {
                 closeCard();
             }
         }
-        document.addEventListener('mousedown', handleClickOut);
+        // document.addEventListener('mousedown', handleClickOut);
 
         // clean up function for removing the event listener when this component is unmounted from the DOM
         return () => {
@@ -26,7 +26,12 @@ export default function ProfilePopUpCard({ open, closeCard}) {
         }
     }, [closeCard])
 
-    console.log(recentlyPlayedTracks)
+    const clickLogoutBtnHandler = () => {
+        handleLogout();
+        setIsLoggedIn(false);
+    }
+
+    // console.log(recentlyPlayedTracks)
 
     if(!open) return null
     return (
@@ -38,7 +43,7 @@ export default function ProfilePopUpCard({ open, closeCard}) {
             <p className="userId">id: {userProfileData.id}</p>
             <p className="userFollowers">Followers: {userProfileData.followers.total}</p>
             <div className="logoutBtnContainer">
-                <button onClick={handleLogout}>Logout</button>  
+                <button onClick={clickLogoutBtnHandler}>Logout</button>  
             </div>
         </div>
     )
