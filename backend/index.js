@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import SpotifyWebApi from "spotify-web-api-node";
 import 'dotenv/config'
 import SpotifyAPIController from "./controller/SpotifyAPIController.js";
+// import { aC } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
 
 // console.log(process.env.CLIENT_iD)
 // import { getAuthUrl} from "./helper.js";
@@ -43,7 +44,7 @@ app.get('/login', (req, res) => {
 app.get('/callback', async (req, res) => {
     try {
         const authCode = req.query.code;
-        await spotifyAPIController.getTokens(authCode);
+        const { access_token } = await spotifyAPIController.getTokens(authCode);
 
         // get user profile info
 
@@ -51,6 +52,7 @@ app.get('/callback', async (req, res) => {
         console.log(tokenGeneratedAt.getTime(), tokenGeneratedAt.getTime().toString());
         const homeURL = new URL('http://localhost:5173/')
         homeURL.searchParams.append('tokenCreationTime', tokenGeneratedAt.getTime().toString())
+        homeURL.searchParams.append('access_token', access_token)
 
         res.redirect(homeURL)
     } catch (error) {

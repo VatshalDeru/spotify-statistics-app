@@ -75,6 +75,8 @@ export default class SpotifyAPIController {
         //set the tokens in this class for later use
         this.setAccessToken(access_token);
         this.setRefreshToken(refresh_token);
+
+        return { access_token }
     }
 
     // function to get users listening statistics 
