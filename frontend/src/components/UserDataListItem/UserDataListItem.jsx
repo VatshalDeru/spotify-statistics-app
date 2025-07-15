@@ -1,6 +1,7 @@
+import { formatNumberWithCommas, formatDate } from '../../util';
 import PropTypes from 'prop-types'
 
-export default function UserDataListItem({ item, itemType, itemKey }) {
+export default function UserDataListItem({ item, itemType, rank }) {
     let content;
 
     // console.log(item.artists.map(artist => artist.name).join(', '))
@@ -8,28 +9,31 @@ export default function UserDataListItem({ item, itemType, itemKey }) {
     switch(itemType) {
         case 'topArtists':
             content = <>
+                <p className="rank">{rank+1}.</p>
                 <div className="itemImg">
                     <a href={item.external_urls.spotify}><img src={item.images[0].url} alt="" target='_blank'/></a>
                 </div>
-                <h3>{item.name}</h3>
+                <h3 className='artistName'>{item.name}</h3>
                 <div className="popularityContainer">
-                    <p className="popularity">#{item.popularity}</p>
-                    <p>In The World</p>
+                    <p>Popularity</p>
+                    <p className="popularity">{item.popularity}</p>
                 </div>
+                <p className='followers'>followers: {formatNumberWithCommas(item.followers.total)}</p>
             </>
             break;
         case 'topTracks':
             content = <>
+                <p className="rank">{rank+1}.</p>
                 <div className="itemImg">
                     <a href={item.external_urls.spotify}><img src={item.album.images[0].url} alt="" target='_blank'/></a>
                 </div>
                 <div className="trackInfoContainer">
-                    <h3>{item.name}</h3>
-                    <p>{item.artists.map(artist => artist.name).join(', ')}</p>
+                    <h3 className='trackName'>{item.name}</h3>
+                    <p className='trackArtists'>{item.artists.map(artist => artist.name).join(', ')}</p>
                 </div>
                 <div className="popularityContainer">
-                    <p className="popularity">#{item.popularity}</p>
-                    <p>In The World</p>
+                    <p>Popularity</p>
+                    <p className="popularity">{item.popularity}</p>
                 </div>
                 {/* <p>followers: {item.followers.total}</p> */}
             </>
@@ -39,33 +43,23 @@ export default function UserDataListItem({ item, itemType, itemKey }) {
                 <div className="itemImg">
                     <a href={item.track.external_urls.spotify}><img src={item.track.album.images[0].url} alt="" target='_blank'/></a>
                 </div>
-                <div className="trackInfoContainer">
-                    <h3>{item.track.name}</h3>
-                    <p>{item.track.artists.map(artist => artist.name).join(', ')}</p>
+                <div className="trackInfoContainer ">
+                    <h3 className='trackName'>{item.track.name}</h3>
+                    <p className='trackArtists'>{item.track.artists.map(artist => artist.name).join(', ')}</p>
                 </div>
                 <div className="popularityContainer">
-                    <p className="popularity">#{item.track.popularity}</p>
-                    <p>In The World</p>
+                    <p>Popularity</p>
+                    <p className="popularity">{item.track.popularity}</p>
                 </div>
-                <p>played at: {item.played_at}</p>
+                <p className='timePlayed'>{formatDate(item.played_at)}</p>
             </>
             break
         default:
             console.warn('unknown itemTyper:', itemType)
     }
     
-    console.log(itemType)
-    return <li key={itemKey}>
+    return <li key={rank}>
         {content}
-        {/* <div className="itemImg">
-            <a href={item.external_urls.spotify}><img src={item.images[0].url} alt="" /></a>
-        </div>
-        <h3>{item.name}</h3>
-        <div className="popularityContainer">
-            <p className="popularity">#{item.popularity}</p>
-            <p>In The World</p>
-        </div>
-        <p>followers: {item.followers.total}</p> */}
     </li>
 
     // return content

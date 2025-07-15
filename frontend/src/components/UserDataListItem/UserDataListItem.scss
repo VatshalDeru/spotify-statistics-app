@@ -2,13 +2,41 @@ li {
     list-style: none;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-block: 1em;
 
+    .rank {
+        width: 1.5em;
+    }
+
+    // general img
     img{
         width: 9em;
         height: 9em;
-        border-radius: 50%;
+        border-radius: 2em;
         object-fit: cover;
+    }
+
+  
+    .artistName{
+        width: 14em;
+    }
+
+    .followers {
+        width: 8em;
+        color: rgb(138, 138, 138);
+    }
+
+    .trackInfoContainer{
+        width: 26em;
+        
+        .trackName {
+            margin-bottom: 0;
+        }
+
+        .trackArtists {
+            margin-top: 0;
+        }
     }
 
     .popularityContainer {
@@ -32,7 +60,13 @@ li {
             font-size: 0.6em;
             font-weight: bold;
             word-spacing: -0.1em;
+            // color: rgb(36, 36, 36);
         }
 
+    }
+
+    .timePlayed{
+        width: 5em;
+        color: rgb(138, 138, 138);
     }
 }

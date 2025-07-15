@@ -11,10 +11,12 @@ export default function UserDataList({ selectedConfig }) {
     // console.log(userListeningData[selectedConfig.dataType])
 
     let userData;
+    let heading;
 
     switch(selectedConfig.dataType) {
         case 'topArtists':
         case 'topTracks':
+            heading
             userData = userListeningData[selectedConfig.dataType][selectedConfig.timeRange];
             break;
         case 'recentlyPlayedTracks':
@@ -28,8 +30,9 @@ export default function UserDataList({ selectedConfig }) {
     // console.log(userData)
     return <div className="dataListContainer">
         <ul>
+            <h1></h1>
             {userData.map((item, index) => {
-                return <UserDataListItem key={index} itemKey={index} item={item} itemType={selectedConfig.dataType}/>
+                return <UserDataListItem key={index} rank={index} item={item} itemType={selectedConfig.dataType}/>
             })}
         </ul>
     </div>

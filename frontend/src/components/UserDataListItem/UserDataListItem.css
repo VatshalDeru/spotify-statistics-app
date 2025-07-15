@@ -2,14 +2,34 @@ li {
   list-style: none;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-block: 1em;
+}
+li .rank {
+  width: 1.5em;
 }
 li img {
   width: 9em;
   height: 9em;
-  border-radius: 50%;
+  border-radius: 2em;
   -o-object-fit: cover;
      object-fit: cover;
+}
+li .artistName {
+  width: 14em;
+}
+li .followers {
+  width: 8em;
+  color: rgb(138, 138, 138);
+}
+li .trackInfoContainer {
+  width: 26em;
+}
+li .trackInfoContainer .trackName {
+  margin-bottom: 0;
+}
+li .trackInfoContainer .trackArtists {
+  margin-top: 0;
 }
 li .popularityContainer {
   width: 4.5em;
@@ -31,4 +51,8 @@ li .popularityContainer p {
   font-size: 0.6em;
   font-weight: bold;
   word-spacing: -0.1em;
+}
+li .timePlayed {
+  width: 5em;
+  color: rgb(138, 138, 138);
 }/*# sourceMappingURL=UserDataListItem.css.map */

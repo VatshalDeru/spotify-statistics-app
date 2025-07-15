@@ -45,7 +45,7 @@ function App() {
   }, [])
 
   
-  // console.log(userListeningData.topTracks)
+  console.log(userListeningData.topArtists)
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
