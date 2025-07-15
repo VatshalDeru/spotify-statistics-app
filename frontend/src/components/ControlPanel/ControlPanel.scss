@@ -1,0 +1,26 @@
+.controlPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .dataTypeControls {
+        display: flex;
+        justify-content: space-evenly;
+
+        button{
+            // padding-inline: 2em;
+            width: 12em;
+        }
+    }
+
+    .timeControls {
+        display: flex;
+        justify-content: center;
+        gap: 5em;
+
+        button {
+            width: 7.5em;
+            font-weight: 400;
+        }
+    }
+}

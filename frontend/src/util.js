@@ -52,3 +52,14 @@ export const handleLogout = () => {
   localStorage.removeItem('accessToken');
   // window.location.reload();
 };
+
+export const getDisplayConfigText= (key) => {
+  switch(key) {
+    case 'topArtists' : return 'Top Artists'
+    case 'topTracks' : return 'Top Tracks'
+    case 'recentlyPlayedTracks' : return 'Recently Played'
+    case 'short_term' : return '4 Weeks'
+    case 'medium_term' : return '6 Months'
+    case 'long_term' : return '12 Months'
+  }
+}

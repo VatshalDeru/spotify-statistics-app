@@ -4,9 +4,11 @@ import { UserDataContext } from "../../store/user-data-context"
 import UserDataListItem from "../UserDataListItem/UserDataListItem"
 
 
-export default function UserDataList() {
-    const { topArtists } = useContext(UserDataContext);
+export default function UserDataList({ selectedConfig }) {
+    const { userListeningData } = useContext(UserDataContext);
+    const { topArtists } = userListeningData
 
+    console.log(selectedConfig)
     return <div className="dataListContainer">
         <ul>
             {topArtists.long_term.map((artist, index) => {

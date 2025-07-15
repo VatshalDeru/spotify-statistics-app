@@ -1,31 +1,43 @@
 import { createContext, useState, useReducer } from "react";
 import { getUserDataHandler, getUserProfileHandler } from "../http";
+import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 
 export const UserDataContext = createContext({
-    topArtists: [],
-    topTracks: [],
-    recentlyPlayedTracks: [],
+    userListeningData: {
+        topArtists: [],
+        topTracks: [],
+        recentlyPlayedTracks: [],
+    },
     userProfileData: {},
-    setUserData: () => {},
     getStartedClickHandler: () => {},
     getUserProfileDataHandler: () => {},
 });
 
 
 const  INTITIAL_USER_DATA_OBJ = {
-  topArtists: {},
-  topTracks: {},
-  recentlyPlayedTracks: [],
-  userProfileData: {},
+    userListeningData: {
+        topArtists: [],
+        topTracks: [],
+        recentlyPlayedTracks: [],
+    },
+    userProfileData: {},
 }
 
 const userDataReducer = (state, action) => {
     switch(action.type){
-        case "set-user-data" : 
+        case "set-profile-data" : 
             return {
                 ...state,
                 ...action.payload,
             };
+        case "set-user-listening-data" :
+            return {
+                ...state,
+                userListeningData: {
+                    ...state.userListeningData,
+                    ...action.payload
+                }
+            }
         default:
             return state;
     }
@@ -47,7 +59,7 @@ export default function UserDataContextProvider({ children }) {
         }
 
         userDataDispatch({
-            type: 'set-user-data',
+            type: 'set-user-listening-data',
             payload : userListeningData
         })
     }
@@ -61,7 +73,7 @@ export default function UserDataContextProvider({ children }) {
 
         // console.log('got the data here, dispathcing...', userProfileData)
         userDataDispatch({
-            type: 'set-user-data',
+            type: 'set-profile-data',
             payload: {userProfileData},
         })
     }
@@ -69,15 +81,17 @@ export default function UserDataContextProvider({ children }) {
     // initilise the userData context value so we can connect to it the state and pass it as a value 
     // to the context provider so the context is available in all nested components
     const userDataCtxValue = {
-        topArtists: userDataState.topArtists,
-        topTracks: userDataState.topTracks,
-        recentlyPlayedTracks: userDataState.recentlyPlayedTracks,
+        userListeningData: {
+            topArtists: userDataState.userListeningData.topArtists,
+            topTracks: userDataState.userListeningData.topTracks,
+            recentlyPlayedTracks: userDataState.userListeningData.recentlyPlayedTracks,
+        },
         userProfileData: userDataState.userProfileData,
         getStartedClickHandler,
         getUserProfileDataHandler,
     }
 
-    console.log(userDataState)
+    // console.log(userDataState)
     return <UserDataContext.Provider value={userDataCtxValue}>
         {children}
     </UserDataContext.Provider>

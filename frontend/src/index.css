@@ -46,10 +46,14 @@ button {
   cursor: pointer;
 }
 
-button:hover{
+button:hover, .selected{
   background-color: rgb(59, 228, 119);
   color:  rgb(26, 26, 26)
 }
+
+/* button .selected {
+  color:   
+} */
 
 button:focus,
 button:focus-visible {

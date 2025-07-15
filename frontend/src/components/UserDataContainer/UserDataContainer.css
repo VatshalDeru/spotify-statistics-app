@@ -2,25 +2,4 @@
   background-color: rgb(19, 18, 18);
   padding: 3em 1em;
   border-radius: 1.5em;
-}
-.userDataContainer .controlPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-}
-.userDataContainer .controlPanel .dataTypeControls {
-  display: flex;
-  justify-content: space-evenly;
-}
-.userDataContainer .controlPanel .dataTypeControls button {
-  width: 12em;
-}
-.userDataContainer .controlPanel .timeControls {
-  display: flex;
-  justify-content: center;
-  gap: 5em;
-}
-.userDataContainer .controlPanel .timeControls button {
-  width: 7.5em;
-  font-weight: 400;
 }/*# sourceMappingURL=UserDataContainer.css.map */

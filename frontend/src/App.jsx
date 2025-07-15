@@ -18,7 +18,8 @@ import UserDataContainer from './components/UserDataContainer/UserDataContainer.
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const { setUserData, getUserProfileDataHandler, userProfileData, topArtists } = useContext(UserDataContext)
+  const { getUserProfileDataHandler, userListeningData } = useContext(UserDataContext)
+  const { topArtists } = userListeningData;
 
   useEffect(() => {  // useEffect(() => {
     // check for the date query params in the URL and if present, store it in localstorage

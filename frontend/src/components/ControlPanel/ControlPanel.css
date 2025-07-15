@@ -1,0 +1,21 @@
+.controlPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+.controlPanel .dataTypeControls {
+  display: flex;
+  justify-content: space-evenly;
+}
+.controlPanel .dataTypeControls button {
+  width: 12em;
+}
+.controlPanel .timeControls {
+  display: flex;
+  justify-content: center;
+  gap: 5em;
+}
+.controlPanel .timeControls button {
+  width: 7.5em;
+  font-weight: 400;
+}/*# sourceMappingURL=ControlPanel.css.map */

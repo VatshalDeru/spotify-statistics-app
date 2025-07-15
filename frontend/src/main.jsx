@@ -7,6 +7,7 @@ import './components/ProfilePopUpCard/ProfilePopUpCard.css'
 import './components/UserDataContainer/UserDataContainer.css'
 import './components/UserDataList/UserDataList.css'
 import './components/UserDataListItem/UserDataListItem.css'
+import './components/ControlPanel/ControlPanel.css'
 import App from './App.jsx'
 import UserDataContextProvider from './store/user-data-context.jsx'
 
