@@ -35,7 +35,7 @@ function App() {
 
     // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
-      await getUserProfileDataHandler();
+      getUserProfileDataHandler();
     }
 
     // fetch the users profile data if the user is logged in
@@ -45,7 +45,7 @@ function App() {
   }, [])
 
   
-  // console.log(userProfileData)
+  // console.log(userListeningData.topTracks)
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>

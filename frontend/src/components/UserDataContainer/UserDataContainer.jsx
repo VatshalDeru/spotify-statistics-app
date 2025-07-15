@@ -7,7 +7,7 @@ import ControlPanel from "../ControlPanel/ControlPanel.jsx";
 export default function UserDataContainer() {
     const { userListeningData } = useContext(UserDataContext);
     const [selectedConfig, setSelectedConfig] = useState({
-        dataType: 'topArtists',
+        dataType: 'recentlyPlayedTracks',
         timeRange: 'short_term'
     })
 

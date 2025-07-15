@@ -5,8 +5,8 @@ li {
   margin-block: 1em;
 }
 li img {
-  width: 7em;
-  height: 7em;
+  width: 9em;
+  height: 9em;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;

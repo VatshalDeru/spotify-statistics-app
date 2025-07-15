@@ -20,13 +20,13 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
 
             <div className="dataTypeControls">
                 {Object.keys(userListeningData).map((key, index) => {
-                    return <button key={index} onClick={() => clickControlsHandler({dataType: key})}>{getDisplayConfigText(key)}</button>
+                    return <button key={index} className={selectedConfig.dataType === key? 'selected' : ''} onClick={() => clickControlsHandler({dataType: key})}>{getDisplayConfigText(key)}</button>
                 })}
             </div>
             {selectedConfig.dataType !== 'recentlyPlayedTracks' &&
                 <div className="timeControls">
                     {Object.keys(userListeningData[selectedConfig.dataType]).map((key, index) => {
-                        return <button key={index} onClick={() => clickControlsHandler({timeRange: key})}>{getDisplayConfigText(key)}</button>
+                        return <button key={index} className={selectedConfig.timeRange === key? 'selected' : ''} onClick={() => clickControlsHandler({timeRange: key})}>{getDisplayConfigText(key)}</button>
                     })}
                 </div>
             }

@@ -1,31 +1,124 @@
+import PropTypes from 'prop-types'
 
+export default function UserDataListItem({ item, itemType, itemKey }) {
+    let content;
 
-// eslint-disable-next-line react/prop-types
-export default function UserDataListItem({ artist, itemKey }) {
+    // console.log(item.artists.map(artist => artist.name).join(', '))
 
-
-    // initialise the content to top tracks
-    // let content = <li>
-    //     <div className="itemImg">
-    //         <a href="track/artist url"><img src="" alt="" /></a>
-    //     </div>
-    //     <h3>Artist name</h3>
-    // </li>
-
-    // change the content to artists layout if itemType is 'artists'
-    // if(itemType === 'artists') {
-    //     // content = ''
-    // }
-
+    switch(itemType) {
+        case 'topArtists':
+            content = <>
+                <div className="itemImg">
+                    <a href={item.external_urls.spotify}><img src={item.images[0].url} alt="" target='_blank'/></a>
+                </div>
+                <h3>{item.name}</h3>
+                <div className="popularityContainer">
+                    <p className="popularity">#{item.popularity}</p>
+                    <p>In The World</p>
+                </div>
+            </>
+            break;
+        case 'topTracks':
+            content = <>
+                <div className="itemImg">
+                    <a href={item.external_urls.spotify}><img src={item.album.images[0].url} alt="" target='_blank'/></a>
+                </div>
+                <div className="trackInfoContainer">
+                    <h3>{item.name}</h3>
+                    <p>{item.artists.map(artist => artist.name).join(', ')}</p>
+                </div>
+                <div className="popularityContainer">
+                    <p className="popularity">#{item.popularity}</p>
+                    <p>In The World</p>
+                </div>
+                {/* <p>followers: {item.followers.total}</p> */}
+            </>
+            break
+        case 'recentlyPlayedTracks':
+            content = <>
+                <div className="itemImg">
+                    <a href={item.track.external_urls.spotify}><img src={item.track.album.images[0].url} alt="" target='_blank'/></a>
+                </div>
+                <div className="trackInfoContainer">
+                    <h3>{item.track.name}</h3>
+                    <p>{item.track.artists.map(artist => artist.name).join(', ')}</p>
+                </div>
+                <div className="popularityContainer">
+                    <p className="popularity">#{item.track.popularity}</p>
+                    <p>In The World</p>
+                </div>
+                <p>played at: {item.played_at}</p>
+            </>
+            break
+        default:
+            console.warn('unknown itemTyper:', itemType)
+    }
+    
+    console.log(itemType)
     return <li key={itemKey}>
-        <div className="itemImg">
-            <a href={artist.external_urls.spotify}><img src={artist.images[0].url} alt="" /></a>
+        {content}
+        {/* <div className="itemImg">
+            <a href={item.external_urls.spotify}><img src={item.images[0].url} alt="" /></a>
         </div>
-        <h3>{artist.name}</h3>
+        <h3>{item.name}</h3>
         <div className="popularityContainer">
-            <p className="popularity">#{artist.popularity}</p>
+            <p className="popularity">#{item.popularity}</p>
             <p>In The World</p>
         </div>
-        <p>followers: {artist.followers.total}</p>
+        <p>followers: {item.followers.total}</p> */}
     </li>
+
+    // return content
 }
+
+UserDataListItem.propTypes = {
+    item: PropTypes.shape({
+        external_urls: PropTypes.shape({
+            spotify: PropTypes.string.isRequired,
+        }).isRequired,
+        images: PropTypes.arrayOf(
+            PropTypes.shape({
+                url: PropTypes.string.isRequired,
+            })
+        ),
+        name: PropTypes.string,
+        popularity: PropTypes.number,
+        followers: PropTypes.shape({
+            total: PropTypes.number,
+        }),
+        artists: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string.isRequired,
+            })
+        ),
+        album: PropTypes.shape({
+            images: PropTypes.arrayOf(
+                PropTypes.shape({
+                    url: PropTypes.string.isRequired,
+                })
+            ),
+        }),
+        track: PropTypes.shape({
+            external_urls: PropTypes.shape({
+                spotify: PropTypes.string,
+            }),
+            album: PropTypes.shape({
+                images: PropTypes.arrayOf(
+                    PropTypes.shape({
+                        url: PropTypes.string,
+                    })
+                ),
+            }),
+            name: PropTypes.string,
+            artists: PropTypes.arrayOf(
+                PropTypes.shape({
+                    name: PropTypes.string,
+                })
+            ),
+            popularity: PropTypes.number,
+        }),
+        played_at: PropTypes.string,
+    }).isRequired,
+    itemType: PropTypes.string.isRequired,
+    itemKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
