@@ -42,8 +42,13 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: rgb(26, 26, 26);
   cursor: pointer;
+}
+
+button:hover{
+  background-color: rgb(59, 228, 119);
+  color:  rgb(26, 26, 26)
 }
 
 button:focus,

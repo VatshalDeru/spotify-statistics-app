@@ -18,7 +18,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
                 closeCard();
             }
         }
-        // document.addEventListener('mousedown', handleClickOut);
+        document.addEventListener('mousedown', handleClickOut);
 
         // clean up function for removing the event listener when this component is unmounted from the DOM
         return () => {
