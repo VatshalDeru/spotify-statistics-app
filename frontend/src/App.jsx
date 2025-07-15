@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import './App.css';
-import { getUserProfileHandler} from './http'; 
+// import { getUserProfileHandler} from './http'; 
 import { storeDataFromParams, checkIsLoggedIn } from './util'
 
 import HeroSection from './components/HeroSection/HeroSection';
@@ -18,7 +18,7 @@ import UserDataContainer from './components/UserDataContainer/UserDataContainer.
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const { setUserData } = useContext(UserDataContext)
+  const { setUserData, getUserProfileDataHandler, userProfileData } = useContext(UserDataContext)
 
   useEffect(() => {  // useEffect(() => {
     // check for the date query params in the URL and if present, store it in localstorage
@@ -34,14 +34,7 @@ function App() {
 
     // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
-      const userProfileData = await getUserProfileHandler();
-      // console.log(userProfileData, setUserData)
-      setUserData(prevUserData => {
-        return {
-          ...prevUserData,
-          userProfileData
-        }
-      })
+      await getUserProfileDataHandler();
     }
 
     // fetch the users profile data if the user is logged in
@@ -51,12 +44,12 @@ function App() {
   }, [])
 
   
-  // console.log(userData)
+  // console.log(userProfileData)
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <HeroSection isLoggedIn={isLoggedIn}></HeroSection>
-      {/* {<UserDataContainer></UserDataContainer>} */}
+      <UserDataContainer></UserDataContainer>
     </>
   );
 }
