@@ -1,7 +1,8 @@
 import { useContext } from "react";
 // import { example } from "../../http.js";
-// import UserDataList from "../UserDataList/UserDataList.jsx";
+import UserDataList from "../UserDataList/UserDataList.jsx";
 import { UserDataContext } from "../../store/user-data-context"
+
 
 export default function UserDataContainer() {
     const { recentlyPlayedTracks } = useContext(UserDataContext);
@@ -19,6 +20,7 @@ export default function UserDataContainer() {
                 <button>6 Months</button>
                 <button>12 Months</button>
             </div>
+            <UserDataList></UserDataList>
         </div>
     </div>
 }

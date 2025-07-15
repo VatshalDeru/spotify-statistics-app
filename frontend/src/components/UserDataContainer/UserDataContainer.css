@@ -1,6 +1,6 @@
 .userDataContainer {
   background-color: rgb(19, 18, 18);
-  padding: 3em;
+  padding: 3em 1em;
   border-radius: 1.5em;
 }
 .userDataContainer .controlPanel {

@@ -18,7 +18,7 @@ import UserDataContainer from './components/UserDataContainer/UserDataContainer.
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const { setUserData, getUserProfileDataHandler, userProfileData } = useContext(UserDataContext)
+  const { setUserData, getUserProfileDataHandler, userProfileData, topArtists } = useContext(UserDataContext)
 
   useEffect(() => {  // useEffect(() => {
     // check for the date query params in the URL and if present, store it in localstorage
@@ -49,7 +49,7 @@ function App() {
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <HeroSection isLoggedIn={isLoggedIn}></HeroSection>
-      <UserDataContainer></UserDataContainer>
+      {(isLoggedIn && topArtists.long_term) && <UserDataContainer></UserDataContainer>}
     </>
   );
 }
