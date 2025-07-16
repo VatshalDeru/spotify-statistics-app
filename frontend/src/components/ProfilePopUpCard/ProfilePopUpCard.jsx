@@ -8,6 +8,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     //get the uesr profile data from conext to use in the card
     const { userProfileData } = useContext(UserDataContext);
     const cardRef = useRef(null);
+    // console.log(userProfileData)
 
     useEffect(() => {
         // sepereate event handler function so we can clear the event later
@@ -34,14 +35,21 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     // console.log(recentlyPlayedTracks)
 
     if(!open) return null
+    if(!userProfileData?.external_urls?.spotify ||
+        !userProfileData?.images[0]?.url ||
+        !userProfileData?.display_name ||
+        !userProfileData?.id ||
+        !userProfileData?.followers?.total
+    ) return null;
+    
     return (
         <div className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
-                <a href={userProfileData.external_urls.spotify} target="_blank"><img src={userProfileData.images ? userProfileData.images[0].url : '#'} alt="" /></a>
+                <a href={userProfileData?.external_urls.spotify} target="_blank" data-testid='profile-link'><img src={userProfileData.images ? userProfileData.images[0].url : '#'} alt="user spotify profile picture" /></a>
             </div>
             <h2 className="userName">{userProfileData.display_name}</h2>
-            <p className="userId">id: {userProfileData.id}</p>
-            <p className="userFollowers">Followers: {userProfileData.followers.total}</p>
+            <p className="userId" data-testid='userId'>id: {userProfileData.id}</p>
+            <p className="userFollowers" data-testid='userFollower'>Followers: {userProfileData.followers.total}</p>
             <div className="logoutBtnContainer">
                 <button onClick={clickLogoutBtnHandler}>Logout</button>  
             </div>

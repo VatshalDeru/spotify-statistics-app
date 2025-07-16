@@ -10,6 +10,7 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
         topTracks: userListeningData.topTracks,
         recentlyPlayedTracks: userListeningData.recentlyPlayedTracks,
     }
+
     const clickControlsHandler = (controlConfig) => {
         // console.log(controlConfig)
         setSelectedConfig(prevState => (  
@@ -19,6 +20,7 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
             }
         ))
     }
+
     // console.log(userListeningData[selectedConfig.dataType]);
     return  (
         <div className="controlPanel">
@@ -39,10 +41,10 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
     )
 }
 
-ControlPanel.propTypes = {
-    setSelectedConfig: PropTypes.func.isRequired,
-    selectedConfig: PropTypes.shape({
-        dataType: PropTypes.string.isRequired,
-        timeRange: PropTypes.stringisRequired,
-    }).isRequired,
-}; 
+// ControlPanel.propTypes = {
+//     setSelectedConfig: PropTypes.func.isRequired,
+//     selectedConfig: PropTypes.shape({
+//         dataType: PropTypes.string.isRequired,
+//         timeRange: PropTypes.stringisRequired,
+//     }).isRequired,
+// }; 

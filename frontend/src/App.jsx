@@ -37,6 +37,7 @@ function App() {
     }
   }, [])
 
+  // console.log(userListeningData)
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>

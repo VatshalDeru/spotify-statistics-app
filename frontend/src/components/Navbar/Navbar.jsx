@@ -7,7 +7,7 @@ import ProfilePopUpCard from "../ProfilePopUpCard/ProfilePopUpCard.jsx";
 // eslint-disable-next-line react/prop-types
 export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
     const [isCardOpen, setIsCardOpen] = useState(false)
-    const  { userProfileData, topTracks } = useContext(UserDataContext);
+    const  { userProfileData, isProfileDataPresent } = useContext(UserDataContext);
 
     const openCard = () => {
         setIsCardOpen(true);
@@ -16,11 +16,10 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
     const closeCard = () => {
         setIsCardOpen(false);
     }
-
-    // console.log(userProfileData)
+    
     return <div className="navbarContainer">
         {!isLoggedIn && <button onClick={loginHandlerFn}>Login</button>}
-        {(isLoggedIn && userProfileData.images) && <div className="profileImg" onClick={openCard}><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
+        {(isLoggedIn && isProfileDataPresent) && <div className="profile-button" onClick={openCard} data-testid='profile-button'><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
         {(isLoggedIn && isCardOpen)  && <ProfilePopUpCard open={isCardOpen} closeCard={closeCard} setIsLoggedIn={setIsLoggedIn}></ProfilePopUpCard>}
     </div>
 }

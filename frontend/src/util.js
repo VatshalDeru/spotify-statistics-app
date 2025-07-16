@@ -131,7 +131,7 @@ export const formatDate = (rawDate) => {
   const minutes = date.getMinutes();
 
   const dataString = `${day}/${month}/${year} at ${hour}:${minutes}`
-  console.log(dataString)
+  // console.log(dataString)
   // console.log(formattedDate.getUtc)
   // console.log(formattedDate.toString().slice(0, -34));
   return dataString;

@@ -5,10 +5,11 @@ import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 export const UserDataContext = createContext({
     userListeningData: {
         isDataPresent: false,
-        topArtists: [],
-        topTracks: [],
+        topArtists: {},
+        topTracks: {},
         recentlyPlayedTracks: [],
     },
+    isProfileDataPresent: false,
     userProfileData: {},
     getStartedClickHandler: () => {},
     getUserProfileDataHandler: () => {},
@@ -18,10 +19,11 @@ export const UserDataContext = createContext({
 const  INTITIAL_USER_DATA_OBJ = {
     userListeningData: {
         isDataPresent: false,
-        topArtists: [],
-        topTracks: [],
+        topArtists: {},
+        topTracks: {},
         recentlyPlayedTracks: [],
     },
+    isProfileDataPresent: false,
     userProfileData: {},
 }
 
@@ -31,6 +33,7 @@ const userDataReducer = (state, action) => {
             return {
                 ...state,
                 ...action.payload,
+                isProfileDataPresent: true,
             };
         case "set-user-listening-data" :
             return {
@@ -90,6 +93,7 @@ export default function UserDataContextProvider({ children }) {
             topTracks: userDataState.userListeningData.topTracks,
             recentlyPlayedTracks: userDataState.userListeningData.recentlyPlayedTracks,
         },
+        isProfileDataPresent: userDataState.isProfileDataPresent,
         userProfileData: userDataState.userProfileData,
         getStartedClickHandler,
         getUserProfileDataHandler,

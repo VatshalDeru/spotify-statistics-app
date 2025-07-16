@@ -7,7 +7,7 @@ export default function HeroSection({ isLoggedIn }) {
     const { getStartedClickHandler, userListeningData } = useContext(UserDataContext);
     const { isDataPresent } = userListeningData;
 
-    console.log(isDataPresent);
+    // console.log(isDataPresent);
     return <div className="HeroContainer">
         <h1>Spotify <span>Wrapped</span></h1>
         {(isLoggedIn && !isDataPresent) &&
