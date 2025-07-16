@@ -1,4 +1,5 @@
 import { getUserDataHelper, spotifyFetch } from "../helper.js";
+import { nanoid } from "nanoid";
 
 export default class SpotifyAPIController {
     constructor({client_id, client_secret, redirect_uri}) {
@@ -36,22 +37,21 @@ export default class SpotifyAPIController {
         
         const baseURL = 'https://accounts.spotify.com/authorize?'
 
-        try {
-            // create the query params for the auth URL
-            const params = new URLSearchParams({
-                response_type: 'code',
-                client_id: this.client_id,
-                scope: scope,
-                redirect_uri: this.redirect_uri,
-            })
+        const state = nanoid(16);
 
-            // comnine base URL + params to create the auth URL
-            const authURL = baseURL + params.toString();
+        // create the query params for the auth URL
+        const params = new URLSearchParams({
+            response_type: 'code',
+            client_id: this.client_id,
+            scope: scope,
+            redirect_uri: this.redirect_uri,
+            state: state,
+        })
 
-            return authURL;
-        } catch (error) {
-            throw new Error('hey',error);
-        }
+        // comnine base URL + params to create the auth URL
+        const authURL = baseURL + params.toString();
+
+        return { authURL, state };
     }
 
     // get access & refresh tokens using the authcode

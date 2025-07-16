@@ -3,8 +3,39 @@
 export const storeDataFromParams = () => {
   const params = new URLSearchParams(window.location.search);
 
+  const storedState = localStorage.getItem('state');
+  const receivedState = params.get('state');
+  console.log(storedState, receivedState)
+
+  // check if the state we got in the URL matches the one we have stored in localStorage
+  // only performing this check if we have 'state' value in localStorage and we aren't at root path
+  if(storedState !== receivedState && storedState && window.location.href !== 'http://localhost:5173/') {
+    console.error('error logging in: state mismatch');
+
+    // remove the state to avoid repeated misatch errors in the console upon errors
+    localStorage.removeItem('state')
+
+    // 
+    window.history.replaceState({}, null, '/');
+    return;
+  }
+
+  const error = params.get('error')
+
+  // check if a error param is present in the URL and stop function if so
+  if(error) {
+    console.error('error logging in : ', error);
+    
+    window.history.replaceState({}, null, '/');
+    return;
+  }
+
   // get the time the token was received in the backend from the URL query params
   const tokenCreationTime = params.get('tokenCreationTime');
+
+  if(isNaN(tokenCreationTime)) {
+    console.error('Invalid tokenCreationTime', tokenCreationTime, typeof tokenCreationTime);
+  }
 
   // get the access token from the URL query params
   const accessToken = params.get('access_token')
@@ -50,6 +81,7 @@ export const checkTokenIsFresh = () => {
 export const handleLogout = () => {
   localStorage.removeItem('tokenCreationTime');
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('state');
   // window.location.reload();
 };
 

@@ -62,9 +62,10 @@ export const loginHandlerFn = async () => {
     const url = 'http://localhost:3000/login';
     const errorIntro = 'error logging user in';
 
-    const data = await spotifyFetch({ url, errorIntro });
+    const { authURL, state } = await spotifyFetch({ url, errorIntro });
     console.log('logineHandlerFn() ')
+    localStorage.setItem('state', state)
 
     // go to the auth URL to allow user to authorise app
-    window.location.replace(data);
+    window.location.replace(authURL);
 }

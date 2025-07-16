@@ -35,28 +35,40 @@ app.use((req, res, next) => {
 });
 
 app.get('/login', (req, res) => {
-    const authUrl = spotifyAPIController.getAuthURL();
+    const {authURL, state } = spotifyAPIController.getAuthURL();
     // console.log('authURL: ', authUrl)
 
-    res.json(authUrl);
+    // also sending state to be sent to frontend so we can compare state later
+    res.json({ authURL, state });
 })
 
 app.get('/callback', async (req, res) => {
+    const state = req.query.state;
+    console.log('state', state)
+    const homeURL = new URL('http://localhost:5173/')
+    homeURL.searchParams.append('state', state)
     try {
+        if(req.query.error) {
+            throw new Error(`error authorizing app : ${req.query.error}`)
+        }
+
         const authCode = req.query.code;
         const { access_token } = await spotifyAPIController.getTokens(authCode);
 
         // get user profile info
 
         const tokenGeneratedAt = new Date();
-        console.log(tokenGeneratedAt.getTime(), tokenGeneratedAt.getTime().toString());
-        const homeURL = new URL('http://localhost:5173/')
+        // console.log(tokenGeneratedAt.getTime(), tokenGeneratedAt.getTime().toString());
+        
         homeURL.searchParams.append('tokenCreationTime', tokenGeneratedAt.getTime().toString())
         homeURL.searchParams.append('access_token', access_token)
 
         res.redirect(homeURL)
     } catch (error) {
-        console.log('index.js - /callback: ', error)
+        // console.log('index.js - /callback: ', error);
+        // console.log(error.message);
+        homeURL.searchParams.append('error', error.message)
+        res.redirect(homeURL)
     }
 })
 
