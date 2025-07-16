@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import PropTypes from 'prop-types'
-
+import { createDataListHeader } from "../../util"
 import { UserDataContext } from "../../store/user-data-context"
 import UserDataListItem from "../UserDataListItem/UserDataListItem"
 
@@ -29,8 +29,8 @@ export default function UserDataList({ selectedConfig }) {
         
     // console.log(userData)
     return <div className="dataListContainer">
+        <h2>{createDataListHeader(selectedConfig.dataType, selectedConfig.timeRange)}</h2>
         <ul>
-            <h1></h1>
             {userData.map((item, index) => {
                 return <UserDataListItem key={index} rank={index} item={item} itemType={selectedConfig.dataType}/>
             })}

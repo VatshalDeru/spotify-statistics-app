@@ -136,3 +136,43 @@ export const formatDate = (rawDate) => {
   // console.log(formattedDate.toString().slice(0, -34));
   return dataString;
 }
+
+// format header displayed in UserDataList compponent depening on the data type and time range
+export const createDataListHeader = (dataType, timeRange) => {
+  if(dataType === 'recentlyPlayedTracks') return 'Recently Played Tracks';
+
+  // log error if either the data or timeRange are not passed in
+  if(!dataType || !timeRange) {
+    console.error('incorect dataType and timeRange provided.');
+    return;
+  }
+
+  let headerString = '';
+
+  // append the string unique to each data Type
+  switch(dataType) {
+    case 'topArtists':
+      headerString += 'Top Artists';
+      break;
+    case 'topTracks':
+      headerString += 'Top Tracks'
+      break;
+  }
+
+  headerString += ' in the last ';
+
+  // append the string unique to each time range
+  switch(timeRange) {
+    case 'short_term':
+      headerString += '4 weeks';
+      break;
+    case 'medium_term':
+      headerString += '6 months';
+      break;
+    case 'long_term':
+      headerString += '12 months';
+      break;
+  }
+
+  return headerString;
+}
