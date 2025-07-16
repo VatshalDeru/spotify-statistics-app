@@ -4,6 +4,7 @@ import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 
 export const UserDataContext = createContext({
     userListeningData: {
+        isDataPresent: false,
         topArtists: [],
         topTracks: [],
         recentlyPlayedTracks: [],
@@ -16,6 +17,7 @@ export const UserDataContext = createContext({
 
 const  INTITIAL_USER_DATA_OBJ = {
     userListeningData: {
+        isDataPresent: false,
         topArtists: [],
         topTracks: [],
         recentlyPlayedTracks: [],
@@ -35,6 +37,7 @@ const userDataReducer = (state, action) => {
                 ...state,
                 userListeningData: {
                     ...state.userListeningData,
+                    isDataPresent: true,
                     ...action.payload
                 }
             }
@@ -82,6 +85,7 @@ export default function UserDataContextProvider({ children }) {
     // to the context provider so the context is available in all nested components
     const userDataCtxValue = {
         userListeningData: {
+            isDataPresent: userDataState.userListeningData.isDataPresent,
             topArtists: userDataState.userListeningData.topArtists,
             topTracks: userDataState.userListeningData.topTracks,
             recentlyPlayedTracks: userDataState.userListeningData.recentlyPlayedTracks,

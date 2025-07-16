@@ -9,7 +9,7 @@ export default function UserDataContainer() {
     const [selectedConfig, setSelectedConfig] = useState({
         dataType: 'topArtists',
         timeRange: 'short_term'
-    })
+    });
 
     // console.log(userListeningData)
     return <div className="userDataContainer">

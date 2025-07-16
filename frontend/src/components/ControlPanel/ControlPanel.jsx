@@ -5,6 +5,11 @@ import { getDisplayConfigText } from "../../util";
 
 export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
     const { userListeningData } = useContext(UserDataContext);
+    const userData = {
+        topArtists: userListeningData.topArtists,
+        topTracks: userListeningData.topTracks,
+        recentlyPlayedTracks: userListeningData.recentlyPlayedTracks,
+    }
     const clickControlsHandler = (controlConfig) => {
         // console.log(controlConfig)
         setSelectedConfig(prevState => (  
@@ -19,7 +24,7 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
         <div className="controlPanel">
 
             <div className="dataTypeControls">
-                {Object.keys(userListeningData).map((key, index) => {
+                {Object.keys(userData).map((key, index) => {
                     return <button key={index} className={selectedConfig.dataType === key? 'selected' : ''} onClick={() => clickControlsHandler({dataType: key})}>{getDisplayConfigText(key)}</button>
                 })}
             </div>

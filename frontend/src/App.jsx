@@ -5,15 +5,8 @@ import { storeDataFromParams, checkIsLoggedIn } from './util'
 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
-import UserDataContextProvider, { UserDataContext } from './store/user-data-context.jsx';
+import { UserDataContext } from './store/user-data-context.jsx';
 import UserDataContainer from './components/UserDataContainer/UserDataContainer.jsx';
-
-// const  INTITIAL_USER_DATA_OBJ = {
-//   topArtists: {},
-//   topTracks: {},
-//   recentlyPlayedTracks: [],
-//   userProfileData: {},
-// }
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,8 +37,6 @@ function App() {
     }
   }, [])
 
-  
-  console.log(userListeningData.topArtists)
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>

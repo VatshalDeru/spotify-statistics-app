@@ -5,7 +5,6 @@ export const storeDataFromParams = () => {
 
   const storedState = localStorage.getItem('state');
   const receivedState = params.get('state');
-  console.log(storedState, receivedState)
 
   // check if the state we got in the URL matches the one we have stored in localStorage
   // only performing this check if we have 'state' value in localStorage and we aren't at root path
@@ -15,8 +14,8 @@ export const storeDataFromParams = () => {
     // remove the state to avoid repeated misatch errors in the console upon errors
     localStorage.removeItem('state')
 
-    // 
-    window.history.replaceState({}, null, '/');
+    // redirect user back to root path to clear the params in the URL
+    window.history.replaceState(null, '', '/');
     return;
   }
 
@@ -26,28 +25,35 @@ export const storeDataFromParams = () => {
   if(error) {
     console.error('error logging in : ', error);
     
-    window.history.replaceState({}, null, '/');
+    // redirect user back to root path to clear the params in the URL
+    window.history.replaceState(null, '', '/');
     return;
   }
 
   // get the time the token was received in the backend from the URL query params
   const tokenCreationTime = params.get('tokenCreationTime');
 
-  if(isNaN(tokenCreationTime)) {
+  
+  // get the access token from the URL query params
+  const accessToken = params.get('access_token')
+  
+  // remove the state from localStorage as we no longer need it  
+  localStorage.removeItem('state')
+  
+  // console.log(tokenCreationTime, typeof parseInt(tokenCreationTime))
+  
+  if(!tokenCreationTime || !accessToken) return;
+  
+  // log error in console if the tokenCreationTime is not a number
+  if(isNaN(parseInt(tokenCreationTime)) && tokenCreationTime) {
     console.error('Invalid tokenCreationTime', tokenCreationTime, typeof tokenCreationTime);
   }
 
-  // get the access token from the URL query params
-  const accessToken = params.get('access_token')
-
-
-  // console.log(tokenCreationTime, typeof parseInt(tokenCreationTime))
-
-  if(!tokenCreationTime || !accessToken) return;
-
   localStorage.setItem('tokenCreationTime', parseInt(tokenCreationTime))
   localStorage.setItem('accessToken', accessToken)
-  window.location.replace('http://localhost:5173/')
+
+  // reset URL to root path to remove token and time from the URL without reloading page 
+  window.history.replaceState(null, '', '/');
 }
 
 export const checkIsLoggedIn = () => {
