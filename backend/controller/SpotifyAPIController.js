@@ -22,12 +22,12 @@ export default class SpotifyAPIController {
 
     setAccessToken(token) {
         this.accessToken = token;
-        console.log('access token set to: ', this.accessToken)
+        // console.log('access token set to: ', this.accessToken)
     }
 
     setRefreshToken(token) {
         this.refreshToken = token;
-        console.log('refresh token set to: ', this.refreshToken)
+        // console.log('refresh token set to: ', this.refreshToken)
     }
     // ---------------------------------------------
 
@@ -35,7 +35,7 @@ export default class SpotifyAPIController {
     getAuthURL(givenScope){
         const scope = givenScope || ['playlist-read-private', 'user-read-recently-played', 'user-top-read,', 'user-read-private', 'user-read-email' ];
         
-        const baseURL = 'https://accounts.spotify.com/authorize?'
+        const baseURL = 'https://accounts.spotify.com/authorize?';
 
         const state = nanoid(16);
 
@@ -50,6 +50,7 @@ export default class SpotifyAPIController {
 
         // comnine base URL + params to create the auth URL
         const authURL = baseURL + params.toString();
+        console.log(authURL)
 
         return { authURL, state };
     }

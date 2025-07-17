@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import PropTypes from 'prop-types'
-import { createDataListHeader } from "../../util"
+import { createDataListHeader } from "../../utils/uiUtils"
 import { UserDataContext } from "../../store/user-data-context"
 import UserDataListItem from "../UserDataListItem/UserDataListItem"
 

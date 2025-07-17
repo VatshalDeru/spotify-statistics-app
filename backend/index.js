@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/login', (req, res) => {
-    const {authURL, state } = spotifyAPIController.getAuthURL();
+    const { authURL, state } = spotifyAPIController.getAuthURL();
     // console.log('authURL: ', authUrl)
 
     // also sending state to be sent to frontend so we can compare state later

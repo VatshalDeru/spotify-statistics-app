@@ -1,0 +1,25 @@
+.notificationContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  z-index: 100;
+  transform: translateY(-101%);
+  transition: transform 0.2s ease-in-out;
+}
+.notificationContainer.visible {
+  transform: translateY(0);
+}
+.notificationContainer.pending {
+  background-color: rgb(30, 87, 243);
+}
+.notificationContainer.success {
+  background-color: rgb(59, 228, 119);
+}
+.notificationContainer.error {
+  background-color: rgb(230, 36, 36);
+}/*# sourceMappingURL=Notification.css.map */

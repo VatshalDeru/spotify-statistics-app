@@ -1,6 +1,7 @@
 import { useState,  useContext } from "react";
-import {  loginHandlerFn } from '../../http'; 
+import {  loginFn } from '../../utils/http.js'; 
 import { UserDataContext } from "../../store/user-data-context.jsx";
+import { NotificationContext } from "../../store/notification-context.jsx";
 import ProfilePopUpCard from "../ProfilePopUpCard/ProfilePopUpCard.jsx";
 
 
@@ -8,6 +9,7 @@ import ProfilePopUpCard from "../ProfilePopUpCard/ProfilePopUpCard.jsx";
 export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
     const [isCardOpen, setIsCardOpen] = useState(false)
     const  { userProfileData, isProfileDataPresent } = useContext(UserDataContext);
+    const { showNotification } = useContext(NotificationContext);
 
     const openCard = () => {
         setIsCardOpen(true);
@@ -17,8 +19,18 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
         setIsCardOpen(false);
     }
 
+    const loginClickHandler = async () => {
+        const error = await loginFn();
+        if(error) {
+            console.log(error);
+            showNotification('error', 'Error:', 'Error loggin you in!');
+        };
+        // showNotification('success', 'Success:', 'You have been logged in!')
+    }
+
+
     return <div className="navbarContainer">
-        {!isLoggedIn && <button onClick={loginHandlerFn}>Login</button>}
+        {!isLoggedIn && <button onClick={loginClickHandler}>Login</button>}
         {(isLoggedIn && isProfileDataPresent) && <div className="profileImg" onClick={openCard} data-testid='profile-button'><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
         {(isLoggedIn && isCardOpen)  && <ProfilePopUpCard open={isCardOpen} closeCard={closeCard} setIsLoggedIn={setIsLoggedIn}></ProfilePopUpCard>}
     </div>

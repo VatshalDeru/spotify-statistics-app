@@ -8,13 +8,19 @@ import './components/UserDataContainer/UserDataContainer.css'
 import './components/UserDataList/UserDataList.css'
 import './components/UserDataListItem/UserDataListItem.css'
 import './components/ControlPanel/ControlPanel.css'
+import './components/Notification/Notification.css'
 import App from './App.jsx'
 import UserDataContextProvider from './store/user-data-context.jsx'
+import NotificationContextProvider from './store/notification-context.jsx'
+import Notification from './components/Notification/Notification.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <UserDataContextProvider>
-      <App />
-    </UserDataContextProvider>
+    <NotificationContextProvider>
+      <UserDataContextProvider>
+        <Notification></Notification>
+        <App />
+      </UserDataContextProvider>
+    </NotificationContextProvider>
   </StrictMode>
 )

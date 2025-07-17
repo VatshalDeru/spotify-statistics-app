@@ -1,14 +1,17 @@
 import { useContext, useRef, useEffect } from "react"
 
 import { UserDataContext } from "../../store/user-data-context.jsx";
-import { handleLogout } from "../../util.js";
+import { NotificationContext } from "../../store/notification-context.jsx";
+import { handleLogout } from "../../utils/authUtils.js";
 
 // eslint-disable-next-line react/prop-types
 export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     //get the uesr profile data from conext to use in the card
     const { userProfileData } = useContext(UserDataContext);
+    const { showNotification } = useContext(NotificationContext); 
+    
     const cardRef = useRef(null);
-    // console.log(userProfileData)
+
 
     useEffect(() => {
         // sepereate event handler function so we can clear the event later
@@ -30,6 +33,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     const clickLogoutBtnHandler = () => {
         handleLogout();
         setIsLoggedIn(false);
+        showNotification('success', 'Success:', 'you have been logged out')
     }
 
     console.log(userProfileData)

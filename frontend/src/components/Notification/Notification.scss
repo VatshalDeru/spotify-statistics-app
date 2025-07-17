@@ -1,0 +1,32 @@
+.notificationContainer{
+    // display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    // background-color: rgb(230, 36, 36);
+    z-index: 100;
+    transform: translateY(-101%);
+    transition: transform 0.2s ease-in-out;
+
+
+    &.visible {
+        transform: translateY(0);
+    }
+
+    &.pending {
+        background-color: rgb(30, 87, 243);
+    }
+
+    &.success {
+        background-color: rgb(59, 228, 119);
+    }
+
+    &.error{
+        background-color: rgb(230, 36, 36);
+    }
+}

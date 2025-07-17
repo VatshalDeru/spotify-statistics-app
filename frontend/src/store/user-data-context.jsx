@@ -1,7 +1,7 @@
-import { createContext, useState, useReducer } from "react";
-import { getUserDataHandler, getUserProfileHandler} from "../http";
-import { ensureFreshToken } from "../util";
-import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
+import { createContext, useContext, useReducer } from "react";
+import { getUserDataHandler, getUserProfileHandler} from "../utils/http";
+import { ensureFreshToken } from "../utils/authUtils";
+import { NotificationContext } from "./notification-context";
 
 export const UserDataContext = createContext({
     userListeningData: {
@@ -52,6 +52,7 @@ const userDataReducer = (state, action) => {
 
 export default function UserDataContextProvider({ children }) {
     const [userDataState, userDataDispatch] = useReducer(userDataReducer, INTITIAL_USER_DATA_OBJ);
+    const { showNotification } = useContext(NotificationContext);
 
     // const [userData, setUserData] = useState(INTITIAL_USER_DATA_OBJ);
 
@@ -64,12 +65,21 @@ export default function UserDataContextProvider({ children }) {
             return;
         }
 
-        const userListeningData = await getUserDataHandler();
-
-        if(!userListeningData) {
-            console.warn("getUserDataHandler(): the data fetched is undefined");
+        showNotification('pending', 'Pending:', 'Fetching Your Data...');
+        const { data: userListeningData, error} = await getUserDataHandler();
+        console.log(userListeningData)
+        if(error) {
+            showNotification('error', 'Error:', 'An error occured whislt fetching your data!');
+            console.warn("getUserDataHandler(): Could not fetch user data");
             return;
         }
+
+        showNotification('success', 'Success:', 'Fetched your data successfully!');
+
+        // if(!userListeningData) {
+        //     console.warn("getUserDataHandler(): the data fetched is undefined");
+        //     return;
+        // }
 
         userDataDispatch({
             type: 'set-user-listening-data',
@@ -85,13 +95,21 @@ export default function UserDataContextProvider({ children }) {
             return;
         };
 
-        const userProfileData = await getUserProfileHandler();
-
-        if(!userProfileData) {
-            console.warn("userProfileData(): data fetched was undefined")
+        // showNotification('pending', 'Pending:', 'Fetching Your Data...');
+        const { data: userProfileData, error} = await getUserProfileHandler();
+        // console.log(userProfileData)
+        if(error) {
+            showNotification('error', 'Error:', 'An error occured whislt fetching your data!');
+            console.warn("getUserDataHandler(): Could not fetch users profile data");
+            return;
         }
 
-        // console.log('got the data here, dispathcing...', userProfileData)
+        // showNotification('success', 'Success:', 'Fetched your data successfully!');
+
+        // if(!userProfileData) {
+        //     console.warn("userProfileData(): data fetched was undefined")
+        // }
+
         userDataDispatch({
             type: 'set-profile-data',
             payload: {userProfileData},

@@ -1,17 +1,15 @@
-import { formatNumberWithCommas, formatDate } from '../../util';
+import { formatDate, formatNumberWithCommas } from '../../utils/formatUtils';
 import PropTypes from 'prop-types'
 
 export default function UserDataListItem({ item, itemType, rank }) {
     let content;
-
-    // console.log(item.artists.map(artist => artist.name).join(', '))
 
     switch(itemType) {
         case 'topArtists':
             content = <>
                 <p className="rank">{rank+1}.</p>
                 <div className="itemImg">
-                    <a href={item.external_urls.spotify}><img src={item.images[0].url} alt="" target='_blank'/></a>
+                    <a href={item.external_urls.spotify} target='_blank'><img src={item.images[0].url} alt="" /></a>
                 </div>
                 <h3 className='artistName'>{item.name}</h3>
                 <div className="popularityContainer">
@@ -25,7 +23,7 @@ export default function UserDataListItem({ item, itemType, rank }) {
             content = <>
                 <p className="rank">{rank+1}.</p>
                 <div className="itemImg">
-                    <a href={item.external_urls.spotify}><img src={item.album.images[0].url} alt="" target='_blank'/></a>
+                    <a href={item.external_urls.spotify} target='_blank'><img src={item.album.images[0].url} alt=""/></a>
                 </div>
                 <div className="trackInfoContainer">
                     <h3 className='trackName'>{item.name}</h3>
@@ -41,7 +39,7 @@ export default function UserDataListItem({ item, itemType, rank }) {
         case 'recentlyPlayedTracks':
             content = <>
                 <div className="itemImg">
-                    <a href={item.track.external_urls.spotify}><img src={item.track.album.images[0].url} alt="" target='_blank'/></a>
+                    <a href={item.track.external_urls.spotify} target='_blank'><img src={item.track.album.images[0].url} alt=""/></a>
                 </div>
                 <div className="trackInfoContainer ">
                     <h3 className='trackName'>{item.track.name}</h3>
@@ -61,8 +59,6 @@ export default function UserDataListItem({ item, itemType, rank }) {
     return <li key={rank}>
         {content}
     </li>
-
-    // return content
 }
 
 UserDataListItem.propTypes = {
@@ -115,4 +111,5 @@ UserDataListItem.propTypes = {
     }).isRequired,
     itemType: PropTypes.string.isRequired,
     itemKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    rank: PropTypes.number.isRequired,
 };

@@ -1,7 +1,7 @@
 import { useContext } from "react"
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types'
 import { UserDataContext } from "../../store/user-data-context"
-import { getDisplayConfigText } from "../../util";
+import { getDisplayConfigText } from "../../utils/uiUtils";
 
 export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
     const { userListeningData } = useContext(UserDataContext);
@@ -41,10 +41,10 @@ export default function ControlPanel({ setSelectedConfig, selectedConfig }) {
     )
 }
 
-// ControlPanel.propTypes = {
-//     setSelectedConfig: PropTypes.func.isRequired,
-//     selectedConfig: PropTypes.shape({
-//         dataType: PropTypes.string.isRequired,
-//         timeRange: PropTypes.stringisRequired,
-//     }).isRequired,
-// }; 
+ControlPanel.propTypes = {
+    setSelectedConfig: PropTypes.func.isRequired,
+    selectedConfig: PropTypes.shape({
+        dataType: PropTypes.string.isRequired,
+        timeRange: PropTypes.stringisRequired,
+    }).isRequired,
+}; 
