@@ -1,3 +1,5 @@
+import { refreshAccessToken } from "./http";
+
 // we get the time of token creation and access token from the query params of URL and store it in local storage
 // we will use this time to calculate if tokens have expired or not before each request we make
 export const storeDataFromParams = () => {
@@ -79,7 +81,7 @@ export const checkTokenIsFresh = () => {
   const timeDifference = (currTime - tokenCreationTime) / 1000;
   // console.log('util.js - checkTokenIsExpired() - timeDifference: ', timeDifference);
 
-  const tokenIsFresh = timeDifference < 3600;
+  const tokenIsFresh = timeDifference < 5;
 
   return tokenIsFresh;
 }
@@ -175,4 +177,22 @@ export const createDataListHeader = (dataType, timeRange) => {
   }
 
   return headerString;
+}
+
+// function to ensure we automatically get fresh access tokesn when it expires
+// will return false if failed to refresh access token
+export const ensureFreshToken = async () => {
+  const isTokenFresh = checkTokenIsFresh();
+  console.log('isTokenFresh: ', isTokenFresh)
+  if(!isTokenFresh) {
+      const refreshed = await refreshAccessToken();
+
+      if(!refreshed) {
+          console.error('error refreshing access token');
+          return false;
+      }
+      console.log('token refreshed')
+  }
+  
+  return true;
 }

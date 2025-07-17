@@ -32,14 +32,14 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
         setIsLoggedIn(false);
     }
 
-    // console.log(recentlyPlayedTracks)
+    console.log(userProfileData)
 
     if(!open) return null
     if(!userProfileData?.external_urls?.spotify ||
         !userProfileData?.images[0]?.url ||
         !userProfileData?.display_name ||
         !userProfileData?.id ||
-        !userProfileData?.followers?.total
+        (userProfileData?.followers?.total === null)
     ) return null;
     
     return (

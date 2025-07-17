@@ -86,4 +86,10 @@ app.post('/user', async (req, res) => {
     res.json(data)
 })
 
+app.get('/refresh-token', async (req, res) => {
+    const accessToken = await spotifyAPIController.refreshAccessToken();
+
+    res.json(accessToken);
+})
+
 app.listen(port, () => console.log(`Listening on port: ${port}`))

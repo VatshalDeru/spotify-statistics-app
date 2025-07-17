@@ -16,10 +16,10 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
     const closeCard = () => {
         setIsCardOpen(false);
     }
-    
+
     return <div className="navbarContainer">
         {!isLoggedIn && <button onClick={loginHandlerFn}>Login</button>}
-        {(isLoggedIn && isProfileDataPresent) && <div className="profile-button" onClick={openCard} data-testid='profile-button'><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
+        {(isLoggedIn && isProfileDataPresent) && <div className="profileImg" onClick={openCard} data-testid='profile-button'><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
         {(isLoggedIn && isCardOpen)  && <ProfilePopUpCard open={isCardOpen} closeCard={closeCard} setIsLoggedIn={setIsLoggedIn}></ProfilePopUpCard>}
     </div>
 }

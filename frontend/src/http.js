@@ -1,4 +1,4 @@
-
+import { checkTokenIsFresh } from "./util";
 
 // function will send fetch request for you with values and data provided
 const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
@@ -8,8 +8,7 @@ const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) =>
         ...(headersObj && { headers: headersObj}),
         ...(bodyObj && {body: bodyObj}),
     }
-    // console.log('helper.js - spotifyFetch():', options);
-
+    
     // general try/catch block that calls fetch(), will be used for all fetch requests in the backend
     try {
         const response = await fetch(url, options);
@@ -68,4 +67,18 @@ export const loginHandlerFn = async () => {
 
     // go to the auth URL to allow user to authorise app
     window.location.replace(authURL);
+}
+
+export const refreshAccessToken = async () => {
+    const url = 'http://localhost:3000/refresh-token';
+    const errorIntro = 'error refreshing access token';
+
+    const accessToken = await spotifyFetch({ url, errorIntro });
+    console.log(accessToken);
+    if(!accessToken) {
+        return false;
+    }
+
+    localStorage.setItem('accessToken', accessToken);
+    return true;
 }

@@ -79,6 +79,28 @@ export default class SpotifyAPIController {
         return { access_token }
     }
 
+    // get a fresh accesstoken in exchange for a refreshToken
+    async refreshAccessToken(){
+        const url = 'https://accounts.spotify.com/api/token';
+        const method = 'POST';
+        const headersObj = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + (new Buffer.from(this.client_id + ':' + this.client_secret).toString('base64'))
+        };
+        const bodyObj = new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: this.refreshToken,
+        });
+        const errorIntro = 'error refreshing token'
+
+        const { access_token } = await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
+        
+        this.setAccessToken(access_token);
+        return access_token;
+        console.log(data)
+        // console.log(this.client_id, this.client_secret);
+    }
+
     // function to get users listening statistics 
     async getUserData(){
         return await getUserDataHelper(this.accessToken); 

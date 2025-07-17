@@ -1,5 +1,6 @@
 import { createContext, useState, useReducer } from "react";
-import { getUserDataHandler, getUserProfileHandler } from "../http";
+import { getUserDataHandler, getUserProfileHandler} from "../http";
+import { ensureFreshToken } from "../util";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 
 export const UserDataContext = createContext({
@@ -56,7 +57,13 @@ export default function UserDataContextProvider({ children }) {
 
 
     const getStartedClickHandler = async () => {
-        userDataDispatch({type : "set-user-data"})
+        const isTokenFresh = ensureFreshToken();
+
+        if(!isTokenFresh) {
+            console.log('session expired, Please logout')
+            return;
+        }
+
         const userListeningData = await getUserDataHandler();
 
         if(!userListeningData) {
@@ -71,6 +78,13 @@ export default function UserDataContextProvider({ children }) {
     }
 
     const getUserProfileDataHandler = async () => {
+        const isTokenFresh = ensureFreshToken();
+
+        if(!isTokenFresh) {
+            console.log('session expired, Please logout')
+            return;
+        };
+
         const userProfileData = await getUserProfileHandler();
 
         if(!userProfileData) {

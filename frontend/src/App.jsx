@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import './App.css';
 // import { getUserProfileHandler} from './http'; 
-import { storeDataFromParams, checkIsLoggedIn } from './util'
+import { storeDataFromParams, checkIsLoggedIn, checkTokenIsFresh } from './util'
+import { refreshAccessToken } from './http.js';
 
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
@@ -28,6 +29,17 @@ function App() {
 
     // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
+      const isTokenFresh = checkTokenIsFresh();
+      console.log('isTokenFresh: ', isTokenFresh)
+      if(!isTokenFresh) {
+        const refreshed = await refreshAccessToken();
+
+        if(!refreshed) {
+          console.error('error refreshing access token');
+          return;
+        }
+      }
+
       getUserProfileDataHandler();
     }
 
