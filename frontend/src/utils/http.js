@@ -1,7 +1,7 @@
 import { checkTokenIsFresh } from "./authUtils";
 
 // function will send fetch request for you with values and data provided
-const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
+const fetchHandler = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
     // conditionally configuring the options object depending on if each option was passed in the parameter or not
     const options = {
         ...(method && {method}),
@@ -34,11 +34,11 @@ export const getUserProfileHandler = async () => {
     const method = 'POST';
     const headersObj = { 'Content-Type': 'application/json' };
     const bodyObj = JSON.stringify({ 
-        action: 'userProfile',
+        action: 'userProfileData',
         accessToken: localStorage.getItem('accessToken'),
     })
     const errorIntro = 'error getting user profile data'
-    return await spotifyFetch({url, method, headersObj, bodyObj, errorIntro});
+    return await fetchHandler({url, method, headersObj, bodyObj, errorIntro});
 }
 
 // gets user data statistics
@@ -52,7 +52,7 @@ export const getUserDataHandler = async () => {
     })
     const errorIntro = 'error getting user listening data'
 
-    return await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
+    return await fetchHandler({ url, method, headersObj, bodyObj, errorIntro });
 }
 
 // function will generate auth url where user can authorise app and log them in
@@ -60,7 +60,7 @@ export const loginFn = async () => {
     const url = 'http://localhost:3000/login';
     const errorIntro = 'error logging user in';
 
-    const { data, error } = await spotifyFetch({ url, errorIntro });
+    const { data, error } = await fetchHandler({ url, errorIntro });
 
     if(error) {
         console.error('error logging in');
@@ -78,12 +78,15 @@ export const refreshAccessToken = async () => {
     const url = 'http://localhost:3000/refresh-token';
     const errorIntro = 'error refreshing access token';
 
-    const { data:accessToken, error } = await spotifyFetch({ url, errorIntro });
-    console.log('refreshed token: ', accessToken);
+    const { data, error } = await fetchHandler({ url, errorIntro });
     if(error) {
         return false;
     }
+    
+    const { access_token: accessToken, tokenCreationTime } = data;
+    // console.log('refreshed token: ', accessToken);
 
     localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('tokenCreationTime', tokenCreationTime);
     return true;
 }

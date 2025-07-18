@@ -12,8 +12,8 @@ export const UserDataContext = createContext({
     },
     isProfileDataPresent: false,
     userProfileData: {},
-    getStartedClickHandler: () => {},
-    getUserProfileDataHandler: () => {},
+    getStartedClickContext: () => {},
+    getUserProfileDataContext: () => {},
 });
 
 
@@ -40,7 +40,6 @@ const userDataReducer = (state, action) => {
             return {
                 ...state,
                 userListeningData: {
-                    ...state.userListeningData,
                     isDataPresent: true,
                     ...action.payload
                 }
@@ -57,7 +56,7 @@ export default function UserDataContextProvider({ children }) {
     // const [userData, setUserData] = useState(INTITIAL_USER_DATA_OBJ);
 
 
-    const getStartedClickHandler = async (logoutModal) => {
+    const getStartedClickContext = async (logoutModal) => {
         const isTokenFresh = ensureFreshToken();
 
         if(!isTokenFresh) {
@@ -68,6 +67,7 @@ export default function UserDataContextProvider({ children }) {
         showNotification('pending', 'Pending:', 'Fetching Your Data...');
         const { data: userListeningData, error} = await getUserDataHandler();
         console.log(userListeningData)
+        
         if(error) {
             showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
             console.warn("getUserDataHandler(): Could not fetch user data");
@@ -83,7 +83,7 @@ export default function UserDataContextProvider({ children }) {
         })
     }
 
-    const getUserProfileDataHandler = async (logoutModal) => {
+    const getUserProfileContext = async (logoutModal) => {
         const isTokenFresh = ensureFreshToken();
 
         if(!isTokenFresh) {
@@ -96,7 +96,7 @@ export default function UserDataContextProvider({ children }) {
         // console.log(userProfileData)
         if(error) {
             showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
-            console.warn("getUserDataHandler(): Could not fetch users profile data");
+            console.error("getUserDataHandler(): Could not fetch users profile data");
             // shows the logout modal to prompt user to logout
             logoutModal.current.showModal();
             return;
@@ -119,8 +119,8 @@ export default function UserDataContextProvider({ children }) {
         },
         isProfileDataPresent: userDataState.isProfileDataPresent,
         userProfileData: userDataState.userProfileData,
-        getStartedClickHandler,
-        getUserProfileDataHandler,
+        getStartedClickContext,
+        getUserProfileContext,
     }
 
     // console.log(userDataState)

@@ -1,7 +1,7 @@
 import { createContext, useReducer } from "react";
 
 export const NotificationContext = createContext({
-    requestState: null,
+    requestState: null, // pending, success or error
     title: '',
     message: '',
     showNotification: () => {},
@@ -44,8 +44,7 @@ export default function NotificationContextProvider({ children }) {
             }
         });
 
-        // dont schedule timeout for clearing because a 'pending' state notification will always
-        //  resolve to either 'success' or 'error' state
+        // pending state will always switch to 'success' or 'error' so don't set timeout for it 
         if(requestState === 'pending') return;
         setTimeout(() => {
             clearNotification();

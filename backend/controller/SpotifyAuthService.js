@@ -1,5 +1,7 @@
-import { spotifyFetch } from "../helper.js";
+import { fetchHandler } from "../helper.js";
 import { nanoid } from "nanoid";
+
+
 
 export default class SpotifyAuthService{ 
     #accessToken = '';
@@ -35,9 +37,10 @@ export default class SpotifyAuthService{
     // ---------------------------------------------
 
     // create the URL to authenticate user to obtain authcode
+    
     getAuthURL(givenScope){
         // scope to determin what data we can request from API
-        const scope = givenScope || ['playlist-read-private', 'user-read-recently-played', 'user-top-read,', 'user-read-private', 'user-read-email' ];
+        const scope = givenScope;
         
         const baseURL = 'https://accounts.spotify.com/authorize?';
 
@@ -75,11 +78,10 @@ export default class SpotifyAuthService{
         };
         const errorIntro = 'error getting tokens';
 
-        let { data, error } = await spotifyFetch({url, method, bodyObj, headersObj, errorIntro})
+        let { data, error } = await fetchHandler({url, method, bodyObj, headersObj, errorIntro})
         if(error) {
             return { data, error }
         }
-        
         
         // extract tokens from data if no errors occured
         const { access_token, refresh_token } = data;
@@ -112,15 +114,19 @@ export default class SpotifyAuthService{
         });
         const errorIntro = 'error refreshing token'
 
-        const { data, error } = await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
+        let { data, error } = await fetchHandler({ url, method, headersObj, bodyObj, errorIntro });
         
         if(error) {
             return { data, error}
         }
-
+        
         const { access_token } = data;
-
         this.setAccessToken(access_token);
+        
+        // create new time of when access token was received
+        const tokenCreationTime = Date.now();
+        data = { access_token, tokenCreationTime};
+
         return { data, error };
     }
 }

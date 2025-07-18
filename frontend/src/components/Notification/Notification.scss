@@ -1,5 +1,4 @@
 .notificationContainer{
-    // display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +10,7 @@
     // background-color: rgb(230, 36, 36);
     z-index: 100;
     transform: translateY(-101%);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease;
 
 
     &.visible {

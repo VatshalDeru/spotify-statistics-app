@@ -15,7 +15,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const logoutModal = useRef();
 
-  const { getUserProfileDataHandler, userListeningData} = useContext(UserDataContext);
+  const { getUserProfileContext, userListeningData} = useContext(UserDataContext);
   const { showNotification } = useContext(NotificationContext);
 
   const { topArtists } = userListeningData;
@@ -32,13 +32,9 @@ function App() {
       return;
     } // DO NOT return if status 'neutral', wont be able to persist login state upon page refresh
     
-    // determine if user is logged in
+    // determine if user is logged in on refresh
     const loggedIn = checkIsLoggedIn();
-
-    // only change state if the new loggedIn value is different from the current isLoggedIn state
-    if(loggedIn !== isLoggedIn) {
-      setIsLoggedIn(loggedIn);
-    };
+    setIsLoggedIn(loggedIn);
 
     // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
@@ -48,7 +44,7 @@ function App() {
         isLoggedIn(false);
       }
 
-      getUserProfileDataHandler(logoutModal);
+      getUserProfileContext(logoutModal);
     }
 
     // fetch the users profile data if the user is logged in
@@ -57,18 +53,12 @@ function App() {
     }
   }, [])
 
-  const modalLogoutHandler = () => {
-    clearStorage();
-    setIsLoggedIn(false);
-    showNotification('success', 'Success:', 'you have been logged out')
-  }
-
   return (
     <div>
-      <LogoutModal ref={logoutModal} modalLogoutHandler={modalLogoutHandler}></LogoutModal>
+      <LogoutModal ref={logoutModal} setIsLoggedIn={setIsLoggedIn}/>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <HeroSection isLoggedIn={isLoggedIn} logoutModal={logoutModal}></HeroSection>
-      {(isLoggedIn && topArtists.long_term) && <UserDataContainer></UserDataContainer>}
+      {(isLoggedIn && topArtists.long_term) && <UserDataContainer/>}
     </div>
   );
 }

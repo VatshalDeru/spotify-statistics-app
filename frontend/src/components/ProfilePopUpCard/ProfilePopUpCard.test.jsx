@@ -5,6 +5,7 @@ import { UserDataContext } from '../../store/user-data-context';
 import ProfilePopUpCard from './ProfilePopUpCard';
 
 const mockContextValue = {
+    isProfileDataPresent: true,
     userProfileData: {
         external_urls: {
             spotify: '#'

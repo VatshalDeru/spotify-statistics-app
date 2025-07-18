@@ -87,7 +87,7 @@ describe('ControlPanel component', () => {
         expect(recentlyPlayedBtn).not.toHaveClass('selected');
     })
 
-    it("should highlight only the 'Top Tracks' button if selectedConfig.dataType is 'topTracks'", async () => {
+    it("should highlight only the 'Recently Played' button if selectedConfig.dataType is 'recentlyPlayedTracks'", async () => {
         const selectedConfig = {
             dataType: 'recentlyPlayedTracks',
             timeRange: 'short_term'

@@ -36,16 +36,9 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
         showNotification('success', 'Success:', 'you have been logged out')
     }
 
-    console.log(userProfileData)
+    // console.log(userProfileData)
 
-    if(!open) return null
-    if(!userProfileData?.external_urls?.spotify ||
-        !userProfileData?.images[0]?.url ||
-        !userProfileData?.display_name ||
-        !userProfileData?.id ||
-        (userProfileData?.followers?.total === null)
-    ) return null;
-    
+    if(!open || !isProfileDataPresent) return null;
     return (
         <div className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
