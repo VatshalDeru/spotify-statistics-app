@@ -50,7 +50,7 @@ app.get('/callback', async (req, res) => {
         const { data, error } = await spotifyAPIController.getTokens(authCode);
         
         const { access_token } = data;
-        // console.log(access_token)
+        // console.log(data)
 
         if(error){
             throw new Error(error);

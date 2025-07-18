@@ -1,140 +1,84 @@
+import SpotifyRequestData from "./SpotifyRequestData.js";
+import SpotifyAuthService from "./SpotifyAuthService.js";
+
 import { getUserDataHelper, spotifyFetch } from "../helper.js";
-import { nanoid } from "nanoid";
+
 
 export default class SpotifyAPIController {
-    #accessToken = '';
-    #refreshToken = '';
-    #client_id = '';
-    #client_secret = '';
-    #redirect_uri = '';
+    #authService;
+    #requestData = null;
 
     constructor({client_id, client_secret, redirect_uri}) {
-        this.#client_id = client_id || '';
-        this.#client_secret = client_secret || '';
-        this.#redirect_uri = redirect_uri || '';
+        this.#authService = new SpotifyAuthService({client_id, client_secret, redirect_uri})
     }
 
     // ------ getter and setter functions ---------
     getAccessToken() {
-        // console.log('getting accessToken: ', this.accessToken)
-        return this.#accessToken;
+        return this.#authService.getAccessToken();
     }
 
     getRefreshToken() {
-        return this.#refreshToken;
+        return this.#authService.getRefreshToken();
     }
 
     setAccessToken(token) {
-        this.#accessToken = token;
-        // console.log('access token set to: ', this.accessToken)
+        this.#authService.setAccessToken(token)
     }
 
     setRefreshToken(token) {
-        this.#refreshToken = token;
-        // console.log('refresh token set to: ', this.refreshToken)
+        this.#authService.setRefreshToken(token);
     }
     // ---------------------------------------------
 
     // create the URL to authenticate user to obtain authcode
     getAuthURL(givenScope){
-        // scope to determin what data we can request from API
-        const scope = givenScope || ['playlist-read-private', 'user-read-recently-played', 'user-top-read,', 'user-read-private', 'user-read-email' ];
+        // const scope = givenScope || ['playlist-read-private', 'user-read-recently-played', 'user-top-read,', 'user-read-private', 'user-read-email' ];
         
-        const baseURL = 'https://accounts.spotify.com/authorize?';
+        // const baseURL = 'https://accounts.spotify.com/authorize?';
 
-        const state = nanoid(16);
+        // const state = nanoid(16);
 
-        // create the query params for the auth URL
-        const params = new URLSearchParams({
-            response_type: 'code',
-            client_id: this.#client_id,
-            scope: scope,
-            redirect_uri: this.#redirect_uri,
-            state: state,
-        })
+        // // create the query params for the auth URL
+        // const params = new URLSearchParams({
+        //     response_type: 'code',
+        //     client_id: this.#client_id,
+        //     scope: scope,
+        //     redirect_uri: this.#redirect_uri,
+        //     state: state,
+        // })
 
-        // comnine base URL + params to create the auth URL
-        const authURL = baseURL + params.toString();
-        // console.log(authURL)
+        // // comnine base URL + params to create the auth URL
+        // const authURL = baseURL + params.toString();
+        // // console.log(authURL)
 
-        return { authURL, state };
+        // return { authURL, state };
+        return this.#authService.getAuthURL(givenScope);
     }
 
     // get access & refresh tokens using the authcode
     async getTokens(authCode){
-        // prepare values/object for spotifyFetch()
-        const url = 'https://accounts.spotify.com/api/token';
-        const method = 'POST';
-        const bodyObj = new URLSearchParams({
-            redirect_uri: this.#redirect_uri,
-            code: authCode,
-            grant_type: 'authorization_code'
-        })
-        const headersObj = {
-            'content-type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + (new Buffer.from(this.#client_id + ':' + this.#client_secret).toString('base64'))
-        };
-        const errorIntro = 'error getting tokens';
-
-        const { data, error } = await spotifyFetch({url, method, bodyObj, headersObj, errorIntro})
-        
-        if(error) {
-            return { data, error }
+        const { data, error } = await this.#authService.getTokens(authCode);
+        console.log(data)
+        if(error) return { data, error };
+        else if (data && !this.#requestData) {
+            const accessToken = this.#authService.getAccessToken();
+            this.#requestData = new SpotifyRequestData(accessToken)
         }
-
-
-        // extract tokens from data if no errors occured
-        const { access_token, refresh_token } = data;
-
-        //set the tokens in this class for later use
-        this.setAccessToken(access_token);
-        this.setRefreshToken(refresh_token);
-
-        // sending only the access token
-        return { data: {access_token}, error }
+        return { data, error }
     }
 
     // get a fresh accesstoken in exchange for a refreshToken
     async refreshAccessToken(){
-        const url = 'https://accounts.spotify.com/api/token';
-        const method = 'POST';
-        const headersObj = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + (new Buffer.from(this.#client_id + ':' + this.#client_secret).toString('base64'))
-        };
-        const bodyObj = new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: this.#refreshToken,
-        });
-        const errorIntro = 'error refreshing token'
-
-        const { data, error } = await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
-        
-        if(error) {
-            return { data, error}
-        }
-
-        const { access_token } = data;
-
-        this.setAccessToken(access_token);
-        return { data, error };
+        return await this.#authService.refreshAccessToken();
     }
 
     // function to get users listening statistics 
     async getUserData(){
-        return await getUserDataHelper(this.#accessToken); 
+        return await this.#requestData.getUserData();
     };
 
     // get users spotify profile data
     async getUserProfile(){
-        // prepare values/object for spotifyFetch()
-        const url = 'https://api.spotify.com/v1/me';
-        const headersObj = {
-            Authorization: "Bearer " + this.#accessToken
-        };
-        const errorIntro = 'error getting user profile data';
-
-        return await spotifyFetch({url, headersObj, errorIntro});
-        // console.log('apiController.js - getUserProfile(): ', data);
+        return await this.#requestData.getUserProfile();
     }
 }
