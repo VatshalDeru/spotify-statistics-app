@@ -20,14 +20,13 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
     }
 
     const loginClickHandler = async () => {
+        showNotification('pending', 'Pending:', 'Logging in...');
         const error = await loginFn();
         if(error) {
             console.log(error);
-            showNotification('error', 'Error:', 'Error loggin you in!');
+            showNotification('error', 'Error:', 'Error logging you in!');
         };
-        // showNotification('success', 'Success:', 'You have been logged in!')
     }
-
 
     return <div className="navbarContainer">
         {!isLoggedIn && <button onClick={loginClickHandler}>Login</button>}

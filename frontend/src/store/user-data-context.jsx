@@ -57,7 +57,7 @@ export default function UserDataContextProvider({ children }) {
     // const [userData, setUserData] = useState(INTITIAL_USER_DATA_OBJ);
 
 
-    const getStartedClickHandler = async () => {
+    const getStartedClickHandler = async (logoutModal) => {
         const isTokenFresh = ensureFreshToken();
 
         if(!isTokenFresh) {
@@ -69,17 +69,13 @@ export default function UserDataContextProvider({ children }) {
         const { data: userListeningData, error} = await getUserDataHandler();
         console.log(userListeningData)
         if(error) {
-            showNotification('error', 'Error:', 'An error occured whislt fetching your data!');
+            showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
             console.warn("getUserDataHandler(): Could not fetch user data");
+            logoutModal.current.showModal();
             return;
         }
 
         showNotification('success', 'Success:', 'Fetched your data successfully!');
-
-        // if(!userListeningData) {
-        //     console.warn("getUserDataHandler(): the data fetched is undefined");
-        //     return;
-        // }
 
         userDataDispatch({
             type: 'set-user-listening-data',
@@ -87,7 +83,7 @@ export default function UserDataContextProvider({ children }) {
         })
     }
 
-    const getUserProfileDataHandler = async () => {
+    const getUserProfileDataHandler = async (logoutModal) => {
         const isTokenFresh = ensureFreshToken();
 
         if(!isTokenFresh) {
@@ -99,16 +95,12 @@ export default function UserDataContextProvider({ children }) {
         const { data: userProfileData, error} = await getUserProfileHandler();
         // console.log(userProfileData)
         if(error) {
-            showNotification('error', 'Error:', 'An error occured whislt fetching your data!');
+            showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
             console.warn("getUserDataHandler(): Could not fetch users profile data");
+            // shows the logout modal to prompt user to logout
+            logoutModal.current.showModal();
             return;
         }
-
-        // showNotification('success', 'Success:', 'Fetched your data successfully!');
-
-        // if(!userProfileData) {
-        //     console.warn("userProfileData(): data fetched was undefined")
-        // }
 
         userDataDispatch({
             type: 'set-profile-data',

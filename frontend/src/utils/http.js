@@ -23,7 +23,7 @@ const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) =>
         // console.log(data);
         return { data, error: null };
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         return { data: null, error};
     }
 }
@@ -33,18 +33,12 @@ export const getUserProfileHandler = async () => {
     const url = 'http://localhost:3000/user';
     const method = 'POST';
     const headersObj = { 'Content-Type': 'application/json' };
-    const bodyObj = JSON.stringify({ action: 'userProfile' })
+    const bodyObj = JSON.stringify({ 
+        action: 'userProfile',
+        accessToken: localStorage.getItem('accessToken'),
+    })
     const errorIntro = 'error getting user profile data'
-
     return await spotifyFetch({url, method, headersObj, bodyObj, errorIntro});
-    // const { data, error } = await spotifyFetch({url, method, headersObj, bodyObj, errorIntro});
-
-    // if(error){
-    //     console.error(error);
-    // }
-
-    // // console.log('getUserProfileHandler() - user profile data', data)
-    // return {data, error};
 }
 
 // gets user data statistics
@@ -52,7 +46,10 @@ export const getUserDataHandler = async () => {
     const url = 'http://localhost:3000/user';
     const method = 'POST';
     const headersObj = { 'Content-Type': 'application/json' };
-    const bodyObj = JSON.stringify({ action: 'userData' })
+    const bodyObj = JSON.stringify({ 
+        action: 'userListeningData',
+        accessToken: localStorage.getItem('accessToken'),
+    })
     const errorIntro = 'error getting user listening data'
 
     return await spotifyFetch({ url, method, headersObj, bodyObj, errorIntro });
@@ -82,8 +79,8 @@ export const refreshAccessToken = async () => {
     const errorIntro = 'error refreshing access token';
 
     const { data:accessToken, error } = await spotifyFetch({ url, errorIntro });
-    console.log(accessToken);
-    if(!accessToken) {
+    console.log('refreshed token: ', accessToken);
+    if(error) {
         return false;
     }
 

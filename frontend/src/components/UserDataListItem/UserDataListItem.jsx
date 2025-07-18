@@ -7,7 +7,7 @@ export default function UserDataListItem({ item, itemType, rank }) {
     switch(itemType) {
         case 'topArtists':
             content = <>
-                <p className="rank">{rank+1}.</p>
+                <p className="rank">{rank}.</p>
                 <div className="itemImg">
                     <a href={item.external_urls.spotify} target='_blank'><img src={item.images[0].url} alt="" /></a>
                 </div>
@@ -21,7 +21,7 @@ export default function UserDataListItem({ item, itemType, rank }) {
             break;
         case 'topTracks':
             content = <>
-                <p className="rank">{rank+1}.</p>
+                <p className="rank">{rank}.</p>
                 <div className="itemImg">
                     <a href={item.external_urls.spotify} target='_blank'><img src={item.album.images[0].url} alt=""/></a>
                 </div>

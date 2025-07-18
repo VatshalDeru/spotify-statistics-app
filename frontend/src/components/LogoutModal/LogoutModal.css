@@ -1,0 +1,15 @@
+dialog, .logoutModalContainer {
+  z-index: 99;
+  border: none;
+  border-radius: 10%;
+  padding: 1em 3em 2em 3em;
+}
+dialog .message, .logoutModalContainer .message {
+  margin-bottom: 2em;
+}
+dialog .message h3, .logoutModalContainer .message h3 {
+  font-size: 1.5em;
+}
+dialog button, dialog .logout, .logoutModalContainer button, .logoutModalContainer .logout {
+  background-color: rgb(230, 36, 36);
+}/*# sourceMappingURL=LogoutModal.css.map */

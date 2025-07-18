@@ -39,13 +39,7 @@ export const storeDataFromParams = () => {
   localStorage.removeItem('state')
   
   // checking if the user has made no login attempt
-  const paramsInURL = tokenCreationTime && accessToken;
-  if(!paramsInURL ) return { status: 'neutral'};
-
-  // log error in console if the tokenCreationTime is not a number
-  if(isNaN(parseInt(tokenCreationTime)) && tokenCreationTime) {
-    console.error('Invalid tokenCreationTime', tokenCreationTime, typeof tokenCreationTime);
-  }
+  if(!tokenCreationTime || !accessToken ) return { status: 'neutral'};
 
   // store params in localStorage for later use
   localStorage.setItem('tokenCreationTime', parseInt(tokenCreationTime))
@@ -55,7 +49,7 @@ export const storeDataFromParams = () => {
   window.history.replaceState(null, '', '/');
 
   // return success state if we get params from URL and store it in localStorage
-  return { status: 'success'}
+  return { status: 'success' }
 }
 
 export const checkIsLoggedIn = () => {
@@ -66,7 +60,7 @@ export const checkIsLoggedIn = () => {
 
   if(!isTokenFresh || !accesstoken) {
     isLoggedin = false;
-    handleLogout();
+    clearStorage();
   }
 
   return isLoggedin;
@@ -86,7 +80,7 @@ export const checkTokenIsFresh = () => {
   return tokenIsFresh;
 }
 
-export const handleLogout = () => {
+export const clearStorage = () => {
   localStorage.removeItem('tokenCreationTime');
   localStorage.removeItem('accessToken');
   localStorage.removeItem('state');
@@ -101,8 +95,8 @@ export const ensureFreshToken = async () => {
       const refreshed = await refreshAccessToken();
 
       if(!refreshed) {
-          console.error('error refreshing access token');
-          return false;
+        console.error('error refreshing access token');
+        return false;
       }
       console.log('token refreshed')
   }

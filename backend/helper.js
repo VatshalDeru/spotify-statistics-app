@@ -8,14 +8,13 @@ const userDataParamsObj = {
 export const getUserDataHelper = async (accessToken) =>{
     const topArtists = {};
     const topTracks = {};
-    console.log(accessToken)
+    // console.log(accessToken)
 
     // create and prepare the static values/obj so we can pass it spotifyFetch() for the request
     const headersObj = {
         Authorization : `Bearer ${accessToken}`
     };
-    
-
+    let error;
     // loop over userDataParamsObj to fetch user data for their top tracks/artists over long/medium/short (time) term using for loop
     for(const itemType of userDataParamsObj.itemTypes) {
         for(const timeRange of userDataParamsObj.timeRanges) {
@@ -23,7 +22,12 @@ export const getUserDataHelper = async (accessToken) =>{
             const url = `https://api.spotify.com/v1/me/top/${itemType}?time_range=${timeRange}`;
             const errorIntro = `error getting user data with itemType: ${itemType} and timeRange: ${timeRange}`;
 
-            const {items} = await spotifyFetch({url, headersObj, errorIntro})
+            const { data, error:errorMsg } = await spotifyFetch({url, headersObj, errorIntro})
+            if(errorMsg) {
+                error = errorMsg;
+                return;
+            }
+            const { items } = data
             // console.log(items);
             // adding the fetched user data to the relevant data item obj we created above
             if(itemType === 'artists') {
@@ -31,40 +35,18 @@ export const getUserDataHelper = async (accessToken) =>{
             } else{
                 topTracks[timeRange] = items;
             }
-            
-            // try {
-            //     const response = await fetch(`https://api.spotify.com/v1/me/top/${itemType}?time_range=${timeRange}`,{
-            //         headers: {
-            //             Authorization : `Bearer ${accessToken}`
-            //         }
-            //     });
-
-            //     if(!response.ok) {
-            //         const errorMsg = await response.text();
-            //         throw new Error(`error getting user data with itemType: ${itemType} and timeRange: ${timeRange}, error status: ${response.status}, error message: ${errorMsg}`)
-            //     }
-
-            //     // get only the array of the top tracks/artits from the received data
-            //     const {items} = await response.json();
-
-            //     // adding the fetched user data to the relevant data item obj we created above
-            //     if(itemType === 'artists') {
-            //         topArtists[timeRange] = items;
-            //     } else{
-            //         topTracks[timeRange] = items;
-            //     }
-            // } catch (error) {
-            //     console.log(error);
-            // }
         }
     }
     const { items: recentlyPlayedTracks } = await getUserRecentlyPlayed(accessToken);
 
-    // console.log('helper.js - getUserData - topArtists: ', topArtists)
-    // console.log('helper.js - getUserData - topTracks: ', topTracks)
-    // console.log('helper.js - getUserData - recentlyPlayedTracks: ', recentlyPlayedTracks)
-    
-    return {topArtists, topTracks, recentlyPlayedTracks}
+
+    const data ={
+        topArtists, 
+        topTracks,
+        recentlyPlayedTracks
+    }
+
+    return {data, error}
 }
 
 // get users 20 recently played tracks
@@ -75,7 +57,9 @@ export const getUserRecentlyPlayed = async (accessToken) => {
     };
     const errorIntro = 'error getting users recently played tracks'
     
-    const data = await spotifyFetch({ url, headersObj, errorIntro });
+    const { data, error } = await spotifyFetch({ url, headersObj, errorIntro });
+
+    if(error) return;
 
     return data;
 }
@@ -84,11 +68,10 @@ export const getUserRecentlyPlayed = async (accessToken) => {
 export const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
     // conditionally configuring the options object depending on if each option was passed in the parameter or not
     const options = {
-        ...(method && {method: method}),
+        ...(method && {method}),
         ...(headersObj && { headers: headersObj}),
         ...(bodyObj && {body: bodyObj}),
     }
-    // console.log('helper.js - spotifyFetch():', options);
 
     // general try/catch block that calls fetch(), will be used for all fetch requests in the backend
     try {
@@ -102,8 +85,9 @@ export const spotifyFetch = async ({ url, method, bodyObj, headersObj, errorIntr
         const data = await response.json();
 
         // console.log(data);
-        return data;
+        return { data, error: null };
     } catch (error) {
         console.log(error);
+        return { data: null, error};
     }
 }

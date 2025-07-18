@@ -9,7 +9,5 @@ export default function Notification() {
     return <div className={classes}>
         <h3 className="notificationTitle">{title} </h3>
         <p className="notificationMessage">{message}</p>
-        {/* <h3 className="notificationTitle">Sucess: </h3>
-        <p className="notificationMessage">Fetched data successfully!</p> */}
     </div>
 }
