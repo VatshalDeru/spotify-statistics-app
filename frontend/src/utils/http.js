@@ -63,8 +63,8 @@ export const loginFn = async () => {
     const { data, error } = await fetchHandler({ url, errorIntro });
 
     if(error) {
-        console.error('error logging in');
-        return error;
+        console.error('error logging in: ', error);
+        return false;
     }
 
     const { authURL, state } = data

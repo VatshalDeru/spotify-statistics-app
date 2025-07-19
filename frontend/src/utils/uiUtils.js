@@ -49,3 +49,31 @@ export const getDisplayConfigText= (key) => {
     case 'long_term' : return '12 Months'
   }
 }
+
+// check if userProfileData object in context has all the values
+export function isUserProfileDataComplete(userProfileData) {
+  if (!userProfileData) return false;
+
+  console.log(userProfileData)
+
+    
+  return (
+    userProfileData?.external_urls?.spotify &&
+    userProfileData?.images[0].url &&
+    userProfileData?.display_name &&
+    userProfileData?.id &&
+    (userProfileData?.followers?.total >= 0)
+  );
+}
+export function isUserListeningDataComplete(userListeningData) {
+  if (!userListeningData) return false;
+
+  const { topArtists,topTracks, recentlyPlayedTracks } = userListeningData;
+
+    
+  return (
+    topArtists?.short_term &&
+    topTracks?.short_term &&
+    recentlyPlayedTracks
+  )
+}

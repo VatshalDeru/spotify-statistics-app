@@ -4,8 +4,18 @@ import userEvent from '@testing-library/user-event';
 import Navbar from './Navbar';
 import { expect, describe, it, vi } from 'vitest';
 import { UserDataContext } from '../../store/user-data-context';
+import { NotificationContext } from '../../store/notification-context';
 
-const mockContextValue = {
+vi.mock('../../utils/http.js', () => ({
+    loginFn: vi.fn(),
+}))
+
+import { loginFn } from '../../utils/http';
+
+const mockGetStartedClickHandler = vi.fn();
+const mockGetUserProfileDataHandler = vi.fn();
+
+const mockFetchedProfileContextValue = {
     isProfileDataPresent: true,
     userProfileData: { 
         external_urls: {
@@ -18,21 +28,36 @@ const mockContextValue = {
             total: 1
         },
     },
-    getStartedClickHandler: vi.fn(),
-    getUserProfileDataHandler: vi.fn(),
+    getStartedClickHandler: mockGetStartedClickHandler,
+    getUserProfileDataHandler: mockGetUserProfileDataHandler,
 };
 
-function renderWithContext( ui, contextValue) {
-    return render(
-        <UserDataContext value={ contextValue }>
-           {ui}
-        </UserDataContext>
-    )
+// simulates context value when no user profile data is present
+const mockProfileContextValue = {
+    isProfileDataPresent: false,
+    userProfileData: { },
+    getStartedClickHandler: mockGetStartedClickHandler,
+    getUserProfileDataHandler: mockGetUserProfileDataHandler,
+};
+
+const mockShowNotification = vi.fn();
+
+const mockNoitificationContextValue = {
+    requestState: null,
+    title: '',
+    message: '',
+    showNotification: mockShowNotification,
 }
 
-
-// Mock user images data
-
+function renderWithContext( ui, notifcationContextValue, userDataContextValue) {
+    return render(
+        <NotificationContext value={notifcationContextValue}>
+            <UserDataContext value={userDataContextValue}>
+                {ui}
+            </UserDataContext>
+        </NotificationContext>
+    )
+}
 
 describe('Navbar Component', () => { 
     it("Should render the login button if the user is not logged in", () => {
@@ -40,48 +65,40 @@ describe('Navbar Component', () => {
 
         const buttonElement = screen.getByRole('button', { name: "Login" });
         expect(buttonElement).toBeInTheDocument();
-    })
-
+    });
     it("Should not render the login button if the user is logged in", async () => {
         render(<Navbar isLoggedIn={true}/>);
 
         const buttonElement = screen.queryByRole('button', { name: "Login" },);
         expect(buttonElement).toBe(null);
-    })
-
+    });
     it('Should not render the users profile image in the corner if the user is not logged in and the userProfileData is not present', async () => {
-        renderWithContext(<Navbar isLoggedIn={false}/>, { userProfileData: {}, isProfileDataPresent: false});
+        renderWithContext(<Navbar isLoggedIn={false}/>, mockNoitificationContextValue, mockProfileContextValue);
 
         const profileDiv = screen.queryByAltText('Profile Picture');
         expect(profileDiv).toBe(null);
-    })
-
+    });
     it("Should not render the users profile image in the corner if the user is not logged in but the userProfileData is present", () => {
-        renderWithContext(<Navbar isLoggedIn={false}/>, mockContextValue);
+        renderWithContext(<Navbar isLoggedIn={false}/>, mockNoitificationContextValue, mockFetchedProfileContextValue);
 
         const profileDiv = screen.queryByAltText('Profile Picture');
         expect(profileDiv).toBe(null);
-    })
-    
+    });
     it('Should not render the users profile image in the corner if the user is logged in but the userProfileData is an empty object', async () => {
-        // pass with object userProfileData property set to empty object
-        // *PERSONAL NOTE* DONT pass empty object here, userProfileData will be undefined in Navbar component, and if you're accesing values from userPorfileData in there, it will thorw a type error
-        renderWithContext(<Navbar isLoggedIn={true}/>, { userProfileData: {}, isProfileDataPresent: false});
+        renderWithContext(<Navbar isLoggedIn={true}/>, mockNoitificationContextValue, mockProfileContextValue);
         
         const profileDiv = screen.queryByAltText('Profile Picture');
         expect(profileDiv).toBe(null);
-    })
-
-    it('Should render the users profile image in the corner if the user is logged in and the userProfileData is present', async () => {
-        renderWithContext(<Navbar isLoggedIn={true}/>, mockContextValue);
+    });
+    it('Should render the users profile image if the user is logged in and the userProfileData is present', async () => {
+        renderWithContext(<Navbar isLoggedIn={true}/>, mockNoitificationContextValue, mockFetchedProfileContextValue);
 
         const profileDiv = screen.getByAltText('Profile Picture');
         
         expect(profileDiv).toBeInTheDocument()
-    })
-
+    });
     it('Should not render the ProfilePopUpCard component by default', () => {
-        renderWithContext(<Navbar isLoggedIn={false}/>, mockContextValue);
+        renderWithContext(<Navbar isLoggedIn={true}/>, mockNoitificationContextValue, mockFetchedProfileContextValue);
 
         const profileCardElements = [
             screen.queryByRole('link', { name: 'user spotify profile picture' }),
@@ -95,11 +112,10 @@ describe('Navbar Component', () => {
         profileCardElements.forEach(element => {
             expect(element).toBeNull();
         });
-    })
-
+    });
     it('Should render the ProfilePopUpCard Component if the user clicks their profile pic', async ()=> {
         const user = userEvent.setup();
-        renderWithContext(<Navbar isLoggedIn={true}/>, mockContextValue)
+        renderWithContext(<Navbar isLoggedIn={true}/>, mockNoitificationContextValue, mockFetchedProfileContextValue)
         screen.debug();
 
         const profileButton = screen.getByTestId('profile-button');
@@ -116,5 +132,26 @@ describe('Navbar Component', () => {
         profileCardElements.forEach(element => {
             expect(element).toBeInTheDocument();
         });
+    });
+    it('Should call showNotification and loginFn when the user clicks on login button and login is successfull', async () => {
+        renderWithContext(<Navbar isLoggedIn={false}/>, mockNoitificationContextValue, mockProfileContextValue);
+
+        const loginButton = screen.getByRole('button', { name: 'Login' });
+        
+        await userEvent.click(loginButton);
+
+        expect(mockShowNotification).toHaveBeenCalledWith('pending', 'Pending:', 'Logging in...');
+        expect(loginFn).toHaveBeenCalled();
+    })
+    it('should call showNotification with error status if the login is unsuccessful', async () => {
+        vi.mocked(loginFn).mockResolvedValueOnce(false);
+
+       renderWithContext(<Navbar isLoggedIn={false}/>, mockNoitificationContextValue, mockProfileContextValue);
+
+       const loginBtn = screen.getByRole('button', { name: 'Login' });
+
+       await userEvent.click(loginBtn);
+
+       expect(mockShowNotification).toHaveBeenCalledWith('error', 'Error:', 'Error logging you in!');
     })
 })

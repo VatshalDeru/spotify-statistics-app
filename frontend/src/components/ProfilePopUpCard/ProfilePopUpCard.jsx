@@ -3,6 +3,7 @@ import { useContext, useRef, useEffect } from "react"
 import { UserDataContext } from "../../store/user-data-context.jsx";
 import { NotificationContext } from "../../store/notification-context.jsx";
 import { clearStorage } from "../../utils/authUtils.js";
+import { isUserProfileDataComplete } from "../../utils/uiUtils.js";
 
 // eslint-disable-next-line react/prop-types
 export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
@@ -27,7 +28,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
         // clean up function for removing the event listener when this component is unmounted from the DOM
         return () => {
             document.removeEventListener('mousedown', handleClickOut)
-        }
+        };
     }, [closeCard])
 
     const clickLogoutBtnHandler = () => {
@@ -38,7 +39,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
 
     // console.log(userProfileData)
 
-    if(!open || !isProfileDataPresent) return null;
+    if(!open || !isProfileDataPresent || !isUserProfileDataComplete(userProfileData)) return null;
     return (
         <div className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
