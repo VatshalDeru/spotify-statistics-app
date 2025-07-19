@@ -52,7 +52,6 @@ const renderWithContext = (ui, notificationContextValue, userDataContextValue) =
 describe('ProfilePopUpCard component', () => {
     it('renders correctly', () => {
         renderWithContext(<ProfilePopUpCard open={true}/>, mockNotificationContextValues, mockUserDataContextValue)
-        // screen.debug()
         
         const profileCardElements = [
             screen.getByRole('link', { name: 'user spotify profile picture' }),
@@ -69,8 +68,6 @@ describe('ProfilePopUpCard component', () => {
     
     it('does not render if open prop is false', () => {
         renderWithContext(<ProfilePopUpCard open={false}/>, mockNotificationContextValues, mockUserDataContextValue);
-        // screen.debug();
-
         const profileCardElements = [
             screen.queryByRole('link', { name: 'user spotify profile picture' }),
             screen.queryByAltText('user spotify profile picture'),
@@ -106,7 +103,6 @@ describe('ProfilePopUpCard component', () => {
 
     it("doesn't render if the userProfileData is an empty object (open is true)", () => {
         renderWithContext(<ProfilePopUpCard open={true}/>, mockNotificationContextValues, { userProfileData: {} });
-        // screen.debug();
 
         const profileCardElements = [
             screen.queryByRole('link', { name: 'user spotify profile picture' }),
@@ -126,7 +122,6 @@ describe('ProfilePopUpCard component', () => {
 
         const mockSetIsLoggedIn = vi.fn();
         renderWithContext(<ProfilePopUpCard open={true} setIsLoggedIn={mockSetIsLoggedIn}/>, mockNotificationContextValues, mockUserDataContextValue)
-        // screen.debug()
 
         const logoutBtn = screen.getByRole('button', { name: 'Logout' });
 
@@ -144,7 +139,6 @@ describe('ProfilePopUpCard component', () => {
             <button>outside element</button>
             <ProfilePopUpCard open={true} closeCard={mockCloseCard}/>
         </>, mockNotificationContextValues, mockUserDataContextValue)
-        // screen.debug();
         
         const outsideElement = screen.getByRole('button', { name: 'outside element' })
         await userEvent.click(outsideElement);
@@ -159,11 +153,9 @@ describe('ProfilePopUpCard component', () => {
 
             if(!isLoggedIn ) return null;
             return  <ProfilePopUpCard open={true} setIsLoggedIn={setIsLoggedIn} />
-        }
+        };
 
         renderWithContext(<TestWrapper/>, mockNotificationContextValues, mockUserDataContextValue);
-        screen.debug()
-
 
         const logoutButton = screen.getByRole('button', { name: 'Logout' });
 

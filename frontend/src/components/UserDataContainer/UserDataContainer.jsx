@@ -11,7 +11,7 @@ export default function UserDataContainer() {
 
     // console.log(userListeningData)
     return <div className="userDataContainer">
-        <ControlPanel setSelectedConfig={setSelectedConfig} selectedConfig={selectedConfig}></ControlPanel>
-        <UserDataList selectedConfig={selectedConfig}></UserDataList>
+        <ControlPanel data-testid='control-panel-component' setSelectedConfig={setSelectedConfig} selectedConfig={selectedConfig}></ControlPanel>
+        <UserDataList data-testid='user-data-list-component' selectedConfig={selectedConfig}></UserDataList>
     </div>
 }

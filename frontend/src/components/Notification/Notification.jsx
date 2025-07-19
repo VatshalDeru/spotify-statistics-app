@@ -6,8 +6,8 @@ export default function Notification() {
 
     const classes = `notificationContainer ${requestState ? 'visible ' + requestState : ''}`;
 
-    return <div className={classes}>
-        <h3 className="notificationTitle">{title} </h3>
+    return <div data-testid="notification-div" className={classes}>
+        <h3  className="notificationTitle">{title} </h3>
         <p className="notificationMessage">{message}</p>
     </div>
 }

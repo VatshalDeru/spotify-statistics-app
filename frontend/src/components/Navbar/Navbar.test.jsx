@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Navbar from './Navbar';
 import { expect, describe, it, vi } from 'vitest';
@@ -116,7 +116,6 @@ describe('Navbar Component', () => {
     it('Should render the ProfilePopUpCard Component if the user clicks their profile pic', async ()=> {
         const user = userEvent.setup();
         renderWithContext(<Navbar isLoggedIn={true}/>, mockNoitificationContextValue, mockFetchedProfileContextValue)
-        screen.debug();
 
         const profileButton = screen.getByTestId('profile-button');
         await user.click(profileButton);

@@ -7,10 +7,10 @@ export default defineConfig({
     test: {
         environment: "jsdom",
         globals: true,
-            // These reduce noise without silencing your logs:
-    logHeapUsage: false,
-    passWithNoTests: true,
-    // Optional: Only show failing tests in output
-    reporters: ['default', 'verbose'] // or 'dot' for minimal output
+        logHeapUsage: false,
+        passWithNoTests: true,
+        coverage: {
+            reporter: ['text', 'html'] // 'text' for console coverage report, 'lcov' for HTML report
+        }
     }
 })

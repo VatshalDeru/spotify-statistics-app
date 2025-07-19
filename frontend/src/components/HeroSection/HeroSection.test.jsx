@@ -67,7 +67,6 @@ describe('HeroSection Component', () => {
     });
     it(`should display the "get started" button if the userListeningData hasn't been fetched yet`, () => {
         renderWithContext(<HeroSection isLoggedIn={true}/>, userDataContextValue);
-        screen.debug();
 
         const buttonElement = screen.queryByRole('button', { name: 'Get Started' });
 
