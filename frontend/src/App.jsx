@@ -2,8 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import './App.css';
 // import { getUserProfileHandler} from './http'; 
 import { storeDataFromParams, checkIsLoggedIn, ensureFreshToken, clearStorage } from './utils/authUtils.js'
-// import { refreshAccessToken } from './utils/http.js';
-
+import { isUserListeningDataComplete } from './utils/uiUtils.js';
 import HeroSection from './components/HeroSection/HeroSection';
 import Navbar from './components/Navbar/Navbar';
 import { UserDataContext } from './store/user-data-context.jsx';
@@ -15,7 +14,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const logoutModal = useRef();
 
-  const { getUserProfileContext, userListeningData} = useContext(UserDataContext);
+  let { getUserProfileContext, userListeningData} = useContext(UserDataContext);
+  const data = useContext(UserDataContext);
   const { showNotification } = useContext(NotificationContext);
 
   const { topArtists } = userListeningData;
@@ -52,13 +52,14 @@ function App() {
       callfetchProfile();
     }
   }, [])
-
+;
+// console.log(data);
   return (
     <div>
       <LogoutModal ref={logoutModal} setIsLoggedIn={setIsLoggedIn}/>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <HeroSection isLoggedIn={isLoggedIn} logoutModal={logoutModal}></HeroSection>
-      {(isLoggedIn && topArtists.long_term) && <UserDataContainer/>}
+      {(isLoggedIn && isUserListeningDataComplete(userListeningData)) && <UserDataContainer/>}
     </div>
   );
 }

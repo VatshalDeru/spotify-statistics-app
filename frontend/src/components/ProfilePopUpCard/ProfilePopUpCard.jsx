@@ -17,7 +17,6 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     useEffect(() => {
         // sepereate event handler function so we can clear the event later
         const handleClickOut = (event) => {
-            console.log(cardRef.current)
             // close the card if user clicks outside of the card
             if(cardRef.current && !cardRef.current.contains(event.target)) {
                 closeCard();

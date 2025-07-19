@@ -7,8 +7,6 @@ export default function HeroSection({ isLoggedIn, logoutModal }) {
     const { getStartedClickContext, userListeningData } = useContext(UserDataContext);
     const { isDataPresent } = userListeningData;
 
-
-    console.log(!isUserListeningDataComplete(userListeningData))
     return <div className="HeroContainer">
         <h1>Spotify <span>Wrapped</span></h1>
         {(isLoggedIn && !isDataPresent && !isUserListeningDataComplete(userListeningData)) &&

@@ -8,10 +8,13 @@ import UserDataListItem from "../UserDataListItem/UserDataListItem"
 export default function UserDataList({ selectedConfig }) {
     const { userListeningData } = useContext(UserDataContext);
 
-    // console.log(userListeningData[selectedConfig.dataType])
-
     let userData;
-
+    if(!userListeningData[selectedConfig?.dataType] || 
+        ( selectedConfig?.dataType !== 'recentlyPlayedTracks' && !userListeningData[selectedConfig?.dataType][selectedConfig?.timeRange])
+    ) {
+        // showNotification('error', 'Error', 'error showing user Data');
+        return <h2>Error showing your data :(</h2>
+    }
     switch(selectedConfig.dataType) {
         case 'topArtists':
         case 'topTracks':

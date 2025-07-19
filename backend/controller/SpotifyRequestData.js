@@ -37,20 +37,48 @@ export default class SpotifyRequestData {
         const { items } = data;
         // console.log(items);
         // adding the fetched user data to the relevant data item obj we created above
+
         if (itemType === "artists") {
-          topArtists[timeRange] = items;
+          // get only the values we need
+          const formattedArtistItems = items.map(artist => ({
+            ariststLink: artist.external_urls.spotify,
+            image: artist.images[0].url,
+            artistName: artist.name,
+            artistPopularity: artist.popularity,
+            followers: artist.followers.total,
+          }))
+          topArtists[timeRange] = formattedArtistItems;
         } else {
-          topTracks[timeRange] = items;
+            const formattedTrackItems = items.map(track => ({
+              trackLink: track.external_urls.spotify,
+              image: track.album.images[0].url,
+              trackName: track.name,
+              trackPopularity: track.popularity,
+              artists: track.artists
+            }))
+          topTracks[timeRange] = formattedTrackItems;
         }
       }
     }
-    const { items: recentlyPlayedTracks } = await this.getUserRecentlyPlayed(accessToken);
+    const { items } = await this.getUserRecentlyPlayed(accessToken);
+
+    // console.log(items)
+    const recentlyPlayedTracks = items.map(recentTrack => ({
+      trackLink: recentTrack.track.external_urls.spotify,
+      image: recentTrack.track.album.images[0].url,
+      trackName: recentTrack.track.name,
+      artists: recentTrack.track.artists,
+      trackPopularity: recentTrack.track.popularity,
+      timeStamp: recentTrack.played_at,
+    }))
 
     const data = {
       topArtists,
       topTracks,
       recentlyPlayedTracks,
     };
+
+    console.log(topArtists)
 
     return { data, error };
   }

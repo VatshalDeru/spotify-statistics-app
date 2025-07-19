@@ -6,57 +6,61 @@ export default function UserDataListItem({ item, itemType, rank }) {
 
     switch(itemType) {
         case 'topArtists':
+            if (!item.artistLink || !item.image || !item.artistName || item.artistPopularity === undefined || (!item.followers && item.followers !== 0)) return null;    
             content = <>
                 <p className="rank">{rank}.</p>
                 <div className="itemImg">
-                    <a href={item.external_urls.spotify} target='_blank'><img src={item.images[0].url} alt="" /></a>
+                    <a href={item.artistLink} target='_blank'><img src={item.image} alt="" /></a>
                 </div>
-                <h3 className='artistName'>{item.name}</h3>
+                <h3 className='artistName'>{item.artistName}</h3>
                 <div className="popularityContainer">
                     <p>Popularity</p>
-                    <p className="popularity">{item.popularity}</p>
+                    <p className="popularity">{item.artistPopularity}</p>
                 </div>
-                <p className='followers'>followers: {formatNumberWithCommas(item.followers.total)}</p>
+                <p className='followers'>followers: {formatNumberWithCommas(item.followers)}</p>
             </>
             break;
         case 'topTracks':
+            if (!item.trackLink || !item.image || !item.trackName || !item.artists || item.trackPopularity === undefined) return null;
             content = <>
                 <p className="rank">{rank}.</p>
                 <div className="itemImg">
-                    <a href={item.external_urls.spotify} target='_blank'><img src={item.album.images[0].url} alt=""/></a>
+                    <a href={item.trackLink} target='_blank'><img src={item.image} alt=""/></a>
                 </div>
                 <div className="trackInfoContainer">
-                    <h3 className='trackName'>{item.name}</h3>
+                    <h3 className='trackName'>{item.trackName}</h3>
                     <p className='trackArtists'>{item.artists.map(artist => artist.name).join(', ')}</p>
                 </div>
                 <div className="popularityContainer">
                     <p>Popularity</p>
-                    <p className="popularity">{item.popularity}</p>
+                    <p className="popularity">{item.trackPopularity}</p>
                 </div>
                 {/* <p>followers: {item.followers.total}</p> */}
             </>
             break
         case 'recentlyPlayedTracks':
+            if (!item.trackLink || !item.image || !item.trackName || !item.artists || item.trackPopularity === undefined || !item.timeStamp) return null;
             content = <>
                 <div className="itemImg">
-                    <a href={item.track.external_urls.spotify} target='_blank'><img src={item.track.album.images[0].url} alt=""/></a>
+                    <a href={item.trackLink} target='_blank'><img src={item.image} alt=""/></a>
                 </div>
                 <div className="trackInfoContainer ">
-                    <h3 className='trackName'>{item.track.name}</h3>
-                    <p className='trackArtists'>{item.track.artists.map(artist => artist.name).join(', ')}</p>
+                    <h3 className='trackName'>{item.trackName}</h3>
+                    <p className='trackArtists'>{item.artists.map(artist => artist.name).join(', ')}</p>
                 </div>
                 <div className="popularityContainer">
                     <p>Popularity</p>
-                    <p className="popularity">{item.track.popularity}</p>
+                    <p className="popularity">{item.trackPopularity}</p>
                 </div>
-                <p className='timePlayed'>{formatDate(item.played_at)}</p>
+                <p className='timePlayed'>{formatDate(item.timeStamp)}</p>
             </>
             break
         default:
-            console.warn('unknown itemTyper:', itemType)
+            console.warn('unknown itemType:', itemType)
+            return null;
     }
-    
-    return <li key={rank}>
+
+    return <li data-testid={itemType}>
         {content}
     </li>
 }
@@ -71,8 +75,12 @@ UserDataListItem.propTypes = {
                 url: PropTypes.string.isRequired,
             })
         ),
+        url: PropTypes.string, // Added url prop validation
+        image: PropTypes.string, // Added image prop validation
         name: PropTypes.string,
         popularity: PropTypes.number,
+        artistLink: PropTypes.string.isRequired,
+        artistName: PropTypes.string, // Added artistName prop validation
         followers: PropTypes.shape({
             total: PropTypes.number,
         }),

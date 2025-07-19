@@ -53,9 +53,6 @@ export const getDisplayConfigText= (key) => {
 // check if userProfileData object in context has all the values
 export function isUserProfileDataComplete(userProfileData) {
   if (!userProfileData) return false;
-
-  console.log(userProfileData)
-
     
   return (
     userProfileData?.external_urls?.spotify &&

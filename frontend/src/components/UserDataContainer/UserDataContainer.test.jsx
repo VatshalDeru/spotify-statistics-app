@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
-import { screen, render, getByTestId } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import UserDataContainer from './UserDataContainer';
 import userEvent from '@testing-library/user-event';
 

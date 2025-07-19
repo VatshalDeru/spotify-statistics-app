@@ -66,7 +66,6 @@ export default function UserDataContextProvider({ children }) {
 
         showNotification('pending', 'Pending:', 'Fetching Your Data...');
         const { data: userListeningData, error} = await getUserDataHandler();
-        console.log(userListeningData)
         
         if(error) {
             showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
