@@ -13,4 +13,14 @@
   color: rgb(59, 228, 119);
   line-height: 1.1;
   transform: translateX(3px);
+}
+@media (max-width: 700px) {
+  .HeroContainer h1 {
+    font-size: 7rem;
+  }
+}
+@media (max-width: 570px) {
+  .HeroContainer h1 {
+    font-size: 6rem;
+  }
 }/*# sourceMappingURL=HeroSection.css.map */
