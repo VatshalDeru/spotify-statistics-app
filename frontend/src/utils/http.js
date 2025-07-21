@@ -1,7 +1,7 @@
 import { checkTokenIsFresh } from "./authUtils";
 
 // function will send fetch request for you with values and data provided
-const fetchHandler = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
+export const fetchHandler = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
     // conditionally configuring the options object depending on if each option was passed in the parameter or not
     const options = {
         ...(method && {method}),

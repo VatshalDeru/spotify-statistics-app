@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import UserDataListItem from "./UserDataListItem";
 
 const topArtistItemValue = {
-    artistLink: '#',
+    artistsLink: '#',
     image: '#',
     artistName: 'name', 
     artistPopularity: 50,
@@ -30,7 +30,6 @@ const recentlyPlayedItemValue = {
 describe('UserDataListItem component', () => {
     it("it should render an artist item when itemType is 'topArtist' (this is also default)", () => {
         render(<UserDataListItem item={topArtistItemValue} itemType={'topArtists'} rank={1}/>)
-
         const artistItem = screen.getByTestId('topArtists');
         
         expect(artistItem).toBeInTheDocument();    

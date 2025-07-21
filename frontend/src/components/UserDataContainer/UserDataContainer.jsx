@@ -10,7 +10,7 @@ export default function UserDataContainer() {
     });
 
     // console.log(userListeningData)
-    return <div className="userDataContainer">
+    return <div data-testid='user-data-container' className="userDataContainer">
         <ControlPanel data-testid='control-panel-component' setSelectedConfig={setSelectedConfig} selectedConfig={selectedConfig}></ControlPanel>
         <UserDataList data-testid='user-data-list-component' selectedConfig={selectedConfig}></UserDataList>
     </div>

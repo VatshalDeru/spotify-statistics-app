@@ -6,7 +6,8 @@ export default function UserDataListItem({ item, itemType, rank }) {
 
     switch(itemType) {
         case 'topArtists':
-            if (!item.artistsLink || !item.image || !item.artistName || item.artistPopularity === undefined || (!item.followers)) {
+            if (!item.artistsLink || !item.image || !item.artistName || item.artistPopularity === undefined || !item.followers) {
+                // console.log(!item.artistsLink)
                 return null;
             }    
             content = <>

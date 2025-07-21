@@ -15,16 +15,12 @@ function App() {
   const logoutModal = useRef();
 
   let { getUserProfileContextFn, userListeningData} = useContext(UserDataContext);
-  const data = useContext(UserDataContext);
   const { showNotification } = useContext(NotificationContext);
-
-  const { topArtists } = userListeningData;
 
   useEffect(() => {  // useEffect(() => {
     // check for the date query params in the URL and if present, store it in localstorage
     const { status } = checkURLforParams();
 
-    // show the relevant notification for the status of login attempt
     if(status === 'success') {
       showNotification('success', 'Success:', 'Logged In!');
     } else if(status === 'error'){
@@ -32,28 +28,24 @@ function App() {
       return;
     } // DO NOT return if status 'neutral', wont be able to persist login state upon page refresh
     
-    // determine if user is logged in on refresh
     const loggedIn = checkIsLoggedIn();
     setIsLoggedIn(loggedIn);
 
-    // function to call getUserProfilHandler() inside of useEffect asynchronously 
     const callfetchProfile = async () => {
       const isTokenFresh = await ensureFreshToken();
       if(!isTokenFresh){
         clearStorage();
-        isLoggedIn(false);
+        setIsLoggedIn(false);
       }
 
       getUserProfileContextFn(logoutModal);
     }
 
-    // fetch the users profile data if the user is logged in
     if(loggedIn) {
       callfetchProfile();
     }
-  }, [])
-;
-// console.log(data);
+  }, []);
+
   return (
     <div className='appContainer'>
       <LogoutModal ref={logoutModal} setIsLoggedIn={setIsLoggedIn}/>

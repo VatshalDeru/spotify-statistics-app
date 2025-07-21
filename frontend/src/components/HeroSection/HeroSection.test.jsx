@@ -40,21 +40,13 @@ const renderWithContext = (ui, contextValue) => {
 }
 
 describe('HeroSection Component', () => {
-    it('should render "Spotify"', () => {
-        // Assign
+    it('should render "Spotify Wrapped"', () => {
         renderWithContext(<HeroSection/>, fetchedUserDataContextValue);
 
-        // Assert
-        const textElement = screen.getByText('Spotify');
-        expect(textElement).toBeInTheDocument();
-    });
-    it('should render "Wrapped"', () => {
-        // Assign
-        render(<HeroSection/>);
-
-        // Assert
-        const textElement = screen.getByText('Wrapped');
-        expect(textElement).toBeInTheDocument();
+        const spotifyElement = screen.getByText('Spotify');
+        const wrappedElement = screen.getByText('Wrapped');
+        expect(spotifyElement).toBeInTheDocument();
+        expect(wrappedElement).toBeInTheDocument();
     });
     it('should not dislay the "get started" button if user is not logged in', () => {
         render(<HeroSection isLoggedIn={false}/>, userDataContextValue);

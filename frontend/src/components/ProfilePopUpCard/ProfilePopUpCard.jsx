@@ -38,7 +38,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
 
     if(!open || !isProfileDataPresent || !isUserProfileDataComplete(userProfileData)) return null;
     return (
-        <div className="profileCardContainer" ref={cardRef}>
+        <div data-testid='profile-card-container' className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
                 <a href={userProfileData?.external_urls.spotify} target="_blank" data-testid='profile-link'><img src={ userProfileData?.images[0]?.url ?? '#'} alt="user spotify profile picture" /></a>
             </div>
