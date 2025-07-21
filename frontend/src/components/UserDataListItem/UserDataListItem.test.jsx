@@ -36,14 +36,14 @@ describe('UserDataListItem component', () => {
     });
     it("it should render a track item when itemType is 'topTrack'", () => {
         render(<UserDataListItem item={topTrackItemValue} itemType={'topTracks'} rank={1}/>)
-        screen.debug()
+
         const trackItem = screen.getByTestId('topTracks');
         
         expect(trackItem).toBeInTheDocument();    
     });
     it("it should render a track item when itemType is 'recentlyPlayedTracks'", () => {
         render(<UserDataListItem item={recentlyPlayedItemValue} itemType={'recentlyPlayedTracks'} rank={1}/>)
-        screen.debug();
+
         const recentlyPlayedItem = screen.getByTestId('recentlyPlayedTracks');
         
         expect(recentlyPlayedItem).toBeInTheDocument();    

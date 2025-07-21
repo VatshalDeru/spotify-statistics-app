@@ -23,7 +23,7 @@ export const fetchHandler = async ({ url, method, bodyObj, headersObj, errorIntr
         // console.log(data);
         return { data, error: null };
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         return { data: null, error};
     }
 }

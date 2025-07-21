@@ -87,6 +87,7 @@ export default function UserDataContextProvider({ children }) {
         const isTokenFresh = await ensureFreshToken();
 
         if(!isTokenFresh) {
+            logoutModal.current.showModal();
             console.log('session expired, Please logout')
             return;
         };

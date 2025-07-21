@@ -22,15 +22,8 @@ export const checkURLforParams = () => {
   // no longer need to store state
   localStorage.removeItem("state");
 
-  const tokenCreationTime = params.get("tokenCreationTime");
-  const accessToken = params.get("access_token");
-
-
-  // checking if the user has made no login attempt
-  if (!tokenCreationTime || !accessToken) return { status: "neutral" };
-
-  localStorage.setItem("tokenCreationTime", parseInt(tokenCreationTime));
-  localStorage.setItem("accessToken", accessToken);
+  const storedParams = storeParamsInStorage(params);
+  if(!storedParams) return { status: "neutral" } // neutral means login wasn't attempted
 
   // reset URL to root path to remove token and time from the URL without reloading page
   window.history.replaceState(null, "", "/");
@@ -40,7 +33,7 @@ export const checkURLforParams = () => {
 };
 
 // check if the state received in the URL params ins
-const checkForStateMismatch = (params) => {
+export const checkForStateMismatch = (params) => {
   const storedState = localStorage.getItem("state");
   const receivedState = params.get("state");
 
@@ -58,9 +51,10 @@ const checkForStateMismatch = (params) => {
   }
 };
 
-const storeParamsInStorage = () =>{
+const storeParamsInStorage = (params) =>{
   const tokenCreationTime = params.get("tokenCreationTime");
   const accessToken = params.get("access_token");
+  console.log(0)
   if (!tokenCreationTime || !accessToken) return false;
 
   localStorage.setItem("tokenCreationTime", parseInt(tokenCreationTime));
