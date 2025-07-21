@@ -4,7 +4,7 @@ export const createDataListHeader = (dataType, timeRange) => {
 
   // log error if either the data or timeRange are not passed in
   if(!dataType || !timeRange) {
-    console.error('incorect dataType and timeRange provided.');
+    console.error('incorect dataType or timeRange provided.');
     return;
   }
 
@@ -18,6 +18,9 @@ export const createDataListHeader = (dataType, timeRange) => {
     case 'topTracks':
       headerString += 'Top Tracks'
       break;
+    default:
+      console.error('incorect dataType provided.');
+      return;
   }
 
   headerString += ' in the last ';
@@ -33,6 +36,9 @@ export const createDataListHeader = (dataType, timeRange) => {
     case 'long_term':
       headerString += '12 months';
       break;
+    default:
+      console.error('incorect timeRange provided.');
+      return;
   }
 
   return headerString;
@@ -47,6 +53,9 @@ export const getDisplayConfigText= (key) => {
     case 'short_term' : return '4 Weeks'
     case 'medium_term' : return '6 Months'
     case 'long_term' : return '12 Months'
+    default:
+      console.error('Invalid key provided');
+      return undefined;
   }
 }
 
@@ -56,21 +65,26 @@ export function isUserProfileDataComplete(userProfileData) {
     
   return (
     userProfileData?.external_urls?.spotify &&
-    userProfileData?.images[0].url &&
+    userProfileData?.images[0]?.url &&
     userProfileData?.display_name &&
     userProfileData?.id &&
     (userProfileData?.followers?.total >= 0)
   );
 }
+
 export function isUserListeningDataComplete(userListeningData) {
   if (!userListeningData) return false;
 
-  const { topArtists,topTracks, recentlyPlayedTracks } = userListeningData;
+  const { topArtists, topTracks, recentlyPlayedTracks } = userListeningData;
 
     
-  return (
-    topArtists?.short_term &&
-    topTracks?.short_term &&
-    recentlyPlayedTracks
+  return Boolean(
+    (topArtists?.short_term && topArtists?.short_term?.length >= 1 && topArtists?.short_term?.length <= 20) &&
+    (topArtists?.medium_term && topArtists?.medium_term?.length >= 1 && topArtists?.medium_term?.length <= 20) &&
+    (topArtists?.long_term && topArtists?.long_term?.length >= 1 && topArtists?.long_term?.length <= 20) &&
+    (topTracks?.short_term && topTracks?.short_term?.length >= 1 && topTracks?.short_term?.length <= 20) &&
+    (topTracks?.medium_term && topTracks?.medium_term?.length >= 1 && topTracks?.medium_term?.length <= 20) &&
+    (topTracks?.long_term && topTracks?.long_term?.length >= 1 && topTracks?.long_term?.length <= 20) &&
+    (recentlyPlayedTracks?.length >= 1 && recentlyPlayedTracks?.length <= 20)
   )
 }

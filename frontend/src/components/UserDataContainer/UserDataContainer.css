@@ -2,4 +2,23 @@
   background-color: rgb(19, 18, 18);
   padding: 3em 1em;
   border-radius: 1.5em;
+  margin: auto;
+}
+@media (max-width: 950px) {
+  .userDataContainer {
+    width: 39em;
+    padding: 2em 0.5em;
+  }
+}
+@media (max-width: 700px) {
+  .userDataContainer {
+    width: 32em;
+    padding: 2em 0.3em;
+  }
+}
+@media (max-width: 570px) {
+  .userDataContainer {
+    width: 26em;
+    padding: 2em 0.3em;
+  }
 }/*# sourceMappingURL=UserDataContainer.css.map */

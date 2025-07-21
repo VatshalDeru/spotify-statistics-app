@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-import SpotifyWebApi from "spotify-web-api-node";
 import "dotenv/config";
 import SpotifyAPIController from "./controller/SpotifyAPIController.js";
 
@@ -9,9 +8,7 @@ import SpotifyAPIController from "./controller/SpotifyAPIController.js";
 const app = express();
 const port = 3000;
 
-// allowed me to receive the access tokens in the backend through body, that i sent from frontend
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // initialise the controller
 const spotifyAPIController = new SpotifyAPIController({
@@ -19,6 +16,7 @@ const spotifyAPIController = new SpotifyAPIController({
   client_id: "31efb33b062d4da9a45cb8f69e7cf34d",
   client_secret: "21c9d39137cb440b9898877d15d510e7",
 });
+
 const scope = [
   "user-read-recently-played",
   "user-top-read,",
@@ -27,9 +25,7 @@ const scope = [
 ];
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-
-  // when i tried to send access token from frontend to backend for fetching user data
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
   res.setHeader("Access-Control-Allow-Headers", "content-type");
   next();
 });
@@ -76,7 +72,6 @@ app.get("/callback", async (req, res) => {
   }
 });
 
-// process request for users listening and users profile data
 app.post("/user", async (req, res) => {
   const { action, accessToken } = req.body;
   let data;

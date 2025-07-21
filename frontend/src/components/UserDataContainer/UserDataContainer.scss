@@ -1,9 +1,22 @@
 .userDataContainer{
     background-color: rgb(19, 18, 18);
     padding: 3em 1em;
-    // padding-inline: 0em !important;
     border-radius: 1.5em;
+    margin: auto;
 
+    @media (max-width: 950px) {
+        width: 39em;         
+        padding: 2em 0.5em; 
+    }
 
+    @media (max-width: 700px) {
+        width: 32em;         
+        padding: 2em 0.3em; 
+    }
+
+    @media (max-width: 570px) {
+        width: 26em;         
+        padding: 2em 0.3em; 
+    }
 
 }

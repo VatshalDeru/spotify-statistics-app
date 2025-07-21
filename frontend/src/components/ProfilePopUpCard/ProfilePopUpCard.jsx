@@ -13,7 +13,7 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
     
     const cardRef = useRef(null);
 
-
+    
     useEffect(() => {
         // sepereate event handler function so we can clear the event later
         const handleClickOut = (event) => {
@@ -36,13 +36,11 @@ export default function ProfilePopUpCard({ open, closeCard, setIsLoggedIn }) {
         showNotification('success', 'Success:', 'you have been logged out')
     }
 
-    // console.log(userProfileData)
-
     if(!open || !isProfileDataPresent || !isUserProfileDataComplete(userProfileData)) return null;
     return (
         <div className="profileCardContainer" ref={cardRef}>
             <div className="profilePhotoContainer">
-                <a href={userProfileData?.external_urls.spotify} target="_blank" data-testid='profile-link'><img src={userProfileData.images ? userProfileData.images[0].url : '#'} alt="user spotify profile picture" /></a>
+                <a href={userProfileData?.external_urls.spotify} target="_blank" data-testid='profile-link'><img src={ userProfileData?.images[0]?.url ?? '#'} alt="user spotify profile picture" /></a>
             </div>
             <h2 className="userName">{userProfileData.display_name}</h2>
             <p className="userId" data-testid='userId'>id: {userProfileData.id}</p>

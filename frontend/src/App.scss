@@ -1,0 +1,16 @@
+// #root {
+//   max-width: 1280px;
+//   margin: 0 auto;
+//   padding: 2rem;
+//   text-align: center;
+// }
+.appContainer{
+  width: 98vw;
+  // max-width: 950px;
+  // margin-inline: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}

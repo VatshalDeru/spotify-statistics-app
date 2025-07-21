@@ -23,33 +23,40 @@ li {
     }
 
     .followers {
-        width: 8em;
+        width:7em;
         color: rgb(138, 138, 138);
     }
 
     .trackInfoContainer{
         width: 26em;
         
-        .trackName {
+        .trackName, .recentTrackName {
             margin-bottom: 0;
         }
+
+        // .recentTrackName {
+        //     width: 10em;
+        // }
 
         .trackArtists {
             margin-top: 0;
         }
     }
 
+    .trackInfoContainer.recent {
+        width: 20em;
+    }
+
     .popularityContainer {
         width: 4.5em;
         height: 4.5em;
-        padding: 0;
+        margin-inline: 0.8em;
         border-radius: 50%;
         background-color: rgb(0, 116, 224);
         line-height: 0.5em;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        // gap: -10em;
 
         .popularity {
             font-size: 1.5em;
@@ -60,7 +67,6 @@ li {
             font-size: 0.6em;
             font-weight: bold;
             word-spacing: -0.1em;
-            // color: rgb(36, 36, 36);
         }
 
     }
@@ -69,4 +75,176 @@ li {
         width: 5em;
         color: rgb(138, 138, 138);
     }
+
+    @media(max-width: 950px){
+        margin-block: 1em;
+
+        img{
+            width: 6.5em;
+            height: 6.5em;
+        }
+
+    
+        .artistName{
+            width: 14em;
+            font-size: 1rem;
+        }
+
+        .followers {
+            font-size: 0.9rem;
+        }
+
+        .trackInfoContainer{
+            width: 20em;
+            
+            .trackName {
+                font-size: 1rem;
+            }
+
+            .trackArtists {
+                font-size: 0.8rem;
+            }
+        }
+
+        .trackInfoContainer.recent{
+            width: 18em;
+            .recentTrackName{
+                font-size: 1.1rem;
+            }
+        }
+
+        .popularityContainer {
+            width: 3.7em;
+            height: 3.7em;
+
+            .popularity {
+                font-size: 1.2em;
+            }
+
+        }
+
+        .timePlayed{
+            width: 5em;
+            font-size: 0.8rem;
+        }
+
+    }
+    
+    @media(max-width: 700px){
+        img{
+            width: 5.5em;
+            height: 5.5em;
+        }
+    
+        .artistName{
+            width: 12em;
+            font-size: 0.8rem;
+        }
+
+        .followers {
+            font-size: 0.7rem;
+        }
+
+        .trackInfoContainer{
+            width: 14em;
+            .trackName {
+                margin-bottom: 0;
+                font-size: 0.8rem;
+            }
+
+            .trackArtists {
+                margin-top: 0;
+                font-size: 0.8rem;
+            }
+        }
+
+        .trackInfoContainer.recent{
+            width: 9em;
+            .recentTrackName{
+                font-size: 0.8rem;
+            }
+        }
+
+
+        .popularityContainer {
+            width: 3.4em;
+            height: 3.4em;
+
+            .popularity {
+                font-size: 1em;
+            }
+
+            p{
+                font-size: 0.6rem;
+            }
+
+        }
+
+        .timePlayed{
+            width: 5em;
+        }
+
+    }
+    @media(max-width: 570px){
+        .rank{
+            font-size: 0.9rem;
+            margin-inline: 0.2em;
+        }
+
+        img{
+            width: 4.5em;
+            height: 4.5em;
+        }
+    
+        .artistName{
+            width: 8em;
+            font-size: 0.6rem;
+        }
+
+        .followers {
+            font-size: 0.6rem;
+        }
+
+        .trackInfoContainer{
+            width: 13em;
+            .trackName {
+                margin-bottom: 0;
+                font-size: 0.6em;
+            }
+
+            .trackArtists {
+                margin-top: 0;
+                font-size: 0.6rem;
+            }
+        }
+
+        .trackInfoContainer.recent{
+            width: 8em;
+            .recentTrackName{
+                font-size: 0.6rem;
+            }
+        }
+
+
+        .popularityContainer {
+            width: 3.4em;
+            height: 3.4em;
+
+            .popularity {
+                font-size: 0.9em;
+            }
+
+            p{
+                font-size: 0.6rem;
+            }
+
+        }
+
+        .timePlayed{
+            // width: 5em;
+            font-size: 0.7rem;
+        }
+
+    }
 }
+

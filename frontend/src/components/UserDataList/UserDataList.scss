@@ -6,3 +6,26 @@ ul {
 h2 {
     font-size: 2.5em;
 }
+
+@media(max-width: 950px) {
+    h2{
+        font-size: 2em;
+    }
+}
+@media(max-width: 700px) {
+    ul{
+        margin-block: 1em;
+    }
+    h2{
+        font-size: 1.5em;
+    }
+}
+
+@media(max-width: 570px) {
+    ul{
+        margin-block: 1em;
+    }
+    h2{
+        font-size: 1.2em;
+    }
+}

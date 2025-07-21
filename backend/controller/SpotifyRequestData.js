@@ -41,7 +41,7 @@ export default class SpotifyRequestData {
         if (itemType === "artists") {
           // get only the values we need
           const formattedArtistItems = items.map(artist => ({
-            ariststLink: artist.external_urls.spotify,
+            artistsLink: artist.external_urls.spotify,
             image: artist.images[0].url,
             artistName: artist.name,
             artistPopularity: artist.popularity,

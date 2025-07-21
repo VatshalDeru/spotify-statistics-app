@@ -1,7 +1,7 @@
 import { refreshAccessToken } from "./http";
 
 // check for params from the URL after auth redirection and store it in localstorage if present
-export const storeDataFromParams = () => {
+export const checkURLforParams = () => {
   const params = new URLSearchParams(window.location.search);
 
   const stateMismatch =  checkForStateMismatch(params);
@@ -19,11 +19,12 @@ export const storeDataFromParams = () => {
     return { status: "error" };
   }
 
+  // no longer need to store state
+  localStorage.removeItem("state");
+
   const tokenCreationTime = params.get("tokenCreationTime");
   const accessToken = params.get("access_token");
 
-  // no longer need to store state
-  localStorage.removeItem("state");
 
   // checking if the user has made no login attempt
   if (!tokenCreationTime || !accessToken) return { status: "neutral" };
@@ -56,6 +57,16 @@ const checkForStateMismatch = (params) => {
     return true;
   }
 };
+
+const storeParamsInStorage = () =>{
+  const tokenCreationTime = params.get("tokenCreationTime");
+  const accessToken = params.get("access_token");
+  if (!tokenCreationTime || !accessToken) return false;
+
+  localStorage.setItem("tokenCreationTime", parseInt(tokenCreationTime));
+  localStorage.setItem("accessToken", accessToken);
+  return true;
+}
 
 export const checkIsLoggedIn = () => {
   let isLoggedin = true;
@@ -94,7 +105,7 @@ export const clearStorage = () => {
 // returns false/true depending on if it refreshed sucessfully
 export const ensureFreshToken = async () => {
   const isTokenFresh = checkTokenIsFresh();
-  // console.log('isTokenFresh: ', isTokenFresh)
+  console.log('isTokenFresh: ', isTokenFresh)
   if (!isTokenFresh) {
     const refreshed = await refreshAccessToken();
 

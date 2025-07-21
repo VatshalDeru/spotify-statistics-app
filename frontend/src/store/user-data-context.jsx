@@ -12,8 +12,8 @@ export const UserDataContext = createContext({
     },
     isProfileDataPresent: false,
     userProfileData: {},
-    getStartedClickContext: () => {},
-    getUserProfileDataContext: () => {},
+    getStartedClickContextFn: () => {},
+    getUserProfileContextFn: () => {},
 });
 
 
@@ -53,14 +53,14 @@ export default function UserDataContextProvider({ children }) {
     const [userDataState, userDataDispatch] = useReducer(userDataReducer, INTITIAL_USER_DATA_OBJ);
     const { showNotification } = useContext(NotificationContext);
 
-    // const [userData, setUserData] = useState(INTITIAL_USER_DATA_OBJ);
-
-
-    const getStartedClickContext = async (logoutModal) => {
-        const isTokenFresh = ensureFreshToken();
+    // invoked when button in heroSection is clicked
+    const getStartedClickContextFn = async (logoutModal) => {
+        const isTokenFresh = await ensureFreshToken();
+        console.log(isTokenFresh)
 
         if(!isTokenFresh) {
-            console.log('session expired, Please logout')
+            logoutModal.current.showModal();
+            console.error('session expired, Please logout')
             return;
         }
 
@@ -69,7 +69,7 @@ export default function UserDataContextProvider({ children }) {
         
         if(error) {
             showNotification('error', 'Error:', 'An error occured whilst fetching your data!');
-            console.warn("getUserDataHandler(): Could not fetch user data");
+            console.error("getUserDataHandler(): Could not fetch user data");
             logoutModal.current.showModal();
             return;
         }
@@ -82,8 +82,9 @@ export default function UserDataContextProvider({ children }) {
         })
     }
 
-    const getUserProfileContext = async (logoutModal) => {
-        const isTokenFresh = ensureFreshToken();
+    //invoked in useEffect in App.jsx when user is logged in
+    const getUserProfileContextFn = async (logoutModal) => {
+        const isTokenFresh = await ensureFreshToken();
 
         if(!isTokenFresh) {
             console.log('session expired, Please logout')
@@ -107,8 +108,7 @@ export default function UserDataContextProvider({ children }) {
         })
     }
 
-    // initilise the userData context value so we can connect to it the state and pass it as a value 
-    // to the context provider so the context is available in all nested components
+    // the object that will be exposed all components accessing this context
     const userDataCtxValue = {
         userListeningData: {
             isDataPresent: userDataState.userListeningData.isDataPresent,
@@ -118,12 +118,11 @@ export default function UserDataContextProvider({ children }) {
         },
         isProfileDataPresent: userDataState.isProfileDataPresent,
         userProfileData: userDataState.userProfileData,
-        getStartedClickContext,
-        getUserProfileContext,
+        getStartedClickContextFn,
+        getUserProfileContextFn,
     }
 
-    // console.log(userDataState)
-    return <UserDataContext.Provider value={userDataCtxValue}>
+    return <UserDataContext value={userDataCtxValue}>
         {children}
-    </UserDataContext.Provider>
+    </UserDataContext>
 }

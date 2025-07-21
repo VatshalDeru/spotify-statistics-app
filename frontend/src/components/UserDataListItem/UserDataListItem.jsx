@@ -6,11 +6,13 @@ export default function UserDataListItem({ item, itemType, rank }) {
 
     switch(itemType) {
         case 'topArtists':
-            if (!item.artistLink || !item.image || !item.artistName || item.artistPopularity === undefined || (!item.followers && item.followers !== 0)) return null;    
+            if (!item.artistsLink || !item.image || !item.artistName || item.artistPopularity === undefined || (!item.followers)) {
+                return null;
+            }    
             content = <>
                 <p className="rank">{rank}.</p>
                 <div className="itemImg">
-                    <a href={item.artistLink} target='_blank'><img src={item.image} alt="" /></a>
+                    <a href={item.artistsLink} target='_blank'><img src={item.image} alt="" /></a>
                 </div>
                 <h3 className='artistName'>{item.artistName}</h3>
                 <div className="popularityContainer">
@@ -44,8 +46,8 @@ export default function UserDataListItem({ item, itemType, rank }) {
                 <div className="itemImg">
                     <a href={item.trackLink} target='_blank'><img src={item.image} alt=""/></a>
                 </div>
-                <div className="trackInfoContainer ">
-                    <h3 className='trackName'>{item.trackName}</h3>
+                <div className="trackInfoContainer recent">
+                    <h3 className='recentTrackName'>{item.trackName}</h3>
                     <p className='trackArtists'>{item.artists.map(artist => artist.name).join(', ')}</p>
                 </div>
                 <div className="popularityContainer">

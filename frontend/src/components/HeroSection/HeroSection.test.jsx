@@ -5,7 +5,7 @@ import { UserDataContext } from '../../store/user-data-context';
 import { expect, describe, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
-const mockGetStartedClickContext = vi.fn();
+const mockGetStartedClickContextFn = vi.fn();
 
 const fetchedUserDataContextValue = {
     userListeningData: {
@@ -18,7 +18,7 @@ const fetchedUserDataContextValue = {
         },
         recentlyPlayedTracks: [],
     },
-    getStartedClickContext: mockGetStartedClickContext,
+    getStartedClickContextFn: mockGetStartedClickContextFn,
 }
 
 
@@ -30,7 +30,7 @@ const userDataContextValue = {
         topTracks: {},
         recentlyPlayedTracks: [],
     },
-    getStartedClickContext: mockGetStartedClickContext,
+    getStartedClickContextFn: mockGetStartedClickContextFn,
 }
 
 const renderWithContext = (ui, contextValue) => {
@@ -76,13 +76,13 @@ describe('HeroSection Component', () => {
 
         expect(buttonElement).toBeInTheDocument();
     });
-    it('should call the getStartedClickContext function when you click the "Get Started" button', async () => {
+    it('should call the getStartedClickContextFn function when you click the "Get Started" button', async () => {
         renderWithContext(<HeroSection isLoggedIn={true}/>, userDataContextValue);
 
         const buttonElement = screen.getByRole('button', { name: 'Get Started' });
 
         await userEvent.click(buttonElement);
 
-        expect(mockGetStartedClickContext).toHaveBeenCalled();
+        expect(mockGetStartedClickContextFn).toHaveBeenCalled();
     });
 })

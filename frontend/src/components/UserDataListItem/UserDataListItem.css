@@ -19,22 +19,25 @@ li .artistName {
   width: 14em;
 }
 li .followers {
-  width: 8em;
+  width: 7em;
   color: rgb(138, 138, 138);
 }
 li .trackInfoContainer {
   width: 26em;
 }
-li .trackInfoContainer .trackName {
+li .trackInfoContainer .trackName, li .trackInfoContainer .recentTrackName {
   margin-bottom: 0;
 }
 li .trackInfoContainer .trackArtists {
   margin-top: 0;
 }
+li .trackInfoContainer.recent {
+  width: 20em;
+}
 li .popularityContainer {
   width: 4.5em;
   height: 4.5em;
-  padding: 0;
+  margin-inline: 0.8em;
   border-radius: 50%;
   background-color: rgb(0, 116, 224);
   line-height: 0.5em;
@@ -55,4 +58,136 @@ li .popularityContainer p {
 li .timePlayed {
   width: 5em;
   color: rgb(138, 138, 138);
+}
+@media (max-width: 950px) {
+  li {
+    margin-block: 1em;
+  }
+  li img {
+    width: 6.5em;
+    height: 6.5em;
+  }
+  li .artistName {
+    width: 14em;
+    font-size: 1rem;
+  }
+  li .followers {
+    font-size: 0.9rem;
+  }
+  li .trackInfoContainer {
+    width: 20em;
+  }
+  li .trackInfoContainer .trackName {
+    font-size: 1rem;
+  }
+  li .trackInfoContainer .trackArtists {
+    font-size: 0.8rem;
+  }
+  li .trackInfoContainer.recent {
+    width: 18em;
+  }
+  li .trackInfoContainer.recent .recentTrackName {
+    font-size: 1.1rem;
+  }
+  li .popularityContainer {
+    width: 3.7em;
+    height: 3.7em;
+  }
+  li .popularityContainer .popularity {
+    font-size: 1.2em;
+  }
+  li .timePlayed {
+    width: 5em;
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 700px) {
+  li img {
+    width: 5.5em;
+    height: 5.5em;
+  }
+  li .artistName {
+    width: 12em;
+    font-size: 0.8rem;
+  }
+  li .followers {
+    font-size: 0.7rem;
+  }
+  li .trackInfoContainer {
+    width: 14em;
+  }
+  li .trackInfoContainer .trackName {
+    margin-bottom: 0;
+    font-size: 0.8rem;
+  }
+  li .trackInfoContainer .trackArtists {
+    margin-top: 0;
+    font-size: 0.8rem;
+  }
+  li .trackInfoContainer.recent {
+    width: 9em;
+  }
+  li .trackInfoContainer.recent .recentTrackName {
+    font-size: 0.8rem;
+  }
+  li .popularityContainer {
+    width: 3.4em;
+    height: 3.4em;
+  }
+  li .popularityContainer .popularity {
+    font-size: 1em;
+  }
+  li .popularityContainer p {
+    font-size: 0.6rem;
+  }
+  li .timePlayed {
+    width: 5em;
+  }
+}
+@media (max-width: 570px) {
+  li .rank {
+    font-size: 0.9rem;
+    margin-inline: 0.2em;
+  }
+  li img {
+    width: 4.5em;
+    height: 4.5em;
+  }
+  li .artistName {
+    width: 8em;
+    font-size: 0.6rem;
+  }
+  li .followers {
+    font-size: 0.6rem;
+  }
+  li .trackInfoContainer {
+    width: 13em;
+  }
+  li .trackInfoContainer .trackName {
+    margin-bottom: 0;
+    font-size: 0.6em;
+  }
+  li .trackInfoContainer .trackArtists {
+    margin-top: 0;
+    font-size: 0.6rem;
+  }
+  li .trackInfoContainer.recent {
+    width: 8em;
+  }
+  li .trackInfoContainer.recent .recentTrackName {
+    font-size: 0.6rem;
+  }
+  li .popularityContainer {
+    width: 3.4em;
+    height: 3.4em;
+  }
+  li .popularityContainer .popularity {
+    font-size: 0.9em;
+  }
+  li .popularityContainer p {
+    font-size: 0.6rem;
+  }
+  li .timePlayed {
+    font-size: 0.7rem;
+  }
 }/*# sourceMappingURL=UserDataListItem.css.map */
