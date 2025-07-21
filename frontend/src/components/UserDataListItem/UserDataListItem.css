@@ -147,18 +147,20 @@ li .timePlayed {
 @media (max-width: 570px) {
   li .rank {
     font-size: 0.9rem;
-    margin-inline: 0.2em;
+    width: 0em;
   }
   li img {
-    width: 4.5em;
-    height: 4.5em;
+    width: 4em;
+    height: 4em;
   }
   li .artistName {
     width: 8em;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
   li .followers {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
+    margin: 0;
+    width: 3em;
   }
   li .trackInfoContainer {
     width: 13em;
@@ -180,6 +182,7 @@ li .timePlayed {
   li .popularityContainer {
     width: 3.4em;
     height: 3.4em;
+    margin-inline: 0;
   }
   li .popularityContainer .popularity {
     font-size: 0.9em;
