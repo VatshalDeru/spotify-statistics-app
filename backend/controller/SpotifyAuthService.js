@@ -9,6 +9,7 @@ export default class SpotifyAuthService{
     #client_id = '';
     #client_secret = '';
     #redirect_uri = '';
+    #state = '';
 
     constructor({client_id, client_secret, redirect_uri}) {
         this.#client_id = client_id || '';
@@ -25,6 +26,10 @@ export default class SpotifyAuthService{
         return this.#refreshToken;
     }
 
+    getState() {
+        return this.#state;
+    }
+
     setAccessToken(token) {
         this.#accessToken = token;
         // console.log('access token set to: ', this.#accessToken)
@@ -34,17 +39,19 @@ export default class SpotifyAuthService{
         this.#refreshToken = token;
         // console.log('refresh token set to: ', this.#refreshToken)
     }
+
     // ---------------------------------------------
 
     // create the URL to authenticate user to obtain authcode
     
     getAuthURL(givenScope){
-        // scope to determin what data we can request from API
+        // scope to determine what data we can request from API
         const scope = givenScope;
         
         const baseURL = 'https://accounts.spotify.com/authorize?';
 
         const state = nanoid(16);
+        this.#state = state;
 
         // create the query params for the auth URL
         const params = new URLSearchParams({
@@ -57,9 +64,8 @@ export default class SpotifyAuthService{
 
         // comnine base URL + params to create the auth URL
         const authURL = baseURL + params.toString();
-        // console.log(authURL)
 
-        return { authURL, state };
+        return { authURL };
     }
 
     // get access & refresh tokens using the authcode
@@ -83,20 +89,14 @@ export default class SpotifyAuthService{
             return { data, error }
         }
         
-        // extract tokens from data if no errors occured
         const { access_token, refresh_token } = data;
-        // console.log('accessToken: ', access_token)
-        
-        // console.log({ data: {access_token}, error })
-        //set the tokens in this class for later use
         this.setAccessToken(access_token);
         this.setRefreshToken(refresh_token);
 
-        // sending only the access token
         data =  {
             access_token
         }
-        // console.log({ data, error });
+
         return { data, error }
     }
 
@@ -117,7 +117,7 @@ export default class SpotifyAuthService{
         let { data, error } = await fetchHandler({ url, method, headersObj, bodyObj, errorIntro });
         
         if(error) {
-            return { data, error}
+            return { data, error }
         }
         
         const { access_token } = data;

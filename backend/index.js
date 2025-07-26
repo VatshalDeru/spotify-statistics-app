@@ -12,9 +12,9 @@ app.use(bodyParser.json());
 
 // initialise the controller
 const spotifyAPIController = new SpotifyAPIController({
-  redirect_uri: "http://localhost:3000/callback",
-  client_id: "31efb33b062d4da9a45cb8f69e7cf34d",
-  client_secret: "21c9d39137cb440b9898877d15d510e7",
+  redirect_uri: process.env.REDIRECT_URI,
+  client_id: process.env.CLIENT_iD,
+  client_secret: process.env.CLIENT_SECRET,
 });
 
 const scope = [
@@ -31,21 +31,22 @@ app.use((req, res, next) => {
 });
 
 app.get("/login", (req, res) => {
-  const { authURL, state } = spotifyAPIController.getAuthURL(scope);
+  const { authURL } = spotifyAPIController.getAuthURL(scope);
 
-  // also sending state to be sent to frontend so we can compare state later
-  res.json({ authURL, state });
+  res.json({ authURL });
 });
-
+ 
 app.get("/callback", async (req, res) => {
   const state = req.query.state;
 
   const homeURL = new URL("http://localhost:5173/");
-  homeURL.searchParams.append("state", state);
 
   try {
     if (req.query.error) {
       throw new Error(`error authorizing app : ${req.query.error}`);
+    }
+    if((state !== spotifyAPIController.getState())){
+      throw new Error('error authorizing app: state mismatch');
     }
 
     const authCode = req.query.code;

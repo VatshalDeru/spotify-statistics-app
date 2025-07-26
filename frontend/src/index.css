@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+::-webkit-scrollbar-track {
+  width: 20px;
+  background-color: red;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

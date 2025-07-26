@@ -10,21 +10,13 @@ export default class SpotifyAPIController {
         this.#requestData = new SpotifyRequestData();
     }
 
-    // ------ getter and setter functions ---------
+    // ------ getter functions ---------
     getAccessToken() {
         return this.#authService.getAccessToken();
     }
 
-    getRefreshToken() {
-        return this.#authService.getRefreshToken();
-    }
-
-    setAccessToken(token) {
-        this.#authService.setAccessToken(token)
-    }
-
-    setRefreshToken(token) {
-        this.#authService.setRefreshToken(token);
+    getState(){
+        return this.#authService.getState();
     }
     // ---------------------------------------------
 
@@ -40,10 +32,6 @@ export default class SpotifyAPIController {
         const { data, error } = await this.#authService.getTokens(authCode);
 
         if(error) return { data, error };
-        else if (data && !this.#requestData) {
-            const accessToken = this.#authService.getAccessToken();
-            this.#requestData = new SpotifyRequestData(accessToken)
-        }
 
         return { data, error }
     }

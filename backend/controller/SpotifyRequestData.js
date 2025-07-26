@@ -6,14 +6,10 @@ const userDataParamsObj = {
 };
 
 export default class SpotifyRequestData {
-  // function to get users listening statistics
   async getUserData(accessToken) {
-    // return await getUserDataHelper(accessToken);
     const topArtists = {};
     const topTracks = {};
-    // console.log(accessToken)
 
-    // create and prepare the static values/obj so we can pass it spotifyFetch() for the request
     const headersObj = {
       Authorization: `Bearer ${accessToken}`,
     };
@@ -35,11 +31,10 @@ export default class SpotifyRequestData {
           return;
         }
         const { items } = data;
-        // console.log(items);
+ 
         // adding the fetched user data to the relevant data item obj we created above
-
+        // get only the values we need
         if (itemType === "artists") {
-          // get only the values we need
           const formattedArtistItems = items.map(artist => ({
             artistsLink: artist.external_urls.spotify,
             image: artist.images[0].url,

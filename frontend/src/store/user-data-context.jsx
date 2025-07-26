@@ -56,7 +56,6 @@ export default function UserDataContextProvider({ children }) {
     // invoked when button in heroSection is clicked
     const getStartedClickContextFn = async (logoutModal) => {
         const isTokenFresh = await ensureFreshToken();
-        console.log(isTokenFresh)
 
         if(!isTokenFresh) {
             logoutModal.current.showModal();

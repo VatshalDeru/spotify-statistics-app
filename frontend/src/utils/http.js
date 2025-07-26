@@ -1,5 +1,3 @@
-import { checkTokenIsFresh } from "./authUtils";
-
 // function will send fetch request for you with values and data provided
 export const fetchHandler = async ({ url, method, bodyObj, headersObj, errorIntro }) => {
     // conditionally configuring the options object depending on if each option was passed in the parameter or not
@@ -62,13 +60,9 @@ export const loginFn = async () => {
 
     const { data, error } = await fetchHandler({ url, errorIntro });
 
-    if(error) {
-        console.error('error logging in: ', error);
-        return false;
-    }
+    if(error) return false;
 
-    const { authURL, state } = data
-    localStorage.setItem('state', state)
+    const { authURL } = data
 
     // go to the auth URL to allow user to authorise app
     window.location.replace(authURL);

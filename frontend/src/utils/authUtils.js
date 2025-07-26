@@ -4,10 +4,6 @@ import { refreshAccessToken } from "./http";
 export const checkURLforParams = () => {
   const params = new URLSearchParams(window.location.search);
 
-  const stateMismatch =  checkForStateMismatch(params);
-  if(stateMismatch) return { status: 'error' };
-
-
   // check if a error param is present in the URL and stop function if so
   const error = params.get("error");
   if (error) {
@@ -19,11 +15,9 @@ export const checkURLforParams = () => {
     return { status: "error" };
   }
 
-  // no longer need to store state
-  localStorage.removeItem("state");
 
   const storedParams = storeParamsInStorage(params);
-  if(!storedParams) return { status: "neutral" } // neutral means login wasn't attempted
+  if(!storedParams) return { status: "neutral" }; // neutral means login wasn't attempted
 
   // reset URL to root path to remove token and time from the URL without reloading page
   window.history.replaceState(null, "", "/");
@@ -32,29 +26,11 @@ export const checkURLforParams = () => {
   return { status: "success" };
 };
 
-// check if the state received in the URL params ins
-export const checkForStateMismatch = (params) => {
-  const storedState = localStorage.getItem("state");
-  const receivedState = params.get("state");
-
-  // check for state misatch if state is stored in localStorage and we receive state in URL params
-  if (storedState !== receivedState && storedState && receivedState) {
-    console.error("error logging in: state mismatch");
-
-    // remove the state to avoid repeated misatch errors in the console upon page refresh
-    localStorage.removeItem("state");
-
-    window.history.replaceState(null, "", "/");
-
-    // for notification
-    return true;
-  }
-};
 
 const storeParamsInStorage = (params) =>{
   const tokenCreationTime = params.get("tokenCreationTime");
   const accessToken = params.get("access_token");
-  console.log(0)
+
   if (!tokenCreationTime || !accessToken) return false;
 
   localStorage.setItem("tokenCreationTime", parseInt(tokenCreationTime));
@@ -79,7 +55,7 @@ export const checkIsLoggedIn = () => {
 export const checkTokenIsFresh = () => {
   const tokenCreationTime = localStorage.getItem("tokenCreationTime");
 
-  if (!tokenCreationTime) return null;
+  if (!tokenCreationTime) return false;
 
   const currTime = new Date().getTime();
   const timeDifference = (currTime - tokenCreationTime) / 1000;
@@ -99,7 +75,7 @@ export const clearStorage = () => {
 // returns false/true depending on if it refreshed sucessfully
 export const ensureFreshToken = async () => {
   const isTokenFresh = checkTokenIsFresh();
-  console.log('isTokenFresh: ', isTokenFresh)
+
   if (!isTokenFresh) {
     const refreshed = await refreshAccessToken();
 
