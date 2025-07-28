@@ -97,6 +97,20 @@ app.post("/user", async (req, res) => {
   return res.json(data);
 });
 
+app.post("/search-tracks", async (req, res) => {
+  console.log(req.body)
+  const { query } = req.body;
+  const { data, error } = await spotifyAPIController.getSearchedTracks(query);
+  
+  if(error){
+    console.log(error);
+    return res.status(400).json({ error: error.message });
+  }
+  
+  // console.log(data,'line 108')
+  res.json(data);
+})
+
 app.get("/refresh-token", async (req, res) => {
   const { data, error } = await spotifyAPIController.refreshAccessToken();
 

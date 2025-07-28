@@ -7,7 +7,7 @@ import { isUserProfileDataComplete } from "../../utils/uiUtils.js";
 
 
 // eslint-disable-next-line react/prop-types
-export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
+export default function Navbar({ isLoggedIn, setIsLoggedIn, setIsCreatingPlaylist, isCreatingPlaylist }) {
     const [isCardOpen, setIsCardOpen] = useState(false)
     const  { userProfileData, isProfileDataPresent } = useContext(UserDataContext);
     const { showNotification } = useContext(NotificationContext);
@@ -29,8 +29,9 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
         };
     }
 
-    return <div className="navbarContainer">
+    return <div className="navbarContainer">  
         {!isLoggedIn && <button onClick={loginClickHandler}>Login</button>}
+        {isLoggedIn && <button onClick={() => setIsCreatingPlaylist((prevState) => !prevState)}>{isCreatingPlaylist ? 'Home' : 'Create a Playlist'}</button>}
         {(isLoggedIn && isProfileDataPresent && isUserProfileDataComplete) && <div className="profileImg" onClick={openCard} data-testid='profile-button'><img src={ userProfileData.images[0].url} alt="Profile Picture" /></div>}
         {(isLoggedIn && isCardOpen)  && <ProfilePopUpCard open={isCardOpen} closeCard={closeCard} setIsLoggedIn={setIsLoggedIn}></ProfilePopUpCard>}
     </div>

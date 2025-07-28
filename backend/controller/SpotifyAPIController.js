@@ -36,20 +36,25 @@ export default class SpotifyAPIController {
         return { data, error }
     }
 
-    // get a fresh accesstoken in exchange for a refreshToken
-    async refreshAccessToken(){
-        return await this.#authService.refreshAccessToken();
-    }
-
     // function to get users listening statistics 
     async getUserData(){
         const accessToken = this.#authService.getAccessToken()
         return await this.#requestData.getUserData(accessToken);
     };
-
+    
     // get users spotify profile data
-    async getUserProfile(){
+    async getUserProfile(query){
         const accessToken = this.#authService.getAccessToken()
-        return await this.#requestData.getUserProfile(accessToken);
+        return await this.#requestData.getUserProfile(accessToken, query);
+    }
+    
+    async getSearchedTracks(query){
+        const accessToken = this.#authService.getAccessToken()
+        return await this.#requestData.getSearchedTracks(accessToken, query);
+    }
+
+    // get a fresh accesstoken in exchange for a refreshToken
+    async refreshAccessToken(){
+        return await this.#authService.refreshAccessToken();
     }
 }

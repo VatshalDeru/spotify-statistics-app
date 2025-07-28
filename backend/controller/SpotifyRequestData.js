@@ -73,7 +73,7 @@ export default class SpotifyRequestData {
       recentlyPlayedTracks,
     };
 
-    console.log(topArtists)
+    // console.log(topArtists)
 
     return { data, error };
   }
@@ -86,7 +86,7 @@ export default class SpotifyRequestData {
     const errorIntro = "error getting users recently played tracks";
 
     const { data, error } = await fetchHandler({ url, headersObj, errorIntro });
-    if (error) return;
+    if (error) return { data, error };
 
     return data;
   }
@@ -102,5 +102,29 @@ export default class SpotifyRequestData {
 
     return await fetchHandler({ url, headersObj, errorIntro });
     // console.log('apiController.js - getUserProfile(): ', data);
+  }
+
+  //
+  async getSearchedTracks(accessToken, query){
+    const url = new URL("https://api.spotify.com/v1/search?");
+    url.searchParams.append('q', query);
+    url.searchParams.append('type', 'track');
+    url.searchParams.append('market', 'ES');
+    url.searchParams.append('limit', 5);
+
+    const headersObj = {
+      Authorization: "Bearer " + accessToken,
+    };
+    const errorIntro = 'error getting track search results';
+    const { data, error } = await fetchHandler({ url, headersObj})
+    if(error) return { data, error };
+
+    const resultTracks = data.tracks.items;
+    const formattedResultTracks = resultTracks.map(track => ({
+      trackName: track.name,
+      trackImage: track.album.images[0].url
+    }))
+    
+    return {data:formattedResultTracks, error}
   }
 }

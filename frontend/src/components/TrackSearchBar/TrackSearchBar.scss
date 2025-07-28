@@ -1,0 +1,22 @@
+
+.searchBarContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    input {
+        // margin: 0 auto;
+        position: relative;
+        border: none;
+        font-size: 1.2rem;
+        padding: 0.5em 0.8em;
+        left: -0.8em;
+        border-radius: 0.5em;
+        width: 100%;
+    }
+    
+    button {
+        background-color: #3BE477;
+        border-radius: 1em;
+    }
+}

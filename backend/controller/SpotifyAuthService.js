@@ -43,7 +43,6 @@ export default class SpotifyAuthService{
     // ---------------------------------------------
 
     // create the URL to authenticate user to obtain authcode
-    
     getAuthURL(givenScope){
         // scope to determine what data we can request from API
         const scope = givenScope;

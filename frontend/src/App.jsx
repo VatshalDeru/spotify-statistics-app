@@ -9,9 +9,12 @@ import { UserDataContext } from './store/user-data-context.jsx';
 import { NotificationContext } from './store/notification-context.jsx';
 import UserDataContainer from './components/UserDataContainer/UserDataContainer.jsx';
 import LogoutModal from './components/LogoutModal/LogoutModal.jsx';
+import CreatePlaylistContainer from './components/CreatePlaylistContainer/CreatePlaylistContainer.jsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCreatingPlaylist, setIsCreatingPlaylist] = useState(false);
+
   const logoutModal = useRef();
 
   let { getUserProfileContextFn, userListeningData} = useContext(UserDataContext);
@@ -49,9 +52,10 @@ function App() {
   return (
     <div className='appContainer'>
       <LogoutModal ref={logoutModal} setIsLoggedIn={setIsLoggedIn}/>
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
-      <HeroSection isLoggedIn={isLoggedIn} logoutModal={logoutModal}></HeroSection>
-      {(isLoggedIn && isUserListeningDataComplete(userListeningData)) && <UserDataContainer/>}
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsCreatingPlaylist={setIsCreatingPlaylist} isCreatingPlaylist={isCreatingPlaylist}/>
+      <HeroSection isLoggedIn={isLoggedIn} logoutModal={logoutModal} isCreatingPlaylist={isCreatingPlaylist}></HeroSection>
+      {isLoggedIn && isCreatingPlaylist && <CreatePlaylistContainer/>}
+      {(isLoggedIn && isUserListeningDataComplete(userListeningData)) && !isCreatingPlaylist && <UserDataContainer/>}
     </div>
   );
 }

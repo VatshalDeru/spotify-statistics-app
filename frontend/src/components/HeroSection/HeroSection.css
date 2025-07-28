@@ -1,5 +1,5 @@
 .HeroContainer {
-  margin: 10em;
+  margin-block: 4em;
 }
 .HeroContainer h1 {
   display: flex;

@@ -1,0 +1,15 @@
+
+.createPlaylistContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 0.5em;
+    padding-block: 1em;
+    border-radius: 1em;
+    width: 20em;
+    background-color: #1A1A1A;
+
+    span{
+        color: #3BE477;
+    }
+}

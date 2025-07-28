@@ -68,6 +68,26 @@ export const loginFn = async () => {
     window.location.replace(authURL);
 }
 
+export const getSearchedTracksResults = async (query) => {
+    const url = 'http://localhost:3000/search-tracks';
+    const method = 'POST';
+    const headersObj = { 'Content-Type': 'application/json' };
+    const bodyObj = JSON.stringify({
+        query
+    });
+    console.log(bodyObj)
+    const errorIntro = 'error getting track search results!';
+    const { data, error }  = await fetchHandler({ url, method, headersObj, bodyObj, errorIntro });
+    // console.log(data);
+    
+    if(error) {
+      console.error(error);
+      return;
+    }
+
+    return data;
+}
+
 export const refreshAccessToken = async () => {
     const url = 'http://localhost:3000/refresh-token';
     const errorIntro = 'error refreshing access token';
