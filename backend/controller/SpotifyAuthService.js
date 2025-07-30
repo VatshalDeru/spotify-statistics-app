@@ -60,8 +60,7 @@ export default class SpotifyAuthService{
             redirect_uri: this.#redirect_uri,
             state: state,
         })
-
-        // comnine base URL + params to create the auth URL
+        
         const authURL = baseURL + params.toString();
 
         return { authURL };

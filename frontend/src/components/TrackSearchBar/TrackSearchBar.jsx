@@ -17,7 +17,7 @@ export default function TrackSearchBar({setQueries}) {
         setQueries(resultArr)
     }
 
-    const debouncedChangeHandler = debounce(submitSearchHandler, 500);
+    const debouncedChangeHandler = debounce(submitSearchHandler, 750);
 
     return <div className="searchBarContainer">
         <form action="">
