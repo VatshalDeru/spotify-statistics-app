@@ -1,11 +1,12 @@
-import { fetchHandler } from "../helper.js";
+import { fetchHandler, formatUserData } from "../helper.js";
 
 const userDataParamsObj = {
-    itemTypes: ['artists', 'tracks'],
-    timeRanges: ['short_term', 'medium_term', 'long_term']
+  itemTypes: ['artists', 'tracks'],
+  timeRanges: ['short_term', 'medium_term', 'long_term']
 };
 
 export default class SpotifyRequestData {
+  // get users data like top listened to artist/tracks
   async getUserData(accessToken) {
     const topArtists = {};
     const topTracks = {};
@@ -26,6 +27,7 @@ export default class SpotifyRequestData {
           headersObj,
           errorIntro,
         });
+        
         if (errorMsg) {
           error = errorMsg;
           return;
@@ -33,39 +35,19 @@ export default class SpotifyRequestData {
         const { items } = data;
  
         // adding the fetched user data to the relevant data item obj we created above
-        // get only the values we need
+        // get only the values we need by calling the format function
         if (itemType === "artists") {
-          const formattedArtistItems = items.map(artist => ({
-            artistsLink: artist.external_urls.spotify,
-            image: artist.images[0].url,
-            artistName: artist.name,
-            artistPopularity: artist.popularity,
-            followers: artist.followers.total,
-          }))
+          const formattedArtistItems = formatUserData("artists", items)
           topArtists[timeRange] = formattedArtistItems;
         } else {
-            const formattedTrackItems = items.map(track => ({
-              trackLink: track.external_urls.spotify,
-              image: track.album.images[0].url,
-              trackName: track.name,
-              trackPopularity: track.popularity,
-              artists: track.artists
-            }))
+          const formattedTrackItems = formatUserData("tracks", items)
           topTracks[timeRange] = formattedTrackItems;
         }
       }
     }
     const { items } = await this.getUserRecentlyPlayed(accessToken);
 
-    // console.log(items)
-    const recentlyPlayedTracks = items.map(recentTrack => ({
-      trackLink: recentTrack.track.external_urls.spotify,
-      image: recentTrack.track.album.images[0].url,
-      trackName: recentTrack.track.name,
-      artists: recentTrack.track.artists,
-      trackPopularity: recentTrack.track.popularity,
-      timeStamp: recentTrack.played_at,
-    }))
+    const recentlyPlayedTracks = formatUserData("profileData", items);
 
     const data = {
       topArtists,
@@ -78,6 +60,7 @@ export default class SpotifyRequestData {
     return { data, error };
   }
 
+  // gets users listening history of tracks
   async getUserRecentlyPlayed(accessToken) {
     const url = "https://api.spotify.com/v1/me/player/recently-played";
     const headersObj = {
@@ -91,7 +74,6 @@ export default class SpotifyRequestData {
     return data;
   }
 
-  // get users spotify profile data
   async getUserProfile(accessToken) {
     // prepare values/object for spotifyFetch()
     const url = "https://api.spotify.com/v1/me";
@@ -104,7 +86,7 @@ export default class SpotifyRequestData {
     // console.log('apiController.js - getUserProfile(): ', data);
   }
 
-  //
+  // get result for query which the user typed in the search bar
   async getSearchedTracks(accessToken, query){
     const url = new URL("https://api.spotify.com/v1/search?");
     url.searchParams.append('q', query);
@@ -123,7 +105,7 @@ export default class SpotifyRequestData {
     const formattedResultTracks = resultTracks.map(track => ({
       trackName: track.name,
       trackImage: track.album.images[0].url
-    }))
+    }));
     
     return {data:formattedResultTracks, error}
   }

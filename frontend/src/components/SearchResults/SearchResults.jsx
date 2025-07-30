@@ -1,5 +1,3 @@
-
-
 export default function SearchResults({queries}){
     // console.log(queries);
 

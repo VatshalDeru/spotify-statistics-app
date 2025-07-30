@@ -10,7 +10,6 @@ export default class SpotifyAPIController {
         this.#requestData = new SpotifyRequestData();
     }
 
-    // ------ getter functions ---------
     getAccessToken() {
         return this.#authService.getAccessToken();
     }
@@ -18,9 +17,6 @@ export default class SpotifyAPIController {
     getState(){
         return this.#authService.getState();
     }
-    // ---------------------------------------------
-
-    // create the URL to authenticate user to obtain authcode
     
     // get auth URL at which the user will authorize the app
     getAuthURL(givenScope){
@@ -36,13 +32,11 @@ export default class SpotifyAPIController {
         return { data, error }
     }
 
-    // function to get users listening statistics 
     async getUserData(){
         const accessToken = this.#authService.getAccessToken()
         return await this.#requestData.getUserData(accessToken);
     };
     
-    // get users spotify profile data
     async getUserProfile(query){
         const accessToken = this.#authService.getAccessToken()
         return await this.#requestData.getUserProfile(accessToken, query);
@@ -53,7 +47,6 @@ export default class SpotifyAPIController {
         return await this.#requestData.getSearchedTracks(accessToken, query);
     }
 
-    // get a fresh accesstoken in exchange for a refreshToken
     async refreshAccessToken(){
         return await this.#authService.refreshAccessToken();
     }

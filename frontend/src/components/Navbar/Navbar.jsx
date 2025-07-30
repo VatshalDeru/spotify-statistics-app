@@ -22,6 +22,8 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setIsCreatingPlaylis
 
     const loginClickHandler = async () => {
         showNotification('pending', 'Pending:', 'Logging in...');
+        
+        // will return false/true depending on if the user logged in successfully
         const isLoggedIn = await loginFn();
         if(isLoggedIn ===  false) {
             // console.log(error);
